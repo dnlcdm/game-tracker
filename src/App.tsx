@@ -1,7 +1,8 @@
-import "./index.css";
+import type { FC } from "react";
+import { RouterProvider } from "./router/routes";
 
-function App() {
-  return <div className="font-bold uppercase">daniel</div>;
-}
+const App: FC = () => {
+  return <RouterProvider />;
+};
 
 export default App;
