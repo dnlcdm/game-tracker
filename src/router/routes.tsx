@@ -7,7 +7,7 @@ export const RouterProvider = () => {
       element: <p>home</p>,
     },
     {
-      path: "/browser",
+      path: "/comics",
       element: <p>lista de pesquisa</p>,
     },
   ]);
