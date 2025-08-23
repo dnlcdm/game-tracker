@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider as RP } from "react-router";
+import SearchGames from "../pages/search-games";
 
 export const RouterProvider = () => {
   const router = createBrowserRouter([
@@ -7,8 +8,8 @@ export const RouterProvider = () => {
       element: <p>home</p>,
     },
     {
-      path: "/comics",
-      element: <p>lista de pesquisa</p>,
+      path: "/search",
+      element: <SearchGames />,
     },
   ]);
 
