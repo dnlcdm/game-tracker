@@ -5,7 +5,7 @@ import {
   type UseMutationOptions,
   type UseQueryOptions,
 } from "@tanstack/react-query";
-import apiClient from "../api/apiClient";
+import apiClient from "../api/api-client";
 
 type ApiError = Error;
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
