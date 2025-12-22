@@ -1,3 +1,3 @@
-import { Backlog } from "../features/my-games/backlog";
+import { Backlog } from "../features/backlog/backlog.tsx";
 
 export default Backlog;
