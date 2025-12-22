@@ -1,15 +1,44 @@
-import { createBrowserRouter, RouterProvider as RP } from "react-router";
-import SearchGames from "../pages/search-games";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider as RP,
+} from "react-router";
+import { LoginCard } from "../features/login/login";
+import { ProtectedRoute } from "./ProtectedRoute";
+import { PublicRoute } from "./PublicRoute";
+import Backlog from "../pages/backlog-page";
+import { MainLayout } from "../features/sidebar";
+import SearchGames from "../pages/search-games-page";
+import Playing from "../pages/playing-page";
 
 export const RouterProvider = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <p>home</p>,
+      element: <Navigate to="/search" />,
     },
     {
-      path: "/search",
-      element: <SearchGames />,
+      element: <ProtectedRoute />,
+      children: [
+        {
+          element: <MainLayout />,
+          children: [
+            { path: "/backlog", element: <Backlog /> },
+            { path: "/search", element: <SearchGames /> },
+            { path: "/playing", element: <Playing /> },
+            { path: "/game-stats", element: <p>game stats</p> },
+          ],
+        },
+      ],
+    },
+    {
+      element: <PublicRoute />,
+      children: [
+        {
+          path: "/login",
+          element: <LoginCard />,
+        },
+      ],
     },
   ]);
 

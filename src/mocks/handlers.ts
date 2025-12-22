@@ -1,11 +1,10 @@
 import { http, HttpResponse, type JsonBodyType } from "msw";
-import { GAMES } from "../api/api-constants";
 import gamesMocks from "./data/games/games.json";
 
-const baseURL = import.meta.env.VITE_RAWG_API_URL;
+const baseURL = import.meta.env.VITE_MIDDLEWARE;
 
 export const handlers = [
-  http.get(baseURL + GAMES, (): HttpResponse<JsonBodyType> => {
+  http.get(baseURL + "test", (): HttpResponse<JsonBodyType> => {
     return HttpResponse.json(gamesMocks);
   }),
 ];

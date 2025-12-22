@@ -1,8 +1,8 @@
 import axios from "axios";
+import { setupInterceptors } from "./interceptors/setup-interceptors";
 
 const env = import.meta.env;
-const baseURL = env.VITE_RAWG_API_URL;
-const key = env.VITE_RAWG_API_KEY;
+const baseURL = env.VITE_MIDDLEWARE;
 
 const apiClient = axios.create({
   baseURL,
@@ -11,13 +11,6 @@ const apiClient = axios.create({
   },
 });
 
-apiClient.interceptors.request.use((config) => {
-  config.params = {
-    ...config.params,
-    key,
-  };
-
-  return config;
-});
+setupInterceptors(apiClient);
 
 export default apiClient;

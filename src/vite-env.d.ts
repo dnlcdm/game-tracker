@@ -2,9 +2,10 @@
 declare module "*.css";
 
 interface ImportMetaEnv {
-  readonly VITE_RAWG_API_URL: string;
-  readonly VITE_RAWG_API_KEY: string;
   readonly VITE_ENVIRONMENT: string;
+  readonly VITE_MIDDLEWARE: string;
+  readonly VITE_SUPABASE_URL: string;
+  readonly VITE_SUPABASE_API: string;
 }
 
 interface ImportMeta {
