@@ -1,12 +1,12 @@
 import { useEffect, useState, type ReactNode } from "react";
-import type { IGames } from "../../features/search-games/types/games.types";
 import { GameDetailsModal } from "./game-details-modal";
+import type { IGames } from "../../features/search-games/types/games.types";
 
 export interface IGameAction {
-  icon: ReactNode;
-  label: string;
-  onClick: (game: IGames) => void;
-  colorClass?: string;
+  icon: (game: IGames) => ReactNode;
+  label: (game: IGames) => string;
+  onClick: (game: IGames) => void | null;
+  colorClass?: (game: IGames) => string; // Agora é uma função que recebe o jogo
   isLoadingAction?: (game: IGames) => boolean;
 }
 
@@ -26,7 +26,6 @@ export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
     }
   }, [items, selectedGame]);
 
-  // Layout do Skeleton e Grid consistente
   const gridLayoutClasses =
     "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 sm:gap-4 mt-4";
 
@@ -51,14 +50,12 @@ export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
           onClick={() => setSelectedGame(item)}
           className="relative w-full aspect-[3/4] overflow-hidden rounded-xl shadow-lg group bg-gray-900 cursor-pointer active:scale-[0.98] transition-transform duration-150"
         >
-          {/* Background Blur Effect */}
           <img
             src={item.coverUrl}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 transition-opacity duration-300 group-hover:opacity-60"
+            className="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 transition-opacity duration-300 group-hover:opacity-50"
           />
 
-          {/* Main Cover Image */}
           <img
             src={item.coverUrl}
             alt={item.name}
@@ -68,12 +65,14 @@ export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
             }`}
           />
 
-          {/* Overlay de Gradiente (Sempre visível no mobile para legibilidade) */}
-          <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
-            {/* Botões de Ação Rápidas */}
-            <div className="absolute top-2 right-2 flex gap-1.5 z-20">
+          <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-300">
+            <div className="absolute top-1 right-1 flex gap-1.5 z-20">
               {actions?.map((action, index) => {
                 const isCurrentlyLoading = action.isLoadingAction?.(item);
+                const renderedIcon = action.icon(item);
+                const dynamicColorClass = action.colorClass
+                  ? action.colorClass(item)
+                  : "md:hover:text-blue-400";
 
                 return (
                   <button
@@ -84,23 +83,22 @@ export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
                       e.stopPropagation();
                       action.onClick(item);
                     }}
-                    className={`flex items-center justify-center p-2 rounded-full text-white transition-all bg-black/60 backdrop-blur-md border border-white/10
-                      ${isCurrentlyLoading ? "opacity-50" : "active:scale-125 md:hover:scale-110 md:hover:bg-gray-800"} 
-                      ${action.colorClass || "md:hover:text-blue-400"}`}
+                    className={`flex items-center justify-center rounded-md text-white transition-all bg-black/60 backdrop-blur-md border border-white/10
+                      ${isCurrentlyLoading ? "opacity-50" : "active:scale-125 "} 
+                      ${dynamicColorClass}`}
                   >
                     {isCurrentlyLoading ? (
                       <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
                     ) : (
-                      action.icon
+                      renderedIcon
                     )}
                   </button>
                 );
               })}
             </div>
 
-            {/* Nome do Jogo no Rodapé */}
             <div className="absolute bottom-0 left-0 right-0 p-3">
-              <span className="text-[11px] sm:text-xs text-left font-bold text-white line-clamp-2 leading-tight uppercase tracking-wide">
+              <span className="text-[11px] sm:text-xs text-left font-bold text-white line-clamp-2 leading-tight uppercase tracking-wide drop-shadow-md">
                 {item.name}
               </span>
             </div>

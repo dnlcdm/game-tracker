@@ -6,6 +6,5 @@ export function useFetchBacklogGames() {
   return useQuery<IGames[], Error>({
     queryKey: ["backlog"],
     queryFn: getBacklogGames,
-    refetchOnWindowFocus: true,
   });
 }

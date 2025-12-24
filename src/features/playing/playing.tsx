@@ -19,8 +19,8 @@ export const Playing = () => {
 
   const gameActions = [
     {
-      icon: <SportsEsportsIcon fontSize="small" />,
-      label: "Jogar",
+      icon: () => <SportsEsportsIcon fontSize="small" />,
+      label: () => "Remover da lista",
       onClick: (game: IGames) => mutatePlaying(game.id),
       isLoadingAction: (game: IGames) =>
         isPendingPlaying && variablesPlaying === game.id,
@@ -28,7 +28,7 @@ export const Playing = () => {
   ];
 
   return (
-    <div className="p-4 text-white">
+    <div className="text-white">
       <GameGrid
         items={data ?? []}
         actions={gameActions}

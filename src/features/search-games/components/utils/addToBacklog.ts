@@ -15,7 +15,7 @@ export const addToBacklog = async (
 
   const { error: upsertError } = await supabase
     .from("games_backlog")
-    .upsert([backlogData], { onConflict: "id" });
+    .upsert([backlogData], { onConflict: "id,user_id" });
 
   if (upsertError) {
     throw new Error("Erro ao salvar metadados do jogo: " + upsertError.message);

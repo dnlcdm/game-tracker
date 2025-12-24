@@ -19,7 +19,6 @@ export const useUserAuth = () => {
       setIsLoading(false);
     });
 
-    // Monitorar mudanças de estado (login, logout, refresh de token)
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, newSession) => {
@@ -27,7 +26,6 @@ export const useUserAuth = () => {
       setIsLoading(false);
     });
 
-    // Limpeza da assinatura ao desmontar o componente
     return () => subscription.unsubscribe();
   }, []);
 
