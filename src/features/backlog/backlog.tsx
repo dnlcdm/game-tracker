@@ -26,14 +26,14 @@ export const Backlog = () => {
 
   const gameActions = [
     {
-      icon: () => <SportsEsportsIcon fontSize="small" />,
+      icon: () => <SportsEsportsIcon />,
       label: () => "Jogar",
       onClick: (game: IGames) => mutatePlaying(game.id),
       isLoadingAction: (game: IGames) =>
         isPendingPlaying && variablesPlaying === game.id,
     },
     {
-      icon: () => <BookmarkRemoveIcon fontSize="small" />,
+      icon: () => <BookmarkRemoveIcon />,
       label: () => "Remover",
       onClick: (game: IGames) => mutate(game.id),
       colorClass: () => "hover:text-pink-500",

@@ -48,11 +48,7 @@ export const GamesList = () => {
                 <p>Jogando</p>
               </div>
             );
-          return isInBacklog ? (
-            <BookmarkIcon fontSize="small" />
-          ) : (
-            <BookmarkBorderIcon fontSize="small" />
-          );
+          return isInBacklog ? <BookmarkIcon /> : <BookmarkBorderIcon />;
         },
 
         colorClass: (game: IGames) => {

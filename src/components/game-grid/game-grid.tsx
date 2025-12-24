@@ -6,7 +6,7 @@ export interface IGameAction {
   icon: (game: IGames) => ReactNode;
   label: (game: IGames) => string;
   onClick: (game: IGames) => void | null;
-  colorClass?: (game: IGames) => string; // Agora é uma função que recebe o jogo
+  colorClass?: (game: IGames) => string;
   isLoadingAction?: (game: IGames) => boolean;
 }
 
@@ -48,7 +48,7 @@ export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
         <div
           key={item.id}
           onClick={() => setSelectedGame(item)}
-          className="relative w-full aspect-[3/4] overflow-hidden rounded-xl shadow-lg group bg-gray-900 cursor-pointer active:scale-[0.98] transition-transform duration-150"
+          className="relative w-full aspect-[3/4] overflow-hidden rounded-xl shadow-lg group bg-gray-900 active:scale-[0.98] transition-transform duration-150"
         >
           <img
             src={item.coverUrl}
@@ -83,7 +83,7 @@ export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
                       e.stopPropagation();
                       action.onClick(item);
                     }}
-                    className={`flex items-center justify-center rounded-md text-white transition-all bg-black/60 backdrop-blur-md border border-white/10
+                    className={`flex cursor-pointer items-center justify-center rounded-md text-white transition-all bg-black/60 backdrop-blur-md border border-white/10
                       ${isCurrentlyLoading ? "opacity-50" : "active:scale-125 "} 
                       ${dynamicColorClass}`}
                   >

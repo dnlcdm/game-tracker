@@ -5,10 +5,10 @@ body {
   scrollbar-width: none;
   overflow-x: hidden;
 
-  -ms-overflow-style: none; /* Esconde a barra de rolagem do IE/Edge */
+  -ms-overflow-style: none;
 }
 body::-webkit-scrollbar {
-  display: none; /* Esconde a barra de rolagem */
+  display: none;
 }
 
 @font-face {
