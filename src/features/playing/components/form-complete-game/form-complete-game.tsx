@@ -56,15 +56,22 @@ export const FinishGameModal = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="bg-[#111827] border border-gray-800 w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl">
-        <FinishGameHeader game={game} onClose={handleClose} />
-        <FormProvider {...formMethods}>
-          <FinishGameFormFields
-            onSubmit={handleSubmit(onSubmit)}
-            isSaving={isSubmitting || isPending}
-          />
-        </FormProvider>
+    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center bg-black/80 backdrop-blur-sm p-0 sm:p-4">
+      <div className="bg-[#111827] flex flex-col w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-lg sm:rounded-2xl border-t sm:border border-gray-800 shadow-2xl overflow-hidden transition-all">
+        <div className="flex-none sticky top-0 z-20 bg-[#111827] border-b border-gray-800">
+          <FinishGameHeader game={game} onClose={handleClose} />
+        </div>
+
+        <div className="flex-1 overflow-y-auto custom-scrollbar bg-[#0B0F1A]">
+          <div className="w-full">
+            <FormProvider {...formMethods}>
+              <FinishGameFormFields
+                onSubmit={handleSubmit(onSubmit)}
+                isSaving={isSubmitting || isPending}
+              />
+            </FormProvider>
+          </div>
+        </div>
       </div>
     </div>
   );
