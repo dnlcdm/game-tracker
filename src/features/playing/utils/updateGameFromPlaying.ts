@@ -1,12 +1,13 @@
 import { supabase } from "../../../services/supabase-client.service";
+import type { IGameStatus } from "../../../types/games-stats.types";
 
 export const updateGameFromPlaying = async (
   gameId: number,
-  value?: boolean,
+  status: IGameStatus,
 ): Promise<void> => {
   const { error } = await supabase
     .from("games_backlog")
-    .update({ playing: value })
+    .update({ status })
     .eq("id", gameId);
 
   if (error) {

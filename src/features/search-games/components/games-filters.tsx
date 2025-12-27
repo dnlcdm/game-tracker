@@ -5,7 +5,7 @@ import { useDataGame } from "../hooks/useDataGames";
 const DEBOUNCE_DELAY = 500;
 
 export const GamesFilters: FC = () => {
-  const { setParams, isPending, observerTarget } = useDataGame();
+  const { setParams, isPending, observerTarget, hasMore } = useDataGame();
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -22,26 +22,22 @@ export const GamesFilters: FC = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !isPending) {
+        if (entries[0].isIntersecting && !isPending && hasMore) {
           setParams((p) => ({
             ...p,
             page: String(Number(p.page || "1") + 1),
           }));
         }
       },
-      { threshold: 1.0 },
+      { threshold: 0.1 },
     );
 
-    if (observerTarget?.current) {
-      observer.observe(observerTarget?.current);
-    }
-
+    if (observerTarget.current) observer.observe(observerTarget.current);
     return () => observer.disconnect();
-  }, [isPending, observerTarget, setParams]);
+  }, [isPending, hasMore, setParams, observerTarget]);
 
   return (
     <div className="flex flex-col gap-6 w-full">
-      {/* Input de Busca permanece no topo */}
       <div className="relative w-full max-w-md group mx-auto">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <SearchIcon
@@ -53,7 +49,7 @@ export const GamesFilters: FC = () => {
           type="text"
           value={inputValue}
           onChange={handleInputChange}
-          placeholder="Search for games..."
+          placeholder="Pesquise um jogo"
           className="w-full bg-[#111827]/50 border border-gray-800 text-sm text-gray-200 rounded-md pl-10 pr-4 py-2 focus:ring-1 focus:ring-blue-500/20 focus:border-blue-500/50 outline-none"
         />
       </div>

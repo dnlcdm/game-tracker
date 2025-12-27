@@ -1,55 +1,43 @@
+import { useMemo, useState } from "react";
+import BlockIcon from "@mui/icons-material/Block";
+import SportsScoreIcon from "@mui/icons-material/SportsScore";
 import { GameGrid } from "../../components/game-grid/game-grid";
 import type { IGames } from "../search-games/types/games.types";
+import { FinishGameModal } from "./components/form-complete-game/form-complete-game";
 import { useFetchPlayingGames } from "./hooks/useFetchPlayingGames";
-import CheckCircleIcon from "@mui/icons-material/SportsEsports";
-import PauseIcon from "@mui/icons-material/Pause";
-import BlockIcon from "@mui/icons-material/Block";
-import { useMemo } from "react";
+import { useUpdatePlayingGame } from "./hooks/useUpdatePlayingGame";
 
 export const Playing = () => {
-  const { data, isPending, isError } = useFetchPlayingGames();
+  const { data, isPending, error } = useFetchPlayingGames();
+  const [selectedGameToFinish, setSelectedGameToFinish] =
+    useState<IGames | null>(null);
 
-  /*
-*
   const {
-    mutate: mutatePlaying,
-    isPending: isPendingPlaying,
-    variables: variablesPlaying,
-  } = useUpdatePlayingGame(false);
-  const gameActions = [
-    {
-      icon: () => <SportsEsportsIcon fontSize="small" />,
-      label: () => "Remover da lista",
-      onClick: (game: IGames) => mutatePlaying(game.id),
-      isLoadingAction: (game: IGames) =>
-        isPendingPlaying && variablesPlaying === game.id,
-    },
-  ];
-*/
+    mutate: moveToBacklog,
+    isPending: isUpdatingStatus,
+    variables: updatingGameId,
+  } = useUpdatePlayingGame("backlog");
 
   const gameActions = useMemo(
     () => [
       {
-        label: () => "Concluir Jogo",
-        icon: () => <CheckCircleIcon className="text-green-500" />,
-        onClick: (game: IGames) => console.log(game, "completed"),
+        label: (): string => "Concluir Jogo",
+        icon: () => <SportsScoreIcon />,
+        onClick: (game: IGames) => setSelectedGameToFinish(game),
       },
       {
-        label: () => "Pausar",
-        icon: () => <PauseIcon className="text-yellow-500" />,
-        onClick: (game: IGames) => console.log(game, "on-hold"),
-      },
-      {
-        label: () => "Abandonar",
+        label: (): string => "Abandonar",
         icon: () => <BlockIcon className="text-red-500" />,
-        onClick: (game: IGames) => console.log(game, "dropped"),
+        onClick: (game: IGames) => moveToBacklog(game.id),
+        isLoadingAction: (game: IGames) =>
+          isUpdatingStatus && updatingGameId === game.id,
       },
     ],
-    [],
+    [isUpdatingStatus, moveToBacklog, updatingGameId]
   );
 
-  if (isError) {
-    return <p style={{ color: "red" }}>{isError}</p>;
+  if (error) {
+    return <p style={{ color: "red" }}>{error.message}</p>;
   }
 
   return (
@@ -59,6 +47,13 @@ export const Playing = () => {
         actions={gameActions}
         isLoading={isPending}
       />
+      {selectedGameToFinish && (
+        <FinishGameModal
+          game={selectedGameToFinish}
+          isOpen={!!selectedGameToFinish}
+          onClose={() => setSelectedGameToFinish(null)}
+        />
+      )}
     </div>
   );
 };

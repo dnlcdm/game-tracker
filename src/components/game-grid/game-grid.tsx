@@ -32,7 +32,7 @@ export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
   if (isLoading) {
     return (
       <div className={gridLayoutClasses}>
-        {Array.from({ length: 14 }).map((_, i) => (
+        {Array.from({ length: 28 }).map((_, i) => (
           <div
             key={i}
             className="w-full aspect-[3/4] bg-gray-800/50 animate-pulse rounded-xl"

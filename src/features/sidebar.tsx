@@ -12,8 +12,8 @@ export const MainLayout = () => {
 
   const menuItems = [
     { icon: SearchIcon, label: "Games", url: "/search" },
-    { icon: GamepadIcon, label: "Jogando", url: "/playing" },
     { icon: BookmarksIcon, label: "Jogarei", url: "/backlog" },
+    { icon: GamepadIcon, label: "Jogando", url: "/playing" },
     { icon: ShowChartIcon, label: "Stats", url: "/game-stats" },
   ];
 

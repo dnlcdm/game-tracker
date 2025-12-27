@@ -18,7 +18,7 @@ export const Backlog = () => {
     mutate: mutatePlaying,
     isPending: isPendingPlaying,
     variables: variablesPlaying,
-  } = useUpdatePlayingGame(true);
+  } = useUpdatePlayingGame("playing");
 
   if (isError) {
     return <p style={{ color: "red" }}>{isError}</p>;

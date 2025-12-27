@@ -10,6 +10,7 @@ import Backlog from "../pages/backlog-page";
 import { MainLayout } from "../features/sidebar";
 import SearchGames from "../pages/search-games-page";
 import Playing from "../pages/playing-page";
+import { StatsTable } from "../features/game-stats/game-stats";
 
 export const RouterProvider = () => {
   const router = createBrowserRouter([
@@ -26,7 +27,7 @@ export const RouterProvider = () => {
             { path: "/backlog", element: <Backlog /> },
             { path: "/search", element: <SearchGames /> },
             { path: "/playing", element: <Playing /> },
-            { path: "/game-stats", element: <p>game stats</p> },
+            { path: "/game-stats", element: <StatsTable /> },
           ],
         },
       ],

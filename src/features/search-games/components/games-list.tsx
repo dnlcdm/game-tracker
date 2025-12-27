@@ -10,7 +10,7 @@ import { useFetchPlayingGames } from "../../playing/hooks/useFetchPlayingGames";
 import { useMemo } from "react";
 
 export const GamesList = () => {
-  const { results, isPending, observerTarget, params } = useDataGame();
+  const { results, isPending, observerTarget, params, hasMore } = useDataGame();
   const { mutate, isPending: isPendingMutate, variables } = useToggleBacklog();
   const { data: backlogData, isPending: isPendingBacklog } =
     useFetchBacklogGames();
@@ -99,6 +99,14 @@ export const GamesList = () => {
             </div>
             <span className="text-[10px] text-gray-500 uppercase tracking-widest font-medium">
               Carregando mais jogos
+            </span>
+          </div>
+        )}
+        {!hasMore && results.length > 0 && (
+          <div className="flex flex-col w-full items-center gap-2 opacity-50">
+            <div className="h-[1px] w-full bg-gray-700" />
+            <span className="text-xs text-gray-500 uppercase tracking-[0.2em]">
+              Fim da pesquisa
             </span>
           </div>
         )}
