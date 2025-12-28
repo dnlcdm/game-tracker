@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
-import BlockIcon from "@mui/icons-material/Block";
 import SportsScoreIcon from "@mui/icons-material/SportsScore";
 import { GameGrid } from "../../components/game-grid/game-grid";
 import type { IGames } from "../search-games/types/games.types";
 import { FinishGameModal } from "./components/form-complete-game/form-complete-game";
 import { useFetchPlayingGames } from "./hooks/useFetchPlayingGames";
 import { useUpdatePlayingGame } from "./hooks/useUpdatePlayingGame";
+import PauseOutlinedIcon from '@mui/icons-material/PauseOutlined';
 
 export const Playing = () => {
   const { data, isPending, error } = useFetchPlayingGames();
@@ -27,8 +27,8 @@ export const Playing = () => {
         onClick: (game: IGames) => setSelectedGameToFinish(game),
       },
       {
-        label: (): string => "Abandonar",
-        icon: () => <BlockIcon className="text-red-500" />,
+        label: (): string => "Voltar para lista Jogarei",
+        icon: () => <PauseOutlinedIcon />,
         onClick: (game: IGames) => moveToBacklog(game.id),
         gameStatus: (): string => "",
         isLoadingAction: (game: IGames) =>

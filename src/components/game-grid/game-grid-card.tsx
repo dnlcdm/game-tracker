@@ -137,18 +137,15 @@ export const GameGridCard = ({
       `}
     >
       <img
-        src={game.coverUrl}
+        src={game.coverUrl || "src/assets/not-found-image-1.png"}
         className="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 transition-opacity duration-300 group-hover:opacity-50"
       />
 
       <img
-        src={game.coverUrl}
+        src={game.coverUrl || "src/assets/not-found-image-1.png"}
         alt={game.name}
         loading="lazy"
-        className={`absolute inset-0 m-auto w-full h-full object-cover z-0 transition-transform duration-500 group-hover:scale-105 
-          ${hasMutedCover(status) ? "grayscale-[0.4] brightness-[0.6]" : ""}
-          ${!game.coverUrl && "p-4 object-contain opacity-50"}`}
-      />
+        className={`absolute inset-0 m-auto w-full h-full object-cover z-0 transition-transform duration-500 group-hover:scale-105 ${hasMutedCover(status) ? "grayscale-[0.4] brightness-[0.6]" : ""}`} />
 
       <div
         className={`absolute inset-0 z-10 transition-opacity duration-500 ${getStatusOverlayClass(
