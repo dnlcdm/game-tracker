@@ -52,7 +52,7 @@ export const FinishGameFormFields = ({
             { value: "main_story", label: "Campanha Principal" },
             { value: "main_extras", label: "Campanha + Extras" },
             { value: "completionist", label: "100%" },
-            { value: "platina", label: "Platina" },
+            { value: "platinum", label: "Platina" },
           ]}
           label="Objetivo"
         />

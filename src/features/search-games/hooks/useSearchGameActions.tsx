@@ -1,28 +1,29 @@
 import { useMemo } from "react";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import type { IGames } from "../types/games.types";
+import type { IGames, IGamesSupabase } from "../types/games.types";
 import type { IGameAction } from "../../../components/game-grid/types";
 
 type GameState = {
   isPlaying: boolean;
   isInBacklog: boolean;
   isCompleted: boolean;
+  isPlatinum: boolean;
 };
 
 interface UseSearchGameActionsParams {
-  backlogGames?: IGames[];
-  playingGames?: IGames[];
-  completedGames?: IGames[];
+  backlogGames?: IGamesSupabase[];
+  playingGames?: IGamesSupabase[];
+  completedGames?: IGamesSupabase[];
   onToggleBacklog: (game: IGames) => void;
   isToggling: boolean;
   togglingGameId?: IGames["id"];
 }
 
-const buildIdMap = (games?: IGames[]) =>
+const buildIdMap = (games?: IGamesSupabase[]) =>
   new Map(games?.map((game) => [String(game.id), game]));
 
-const buildIdSet = (games?: IGames[]) =>
+const buildIdSet = (games?: IGamesSupabase[]) =>
   new Set(games?.map((game) => String(game.id)));
 
 export const useSearchGameActions = ({
@@ -35,7 +36,10 @@ export const useSearchGameActions = ({
 }: UseSearchGameActionsParams) => {
   const backlogMap = useMemo(() => buildIdMap(backlogGames), [backlogGames]);
   const playingIds = useMemo(() => buildIdSet(playingGames), [playingGames]);
-  const completedIds = useMemo(() => buildIdSet(completedGames), [completedGames]);
+  const completedIds = useMemo(
+    () => buildIdSet(completedGames),
+    [completedGames]
+  );
 
   const gameActions = useMemo<IGameAction[]>(() => {
     const getGameState = (game: IGames): GameState => {
@@ -44,6 +48,10 @@ export const useSearchGameActions = ({
         isPlaying: playingIds.has(gameId),
         isInBacklog: backlogMap.has(gameId),
         isCompleted: completedIds.has(gameId),
+        isPlatinum: !!completedGames?.some(
+          (g) =>
+            String(g.id) === String(game.id) && g.completion_type === "platinum"
+        ),
       };
     };
 
@@ -60,6 +68,7 @@ export const useSearchGameActions = ({
         gameStatus: (game: IGames) => {
           const state = getGameState(game);
           if (state.isPlaying) return "playing";
+          if (state.isPlatinum) return "platinum";
           if (state.isCompleted) return "completed";
           if (state.isInBacklog) return "backlog";
           return "";
@@ -67,7 +76,7 @@ export const useSearchGameActions = ({
         icon: (game: IGames) => {
           const state = getGameState(game);
           if (!canToggleBacklog(state)) return null;
-          return state.isInBacklog ? <BookmarkIcon />  : <BookmarkBorderIcon/> ;
+          return state.isInBacklog ? <BookmarkIcon /> : <BookmarkBorderIcon />;
         },
         colorClass: (game: IGames) => {
           const state = getGameState(game);
@@ -88,11 +97,12 @@ export const useSearchGameActions = ({
       },
     ];
   }, [
+    playingIds,
     backlogMap,
     completedIds,
+    completedGames,
     onToggleBacklog,
     isToggling,
-    playingIds,
     togglingGameId,
   ]);
 

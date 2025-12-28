@@ -1,7 +1,7 @@
 import { supabase } from "../../../services/supabase-client.service";
-import type { IGames } from "../../search-games/types/games.types";
+import type { IGamesSupabase } from "../../search-games/types/games.types";
 
-export const getPlayingGames = async (): Promise<IGames[]> => {
+export const getPlayingGames = async (): Promise<IGamesSupabase[]> => {
   const { data, error } = await supabase
     .from("games_backlog")
     .select("*")
@@ -11,5 +11,5 @@ export const getPlayingGames = async (): Promise<IGames[]> => {
     throw new Error(error.message || "Falha ao obter os jogos.");
   }
 
-  return (data ?? []) as IGames[];
+  return (data ?? []);
 };

@@ -29,7 +29,7 @@ export const StatsTablea = () => {
                 </span>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {game.hours_played}
+                {game.minutes_played}
               </td>
               <td className="px-6 py-4 italic text-blue-400/80">
                 {game.co_op_friend ? `Com ${game.co_op_friend}` : "Solo"}

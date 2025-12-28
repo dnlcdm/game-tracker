@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import type { IGames } from "../../search-games/types/games.types";
 import { supabase } from "../../../services/supabase-client.service";
 import type { IGameStatus } from "../../../types/games-stats.types";
+import type { IGamesSupabase } from "../../search-games/types/games.types";
 
-export const getBacklogGames = async (): Promise<IGames[]> => {
+export const getBacklogGames = async (): Promise<IGamesSupabase[]> => {
   const { data, error } = await supabase
     .from("games_backlog")
     .select("*")
@@ -14,12 +14,11 @@ export const getBacklogGames = async (): Promise<IGames[]> => {
     throw new Error(error.message || "Falha ao obter os jogos.");
   }
 
-  return data as IGames[];
+  return data;
 };
 
 export function useFetchGameStats() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return useQuery<any[], Error>({
+  return useQuery<IGamesSupabase[], Error>({
     queryKey: ["completed"],
     queryFn: getBacklogGames,
   });
