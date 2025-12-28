@@ -7,6 +7,7 @@ import { useFetchPlayingGames } from "../../playing/hooks/useFetchPlayingGames";
 import { useFetchGameStats } from "../../game-stats/hooks/useFetchGameStats";
 import { useSearchGameActions } from "../hooks/useSearchGameActions";
 import type { RefObject } from "react";
+import type { IGamesSupabase } from "../types/games.types";
 
 interface GamesListFooterProps {
   observerTarget: RefObject<HTMLDivElement | null>;
@@ -76,7 +77,7 @@ export const GamesList = () => {
   return (
     <div className="min-h-screen w-full py-4 transition-all duration-500">
       <GameGrid
-        items={results}
+        items={results as IGamesSupabase[]}
         actions={gameActions}
         isLoading={isInitialLoading}
       />

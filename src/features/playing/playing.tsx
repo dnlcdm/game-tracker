@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import SportsScoreIcon from "@mui/icons-material/SportsScore";
 import { GameGrid } from "../../components/game-grid/game-grid";
-import type { IGames } from "../search-games/types/games.types";
+import type { IGamesSupabase } from "../search-games/types/games.types";
 import { FinishGameModal } from "./components/form-complete-game/form-complete-game";
 import { useFetchPlayingGames } from "./hooks/useFetchPlayingGames";
 import { useUpdatePlayingGame } from "./hooks/useUpdatePlayingGame";
@@ -10,7 +10,7 @@ import PauseOutlinedIcon from '@mui/icons-material/PauseOutlined';
 export const Playing = () => {
   const { data, isPending, error } = useFetchPlayingGames();
   const [selectedGameToFinish, setSelectedGameToFinish] =
-    useState<IGames | null>(null);
+    useState<IGamesSupabase | null>(null);
 
   const {
     mutate: moveToBacklog,
@@ -24,14 +24,14 @@ export const Playing = () => {
         label: (): string => "Concluir Jogo",
         gameStatus: (): string => "",
         icon: () => <SportsScoreIcon />,
-        onClick: (game: IGames) => setSelectedGameToFinish(game),
+        onClick: (game: IGamesSupabase) => setSelectedGameToFinish(game),
       },
       {
         label: (): string => "Voltar para lista Jogarei",
         icon: () => <PauseOutlinedIcon />,
-        onClick: (game: IGames) => moveToBacklog(game.id),
+        onClick: (game: IGamesSupabase) => moveToBacklog(game.id),
         gameStatus: (): string => "",
-        isLoadingAction: (game: IGames) =>
+        isLoadingAction: (game: IGamesSupabase) =>
           isUpdatingStatus && updatingGameId === game.id,
       },
     ],

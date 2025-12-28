@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { GameDetailsModal } from "./game-details-modal";
-import type { IGames } from "../../features/search-games/types/games.types";
+import type { IGamesSupabase } from "../../features/search-games/types/games.types";
 import type { IGameAction } from "./types";
 import { GameGridCard } from "./game-grid-card";
 
 interface GameGridProps {
-  items: IGames[];
+  items: IGamesSupabase[];
   actions?: IGameAction[];
   isLoading?: boolean;
 }
@@ -14,8 +14,8 @@ const GRID_LAYOUT_CLASSES =
   "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 sm:gap-4 mt-4";
 const SKELETON_COUNT = 28;
 
-const useSelectedGame = (items: IGames[]) => {
-  const [selectedGame, setSelectedGame] = useState<IGames | null>(null);
+const useSelectedGame = (items: IGamesSupabase[]) => {
+  const [selectedGame, setSelectedGame] = useState<IGamesSupabase | null>(null);
 
   useEffect(() => {
     if (!selectedGame) return;

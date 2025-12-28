@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { IGames } from "../../features/search-games/types/games.types";
+import type { IGamesSupabase } from "../../features/search-games/types/games.types";
 
 export type GameStatus =
   | "playing"
@@ -9,10 +9,10 @@ export type GameStatus =
   | string;
 
 export interface IGameAction {
-  icon: (game: IGames) => ReactNode;
-  label: (game: IGames) => string;
-  onClick: (game: IGames) => void | null;
-  colorClass?: (game: IGames) => string;
-  isLoadingAction?: (game: IGames) => boolean;
-  gameStatus: (game: IGames) => GameStatus;
+  icon: (game: IGamesSupabase) => ReactNode;
+  label: (game: IGamesSupabase) => string;
+  onClick: (game: IGamesSupabase) => void | null;
+  colorClass?: (game: IGamesSupabase) => string;
+  isLoadingAction?: (game: IGamesSupabase) => boolean;
+  gameStatus: (game: IGamesSupabase) => GameStatus;
 }

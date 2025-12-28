@@ -18,7 +18,7 @@ export const updateGameToCompleted = async (
     minutes_played:
       formData.hours_played.hours * 60 + formData.hours_played.minutes,
     co_op_friend: formData.co_op_friend,
-    completed_at: new Date(formData.completed_at),
+    completed_at: new Date(formData.completed_at).toUTCString(),
     completion_type: formData.completion_type,
     platform_used: formData.platform_used,
     review: formData.review,

@@ -1,13 +1,13 @@
-import type { IGames } from "../../features/search-games/types/games.types";
+import type { IGamesSupabase } from "../../features/search-games/types/games.types";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import type { GameStatus, IGameAction } from "./types";
 
 interface GameGridCardProps {
-  game: IGames;
+  game: IGamesSupabase;
   status: GameStatus;
   actions?: IGameAction[];
-  onSelect: (game: IGames) => void;
+  onSelect: (game: IGamesSupabase) => void;
 }
 
 const getStatusBorderClass = (status: GameStatus) => {
@@ -94,7 +94,7 @@ const GameActionButton = ({
   game,
 }: {
   action: IGameAction;
-  game: IGames;
+  game: IGamesSupabase;
 }) => {
   const isCurrentlyLoading = action.isLoadingAction?.(game);
   const renderedIcon = action.icon(game);

@@ -1,18 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
-import type { IGames } from "../../../search-games/types/games.types";
+import type { IGamesSupabase } from "../../../search-games/types/games.types";
 import { useUpdateToCompleteGame } from "../../hooks/useFinishGame";
 import { FinishGameHeader } from "./finish-game-header";
 import { FinishGameFormFields } from "./form-fields";
 import { finishGameSchema, type FinishGameFormData } from "./types";
 
 interface FinishGameModalProps {
-  game: IGames;
+  game: IGamesSupabase;
   isOpen: boolean;
   onClose: () => void;
 }
-
-const todayIsoString = () => new Date().toISOString().split("T")[0];
 
 export const FinishGameModal = ({
   game,
@@ -22,13 +20,17 @@ export const FinishGameModal = ({
   const formMethods = useForm({
     resolver: zodResolver(finishGameSchema),
     defaultValues: {
-      completed_at: todayIsoString(),
-      co_op_friend: "",
-      review: "",
-      user_rating: 3,
-      completion_type: "",
-      platform_used: "",
-      hours_played: { hours: undefined, minutes: 0 },
+      completed_at: game.completed_at ? game.completed_at.split("T")[0] : "",
+      co_op_friend: game.co_op_friend ?? "",
+      review: game.review ?? "",
+      user_rating: game.user_rating ? game.user_rating / 2 : 0,
+      difficult: game.difficult ?? 0,
+      completion_type: game.completion_type ?? "",
+      platform_used: game.platform_used ?? "",
+      hours_played: {
+        hours: Math.floor(game.minutes_played / 60),
+        minutes: game.minutes_played % 60,
+      },
     },
   });
 

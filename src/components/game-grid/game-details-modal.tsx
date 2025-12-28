@@ -1,11 +1,11 @@
-import type { IGames } from "../../features/search-games/types/games.types";
+import type { IGamesSupabase } from "../../features/search-games/types/games.types";
 import CloseIcon from "@mui/icons-material/Close";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import type { IGameAction } from "./types";
 import Rating from "@mui/material/Rating";
 
 interface Props {
-  game: IGames;
+  game: IGamesSupabase;
   onClose: () => void;
   actions: IGameAction[];
 }
