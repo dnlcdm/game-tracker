@@ -22,6 +22,7 @@ export const Playing = () => {
     () => [
       {
         label: (): string => "Concluir Jogo",
+        gameStatus: (): string => "",
         icon: () => <SportsScoreIcon />,
         onClick: (game: IGames) => setSelectedGameToFinish(game),
       },
@@ -29,6 +30,7 @@ export const Playing = () => {
         label: (): string => "Abandonar",
         icon: () => <BlockIcon className="text-red-500" />,
         onClick: (game: IGames) => moveToBacklog(game.id),
+        gameStatus: (): string => "",
         isLoadingAction: (game: IGames) =>
           isUpdatingStatus && updatingGameId === game.id,
       },

@@ -74,6 +74,8 @@ export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
                 ? action.colorClass(game)
                 : "text-white bg-white/5 hover:bg-white/10";
 
+              if (!action.label(game)) return null;
+
               return (
                 <button
                   key={index}

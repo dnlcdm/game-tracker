@@ -8,6 +8,7 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import { useFetchBacklogGames } from "../../backlog/hooks/useFetchBacklogGames";
 import { useFetchPlayingGames } from "../../playing/hooks/useFetchPlayingGames";
 import { useMemo } from "react";
+import { useFetchGameStats } from "../../game-stats/hooks/useFetchGameStats";
 
 export const GamesList = () => {
   const { results, isPending, observerTarget, params, hasMore } = useDataGame();
@@ -16,11 +17,18 @@ export const GamesList = () => {
     useFetchBacklogGames();
   const { data: playingData, isPending: isPendingPlaying } =
     useFetchPlayingGames();
+  const { data: completedData } = useFetchGameStats();
 
   const backlogMap = useMemo(
     () => new Map(backlogData?.map((g) => [String(g.id), g])),
     [backlogData],
   );
+
+  const completedIds = useMemo(
+    () => new Set(completedData?.map((g) => String(g.id))),
+    [completedData],
+  );
+
   const playingIds = useMemo(
     () => new Set(playingData?.map((g) => String(g.id))),
     [playingData],
@@ -30,45 +38,57 @@ export const GamesList = () => {
     const getGameState = (gameId: string) => {
       const isPlaying = playingIds.has(gameId);
       const isInBacklog = backlogMap.has(gameId);
-      return { isPlaying, isInBacklog };
+      const isCompleted = completedIds.has(gameId);
+      return { isPlaying, isInBacklog, isCompleted };
     };
     return [
       {
         label: (game: IGames) => {
-          const { isPlaying, isInBacklog } = getGameState(String(game.id));
-          if (isPlaying) return "Jogando";
+          const { isPlaying, isInBacklog, isCompleted } = getGameState(
+            String(game.id),
+          );
+          if (isPlaying) return "";
+          if (isCompleted) return "";
           return isInBacklog ? "Remover da lista" : "Vou jogar";
         },
 
+        gameStatus: (game: IGames) => {
+          const { isPlaying, isInBacklog, isCompleted } = getGameState(
+            String(game.id),
+          );
+          if (isPlaying) return "playing";
+          if (isCompleted) return "completed";
+          if (isInBacklog) return "backlog";
+          return "";
+        },
         icon: (game: IGames) => {
-          const { isPlaying, isInBacklog } = getGameState(String(game.id));
-          if (isPlaying)
-            return (
-              <div className="flex items-center justify-center text-xs px-1 pb-1">
-                <p>Jogando</p>
-              </div>
-            );
+          const { isPlaying, isInBacklog, isCompleted } = getGameState(String(game.id));
+          if (isPlaying) return null;
+
+          if (isCompleted) return null;
           return isInBacklog ? <BookmarkIcon /> : <BookmarkBorderIcon />;
         },
 
         colorClass: (game: IGames) => {
           const { isPlaying, isInBacklog } = getGameState(String(game.id));
-          if (isPlaying) return "text-blue-400 md:hover:scale-100!";
+          if (isPlaying)
+            return "border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.3)]";
           return isInBacklog
             ? "hover:text-green-400 md:hover:scale-105 md:hover:bg-gray-800"
             : "hover:text-blue-400 text-gray-400 md:hover:scale-105 md:hover:bg-gray-800";
         },
 
         onClick: (game: IGames) => {
-          const { isPlaying } = getGameState(String(game.id));
+          const { isPlaying, isCompleted } = getGameState(String(game.id));
           if (isPlaying) return null;
+          if (isCompleted) return null;
           return mutate(game);
         },
         isLoadingAction: (game: IGames) =>
           isPendingMutate && variables?.id === game.id,
       },
     ];
-  }, [playingIds, backlogMap, mutate, isPendingMutate, variables?.id]);
+  }, [playingIds, backlogMap, completedIds, mutate, isPendingMutate, variables?.id]);
 
   const isInitialLoading =
     (isPending || isPendingBacklog || isPendingPlaying) && params.page === "1";

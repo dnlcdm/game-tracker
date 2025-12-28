@@ -28,6 +28,7 @@ export const Backlog = () => {
     {
       icon: () => <SportsEsportsIcon />,
       label: () => "Jogar",
+      gameStatus: (): string => "",
       onClick: (game: IGames) => mutatePlaying(game.id),
       isLoadingAction: (game: IGames) =>
         isPendingPlaying && variablesPlaying === game.id,
@@ -36,6 +37,7 @@ export const Backlog = () => {
       icon: () => <BookmarkRemoveIcon />,
       label: () => "Remover",
       onClick: (game: IGames) => mutate(game.id),
+      gameStatus: (): string => "",
       colorClass: () => "hover:text-pink-500",
       isLoadingAction: (game: IGames) =>
         isPendingMutation && variables === game.id,
