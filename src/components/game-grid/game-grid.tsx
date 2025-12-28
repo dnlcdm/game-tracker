@@ -1,19 +1,8 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { GameDetailsModal } from "./game-details-modal";
 import type { IGames } from "../../features/search-games/types/games.types";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
-
-export interface IGameAction {
-  icon: (game: IGames) => ReactNode;
-  label: (game: IGames) => string;
-  onClick: (game: IGames) => void | null;
-  colorClass?: (game: IGames) => string;
-  isLoadingAction?: (game: IGames) => boolean;
-  gameStatus: (
-    game: IGames
-  ) => "playing" | "completed" | "platinum" | "backlog" | string;
-}
+import type { IGameAction } from "./types";
+import { GameGridCard } from "./game-grid-card";
 
 interface GameGridProps {
   items: IGames[];
@@ -21,23 +10,30 @@ interface GameGridProps {
   isLoading?: boolean;
 }
 
-export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
+const GRID_LAYOUT_CLASSES =
+  "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 sm:gap-4 mt-4";
+const SKELETON_COUNT = 28;
+
+const useSelectedGame = (items: IGames[]) => {
   const [selectedGame, setSelectedGame] = useState<IGames | null>(null);
 
   useEffect(() => {
-    if (selectedGame) {
-      const gameExists = items.find((item) => item.id === selectedGame.id);
-      if (!gameExists) setSelectedGame(null);
-    }
+    if (!selectedGame) return;
+    const gameExists = items.some((item) => item.id === selectedGame.id);
+    if (!gameExists) setSelectedGame(null);
   }, [items, selectedGame]);
 
-  const gridLayoutClasses =
-    "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 sm:gap-4 mt-4";
+  return { selectedGame, setSelectedGame };
+};
+
+export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
+  const { selectedGame, setSelectedGame } = useSelectedGame(items);
+  const primaryAction = actions?.[0];
 
   if (isLoading) {
     return (
-      <div className={gridLayoutClasses}>
-        {Array.from({ length: 28 }).map((_, i) => (
+      <div className={GRID_LAYOUT_CLASSES}>
+        {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
           <div
             key={i}
             className="w-full aspect-[3/4] bg-gray-800/50 animate-pulse rounded-xl"
@@ -48,152 +44,16 @@ export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
   }
 
   return (
-    <div className={gridLayoutClasses}>
-      {items.map((item) => {
-        const status = actions && actions[0] ? actions[0].gameStatus(item) : "";
-
-        return (
-          <div
-            key={item.id}
-            onClick={() => setSelectedGame(item)}
-            className={`relative w-full aspect-[3/4] overflow-hidden rounded-xl shadow-lg group bg-gray-900 active:scale-[0.98] transition-all duration-300
-              ${
-                status === "playing"
-                  ? "border-2 border-cyan-500 shadow-[0_0_20px_rgba(6,182,212,0.4)]"
-                  : ""
-              }
-              ${
-                status === "platinum"
-                  ? "border-2 border-yellow-500 shadow-[0_0_25px_rgba(234,179,8,0.5)]"
-                  : ""
-              }
-              ${status === "completed" ? "border-2 border-green-500/50" : ""}
-            `}
-          >
-            <img
-              src={item.coverUrl}
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 transition-opacity duration-300 group-hover:opacity-50"
-            />
-
-            <img
-              src={item.coverUrl}
-              alt={item.name}
-              loading="lazy"
-              className={`absolute inset-0 m-auto w-full h-full object-cover z-0 transition-transform duration-500 group-hover:scale-105 
-                ${
-                  status === "completed" ||
-                  status === "platinum" ||
-                  status === "playing"
-                    ? "grayscale-[0.4] brightness-[0.6]"
-                    : ""
-                }
-                ${!item.coverUrl && "p-4 object-contain opacity-50"}`}
-            />
-
-            <div
-              className={`absolute inset-0 z-10 transition-opacity duration-500
-              ${
-                status === "playing"
-                  ? "bg-gradient-to-t from-cyan-900/90 via-transparent to-transparent opacity-80"
-                  : "bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-100"
-              }`}
-            />
-
-            <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-              {status === "playing" && (
-                <div className="animate-in zoom-in drop-shadow-[0_0_30px_rgba(6,182,212)] animate-in zoom-in duration-100 flex flex-col items-center">
-                  <svg
-                    fill="#00C8FF"
-                    height="100px"
-                    width="100px"
-                    version="1.1"
-                    id="Layer_1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 511.285 511.285"
-                    stroke="#00C8FF"
-                  >
-                    <g stroke-width="0"></g>
-                    <g
-                      id="SVGRepo_tracerCarrier"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></g>
-                    <g id="SVGRepo_iconCarrier">
-                      <g transform="translate(1 1)">
-                        <g>
-                          <g>
-                            <path d="M508.936,398.003l-26.453-136.533c-10.24-55.467-59.733-96.427-116.907-96.427h-10.24 c-11.947,0-23.893,3.413-33.28,10.24c-6.827,4.267-14.507,6.827-23.04,6.827h-35.84V88.242c0-14.507,11.093-25.6,25.6-25.6 c14.507,0,25.6,11.093,25.6,25.6v25.6c0,18.773,15.36,34.133,34.133,34.133c18.773,0,34.133-15.36,34.133-34.133v-25.6h8.533 c5.12,0,8.533-3.413,8.533-8.533v-51.2c0-5.12-3.413-8.533-8.533-8.533h-34.133c-5.12,0-8.533,3.413-8.533,8.533v51.2 c0,5.12,3.413,8.533,8.533,8.533h8.533v25.6c0,9.387-7.68,17.067-17.067,17.067s-17.067-7.68-17.067-17.067v-25.6 c0-23.893-18.773-42.667-42.667-42.667c-23.893,0-42.667,18.773-42.667,42.667v93.867h-34.987v-23.04 c0-15.36-12.8-28.16-28.16-28.16h-62.293c-15.36,0-28.16,12.8-28.16,28.16v17.556c-33.481,15.943-58.723,47.017-65.707,84.844 L0.349,398.003c-4.267,22.187,1.707,45.227,16.213,63.147c14.507,17.92,35.84,28.16,58.88,28.16 c15.36,0,29.013-7.68,37.547-20.48l20.48-29.867c11.093-16.213,29.867-26.453,49.493-26.453h143.36 c19.627,0,38.4,9.387,49.493,26.453l20.48,29.867c8.533,12.8,22.187,20.48,37.547,20.48c23.04,0,44.373-10.24,58.88-28.16 C507.229,444.083,513.203,420.189,508.936,398.003z M365.576,37.043h17.067v34.133h-17.067V37.043z M110.429,159.923 c0-5.973,5.12-11.093,11.093-11.093h62.293c5.973,0,11.093,5.12,11.093,11.093v19.168c-2.695-1.038-5.293-2.316-7.68-3.808 c-10.24-6.827-21.333-10.24-33.28-10.24h-10.24c-0.751,0-1.507,0.009-2.265,0.025c-10.693,0.203-21.101,1.836-31.015,4.725 V159.923z M479.923,450.909c-11.093,13.653-28.16,21.333-46.08,21.333c-9.387,0-17.92-5.12-23.04-12.8l-20.48-29.867 c-14.507-21.333-38.4-34.133-64-34.133h-143.36c-25.6,0-49.493,12.8-64,34.133l-20.48,29.867c-5.12,8.533-13.653,12.8-23.04,12.8 c-17.92,0-34.133-7.68-46.08-21.333c-11.947-13.653-16.213-31.573-12.8-49.493l26.453-136.533 c9.387-47.787,52.053-82.773,100.693-82.773h10.24c7.68,0,16.213,2.56,23.04,6.827c10.24,6.827,21.333,10.24,33.28,10.24h88.747 c11.947,0,23.893-3.413,33.28-10.24c6.827-4.267,14.507-6.827,23.04-6.827h10.24c49.493,0,91.307,34.987,100.693,82.773 l26.453,136.533C496.136,419.336,491.016,437.256,479.923,450.909z"></path>{" "}
-                            <path d="M425.309,250.376h-25.6v-25.6c0-5.12-3.413-8.533-8.533-8.533h-34.133c-5.12,0-8.533,3.413-8.533,8.533v25.6h-25.6 c-5.12,0-8.533,3.413-8.533,8.533v34.133c0,5.12,3.413,8.533,8.533,8.533h25.6v25.6c0,5.12,3.413,8.533,8.533,8.533h34.133 c5.12,0,8.533-3.413,8.533-8.533v-25.6h25.6c5.12,0,8.533-3.413,8.533-8.533v-34.133 C433.843,253.789,430.429,250.376,425.309,250.376z M416.776,284.509h-25.6c-5.12,0-8.533,3.413-8.533,8.533v25.6h-17.067v-25.6 c0-5.12-3.413-8.533-8.533-8.533h-25.6v-17.067h25.6c5.12,0,8.533-3.413,8.533-8.533v-25.6h17.067v25.6 c0,5.12,3.413,8.533,8.533,8.533h25.6V284.509z"></path>{" "}
-                            <path d="M143.709,258.909c16.213,0,29.867-13.653,29.867-29.867c0-16.213-13.653-29.867-29.867-29.867 c-16.213,0-29.867,13.653-29.867,29.867C113.843,245.256,127.496,258.909,143.709,258.909z M143.709,216.242 c6.827,0,12.8,5.973,12.8,12.8s-5.973,12.8-12.8,12.8s-12.8-5.973-12.8-12.8S136.883,216.242,143.709,216.242z"></path>{" "}
-                            <path d="M143.709,284.509c-16.213,0-29.867,13.653-29.867,29.867c0,16.213,13.653,29.867,29.867,29.867 c16.213,0,29.867-13.653,29.867-29.867C173.576,298.163,159.923,284.509,143.709,284.509z M143.709,327.176 c-6.827,0-12.8-5.973-12.8-12.8s5.973-12.8,12.8-12.8s12.8,5.973,12.8,12.8S150.536,327.176,143.709,327.176z"></path>{" "}
-                            <path d="M88.242,240.136c-16.213,0-29.867,13.653-29.867,29.867s13.653,29.867,29.867,29.867 c16.213,0,29.867-13.653,29.867-29.867C118.109,253.789,104.456,240.136,88.242,240.136z M88.242,281.949 c-6.827,0-12.8-5.973-12.8-12.8s5.973-12.8,12.8-12.8c6.827,0,12.8,5.973,12.8,12.8S95.069,281.949,88.242,281.949z"></path>{" "}
-                            <path d="M229.043,270.003c0-16.213-13.653-29.867-29.867-29.867c-16.213,0-29.867,13.653-29.867,29.867 s13.653,29.867,29.867,29.867C215.389,299.869,229.043,286.216,229.043,270.003z M199.176,281.949c-6.827,0-12.8-5.973-12.8-12.8 s5.973-12.8,12.8-12.8s12.8,5.973,12.8,12.8S206.003,281.949,199.176,281.949z"></path>{" "}
-                            <path d="M254.643,293.043c-23.893,0-42.667,18.773-42.667,42.667c0,23.893,18.773,42.667,42.667,42.667 c23.893,0,42.667-18.773,42.667-42.667C297.309,311.816,278.536,293.043,254.643,293.043z M254.643,361.309 c-14.507,0-25.6-11.093-25.6-25.6c0-14.507,11.093-25.6,25.6-25.6c14.507,0,25.6,11.093,25.6,25.6 C280.243,350.216,269.149,361.309,254.643,361.309z"></path>{" "}
-                          </g>
-                        </g>
-                      </g>
-                    </g>
-                  </svg>
-                </div>
-              )}
-
-              {status === "platinum" && (
-                <WorkspacePremiumIcon
-                  sx={{ fontSize: 80 }}
-                  className="text-yellow-400 drop-shadow-[0_0_20px_rgba(234,179,8,1)] animate-in zoom-in duration-500"
-                />
-              )}
-
-              {status === "completed" && (
-                <CheckCircleIcon
-                  sx={{ fontSize: 60 }}
-                  className="text-green-500/50 drop-shadow-lg"
-                />
-              )}
-            </div>
-
-            <div className="absolute inset-0 z-30 flex flex-col justify-end p-3">
-              <span className="text-[11px] sm:text-xs font-black text-white line-clamp-2 leading-tight uppercase tracking-wider drop-shadow-md mb-1">
-                {item.name}
-              </span>
-
-              <div className="absolute flex gap-1.5 top-1 right-1 opacity-100 transition-opacity duration-300">
-                {actions?.map((action, index) => {
-                  const isCurrentlyLoading = action.isLoadingAction?.(item);
-                  const renderedIcon = action.icon(item);
-                  const dynamicColorClass = action.colorClass
-                    ? action.colorClass(item)
-                    : "md:hover:text-blue-400";
-
-                  return (
-                    <button
-                      key={index}
-                      disabled={isCurrentlyLoading}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        action.onClick(item);
-                      }}
-                      className={`flex cursor-pointer items-center justify-center rounded-md text-white transition-all bg-black/60 backdrop-blur-md border border-white/10
-                      ${
-                        isCurrentlyLoading ? "opacity-50" : "active:scale-125 "
-                      } 
-                      ${dynamicColorClass}`}
-                    >
-                      {isCurrentlyLoading ? (
-                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                      ) : (
-                        renderedIcon
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        );
-      })}
+    <div className={GRID_LAYOUT_CLASSES}>
+      {items.map((item) => (
+        <GameGridCard
+          key={item.id}
+          game={item}
+          status={primaryAction ? primaryAction.gameStatus(item) : ""}
+          actions={actions}
+          onSelect={setSelectedGame}
+        />
+      ))}
 
       {selectedGame && (
         <GameDetailsModal
