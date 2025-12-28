@@ -137,12 +137,12 @@ export const GameGridCard = ({
       `}
     >
       <img
-        src={game.coverUrl || "src/assets/not-found-image-1.png"}
+        src={game.coverUrl || '/not-found-image-1.png'}
         className="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 transition-opacity duration-300 group-hover:opacity-50"
       />
 
       <img
-        src={game.coverUrl || "src/assets/not-found-image-1.png"}
+        src={game.coverUrl || '/not-found-image-1.png'}
         alt={game.name}
         loading="lazy"
         className={`absolute inset-0 m-auto w-full h-full object-cover z-0 transition-transform duration-500 group-hover:scale-105 ${hasMutedCover(status) ? "grayscale-[0.4] brightness-[0.6]" : ""}`} />
