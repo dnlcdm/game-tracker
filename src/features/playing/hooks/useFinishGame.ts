@@ -41,9 +41,9 @@ export const useUpdateToCompleteGame = (gameId: number) => {
     mutationFn: (formData) => updateGameToCompleted(formData, gameId),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: BACKLOG_QUERY_KEY });
-      queryClient.invalidateQueries({ queryKey: PLAYING_QUERY_KEY });
-      queryClient.invalidateQueries({ queryKey: GAME_STATS_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: [BACKLOG_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [PLAYING_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [GAME_STATS_QUERY_KEY] });
     },
 
     onError: (error) => {

@@ -4,6 +4,7 @@ import { addToBacklog } from "../components/utils/addToBacklog";
 import type { IGames } from "../types/games.types";
 import { removeFromBacklog } from "./removeFromBacklog";
 import { supabase } from "../../../services/supabase-client.service";
+import { BACKLOG_QUERY_KEY } from "../../playing/constants";
 
 export const useToggleBacklog = () => {
   const queryClient = useQueryClient();
@@ -31,7 +32,7 @@ export const useToggleBacklog = () => {
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["backlog"] });
+      queryClient.invalidateQueries({ queryKey: [BACKLOG_QUERY_KEY] });
     },
 
     onError: (error) => {

@@ -5,7 +5,7 @@ import { FinishGameModal } from "../playing/components/form-complete-game/form-c
 import EditNoteIcon from "@mui/icons-material/EditNote"; 
 
 export const StatsTable = () => {
-  const { data, isLoading } = useFetchGameStats();
+  const { data, isPending } = useFetchGameStats();
   const [selectedGameToFinish, setSelectedGameToFinish] =
     useState<IGamesSupabase | null>(null);
 
@@ -25,7 +25,7 @@ export const StatsTable = () => {
     }).format(new Date(dateStr));
   };
 
-  if (isLoading)
+  if (isPending)
     return <div className="animate-pulse h-64 bg-gray-900/50 rounded-xl" />;
 
   return (

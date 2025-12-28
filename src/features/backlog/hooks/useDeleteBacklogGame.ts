@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteGameFromBacklog } from "../utils/deleteGameFromBacklog";
+import { BACKLOG_QUERY_KEY } from "../../playing/constants";
 
 export const useDeleteBacklogGame = () => {
   const queryClient = useQueryClient();
@@ -8,7 +9,7 @@ export const useDeleteBacklogGame = () => {
     mutationFn: deleteGameFromBacklog,
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["backlog"] });
+      queryClient.invalidateQueries({ queryKey: [BACKLOG_QUERY_KEY] });
     },
 
     onError: (error) => {
