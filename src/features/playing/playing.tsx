@@ -5,18 +5,28 @@ import type { IGamesSupabase } from "../search-games/types/games.types";
 import { FinishGameModal } from "./components/form-complete-game/form-complete-game";
 import { useFetchPlayingGames } from "./hooks/useFetchPlayingGames";
 import { useUpdatePlayingGame } from "./hooks/useUpdatePlayingGame";
-import PauseOutlinedIcon from '@mui/icons-material/PauseOutlined';
+import PauseOutlinedIcon from "@mui/icons-material/PauseOutlined";
+import { ConfirmationModal } from "../../components/confirmation.modal/confirmation-modal";
 
 export const Playing = () => {
   const { data, isPending, error } = useFetchPlayingGames();
-  const [selectedGameToFinish, setSelectedGameToFinish] =
-    useState<IGamesSupabase | null>(null);
+  const [selectedGameToFinish, setSelectedGameToFinish] = useState<IGamesSupabase | null>(null);
+  const [isConfirmingBacklog, setIsConfirmingBacklog] = useState(false);
+  const [gameIdToMove, setGameIdToMove] = useState<number | null>(null);
 
   const {
     mutate: moveToBacklog,
     isPending: isUpdatingStatus,
     variables: updatingGameId,
   } = useUpdatePlayingGame("backlog");
+
+  const handleConfirmMoveToBacklog = async () => {
+    if (gameIdToMove) {
+      await moveToBacklog(gameIdToMove);
+      setIsConfirmingBacklog(false);
+      setGameIdToMove(null);
+    }
+  };
 
   const gameActions = useMemo(
     () => [
@@ -27,20 +37,21 @@ export const Playing = () => {
         onClick: (game: IGamesSupabase) => setSelectedGameToFinish(game),
       },
       {
-        label: (): string => "Voltar para lista Jogarei",
+        label: (): string => "Voltar para Jogarei",
         icon: () => <PauseOutlinedIcon />,
-        onClick: (game: IGamesSupabase) => moveToBacklog(game.id),
+        onClick: (game: IGamesSupabase) => {
+          setGameIdToMove(game.id);
+          setIsConfirmingBacklog(true);
+        },
         gameStatus: (): string => "",
         isLoadingAction: (game: IGamesSupabase) =>
           isUpdatingStatus && updatingGameId === game.id,
       },
     ],
-    [isUpdatingStatus, moveToBacklog, updatingGameId]
+    [isUpdatingStatus, updatingGameId] 
   );
 
-  if (error) {
-    return <p style={{ color: "red" }}>{error.message}</p>;
-  }
+  if (error) return <p style={{ color: "red" }}>{error.message}</p>;
 
   return (
     <div className="text-white">
@@ -49,6 +60,22 @@ export const Playing = () => {
         actions={gameActions}
         isLoading={isPending}
       />
+
+      <ConfirmationModal
+        isOpen={isConfirmingBacklog}
+        onClose={() => {
+          setIsConfirmingBacklog(false);
+          setGameIdToMove(null);
+        }}
+        onConfirm={handleConfirmMoveToBacklog}
+        title="Mover para Jogarei?"
+        message="O jogo voltará para a sua lista de espera. Deseja continuar?"
+        confirmLabel="Confirmar"
+        cancelLabel="Cancelar"
+        variant="info" 
+        isLoading={isUpdatingStatus}
+      />
+
       {selectedGameToFinish && (
         <FinishGameModal
           game={selectedGameToFinish}

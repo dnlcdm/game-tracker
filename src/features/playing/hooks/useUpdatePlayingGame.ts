@@ -10,8 +10,8 @@ export const useUpdatePlayingGame = (status: IGameStatus) => {
     mutationFn: (gameId) => updateGameFromPlaying(gameId, status),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: BACKLOG_QUERY_KEY });
-      queryClient.invalidateQueries({ queryKey: PLAYING_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: [PLAYING_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [BACKLOG_QUERY_KEY] });
     },
 
     onError: (error) => {

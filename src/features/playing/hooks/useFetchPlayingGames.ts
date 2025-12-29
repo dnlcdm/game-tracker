@@ -5,7 +5,7 @@ import { getPlayingGames } from "../utils/getPlayingGames";
 
 export function useFetchPlayingGames() {
   return useQuery<IGamesSupabase[], Error>({
-    queryKey: PLAYING_QUERY_KEY,
+    queryKey: [PLAYING_QUERY_KEY],
     queryFn: getPlayingGames,
   });
 }
