@@ -97,7 +97,7 @@ export const FinishGameFormFields = ({
           disabled={isSaving}
           className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-gray-800 text-white font-black py-4 rounded-xl transition-all active:scale-[0.96] shadow-lg shadow-blue-900/20 uppercase tracking-widest text-xs"
         >
-          {isSaving ? "Enviando..." : "Registrar Conclusão"}
+          {isSaving ? "Enviando..." : "Salvar"}
         </button>
       </div>
     </form>
