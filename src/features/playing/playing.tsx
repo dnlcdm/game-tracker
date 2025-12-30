@@ -10,7 +10,8 @@ import { ConfirmationModal } from "../../components/confirmation.modal/confirmat
 
 export const Playing = () => {
   const { data, isPending, error } = useFetchPlayingGames();
-  const [selectedGameToFinish, setSelectedGameToFinish] = useState<IGamesSupabase | null>(null);
+  const [selectedGameToFinish, setSelectedGameToFinish] =
+    useState<IGamesSupabase | null>(null);
   const [isConfirmingBacklog, setIsConfirmingBacklog] = useState(false);
   const [gameIdToMove, setGameIdToMove] = useState<number | null>(null);
 
@@ -20,9 +21,9 @@ export const Playing = () => {
     variables: updatingGameId,
   } = useUpdatePlayingGame("backlog");
 
-  const handleConfirmMoveToBacklog = async () => {
+  const handleConfirmMoveToBacklog = () => {
     if (gameIdToMove) {
-      await moveToBacklog(gameIdToMove);
+      moveToBacklog(gameIdToMove);
       setIsConfirmingBacklog(false);
       setGameIdToMove(null);
     }
@@ -48,7 +49,7 @@ export const Playing = () => {
           isUpdatingStatus && updatingGameId === game.id,
       },
     ],
-    [isUpdatingStatus, updatingGameId] 
+    [isUpdatingStatus, updatingGameId],
   );
 
   if (error) return <p style={{ color: "red" }}>{error.message}</p>;
@@ -72,7 +73,7 @@ export const Playing = () => {
         message="O jogo voltará para a sua lista de espera. Deseja continuar?"
         confirmLabel="Confirmar"
         cancelLabel="Cancelar"
-        variant="info" 
+        variant="info"
         isLoading={isUpdatingStatus}
       />
 
