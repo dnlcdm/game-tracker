@@ -2,13 +2,14 @@ import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
 import SearchIcon from "@mui/icons-material/Search";
 import GamepadIcon from "@mui/icons-material/Gamepad";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { Link, Outlet, useLocation } from "react-router";
 import { useUserAuth } from "./auth/hooks/useUserAuth";
 import Avatar from "@mui/material/Avatar";
 
 export const MainLayout = () => {
   const location = useLocation();
-  const { session } = useUserAuth();
+  const { session, signOut, isLoading } = useUserAuth();
 
   const menuItems = [
     { icon: SearchIcon, label: "Games", url: "/search" },
@@ -17,24 +18,36 @@ export const MainLayout = () => {
     { icon: ShowChartIcon, label: "Stats", url: "/game-stats" },
   ];
 
+  const displayName = session?.user?.user_metadata?.display_name ?? "Player";
+  const email =
+    session?.user?.email ?? session?.user?.user_metadata?.email ?? "";
+  const avatarUrl = session?.user?.user_metadata?.avatar_url;
+
   return (
     <div className="flex flex-col md:flex-row h-screen w-full bg-[#030712] overflow-hidden text-white font-sans">
       <aside className="hidden md:flex flex-col h-full w-64 bg-[#111827] text-[#9CA3AF] border-r border-gray-800">
         <div className="p-4 border-b border-gray-800 bg-[#0F172A]/30">
           <div className="flex items-center p-2 rounded-xl">
-            <Avatar
-              src={session?.user.user_metadata.avatar_url}
-              sx={{ width: 32, height: 32 }}
-            />
+            <Avatar src={avatarUrl} sx={{ width: 32, height: 32 }} />
             <div className="ml-3 overflow-hidden">
               <p className="text-sm font-bold text-white truncate">
-                {session?.user.user_metadata.full_name}
+                {displayName}
               </p>
-              <p className="text-[11px] text-[#9CA3AF] truncate">
-                {session?.user.user_metadata.email}
-              </p>
+              <p className="text-[11px] text-[#9CA3AF] truncate">{email}</p>
             </div>
           </div>
+
+          <button
+            onClick={signOut}
+            disabled={isLoading}
+            className="mt-3 w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-bold
+                       bg-[#0B1220] border border-gray-800 text-gray-200
+                       hover:bg-[#111827] hover:text-white transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+            title="Sair"
+          >
+            <LogoutIcon sx={{ fontSize: 18 }} />
+            {isLoading ? "Saindo..." : "Sair"}
+          </button>
         </div>
 
         <nav className="flex-1 px-3 py-6 space-y-2">
@@ -75,7 +88,7 @@ export const MainLayout = () => {
             <Link
               key={item.url}
               to={item.url}
-              className={`flex flex-col items-center justify-center flex-1 h-full gap-1 transition-colors ${
+              className={`relative flex flex-col items-center justify-center flex-1 h-full gap-1 transition-colors ${
                 isActive ? "text-blue-400" : "text-gray-500"
               }`}
             >
