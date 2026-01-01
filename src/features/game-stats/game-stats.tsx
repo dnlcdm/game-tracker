@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useFetchGameStats } from "./hooks/useFetchGameStats";
 import type { IGamesSupabase } from "../search-games/types/games.types";
 import { FinishGameModal } from "../playing/components/form-complete-game/form-complete-game";
-import EditNoteIcon from "@mui/icons-material/EditNote"; 
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import { EmptyState } from "../../components/empty-states/empty-states";
 
 export const StatsTable = () => {
   const { data, isPending } = useFetchGameStats();
@@ -27,6 +28,8 @@ export const StatsTable = () => {
 
   if (isPending)
     return <div className="animate-pulse h-64 bg-gray-900/50 rounded-xl" />;
+
+  if (data?.length === 0 && !isPending) return <EmptyState type="finished" />;
 
   return (
     <div className="w-full space-y-4">

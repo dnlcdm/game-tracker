@@ -8,6 +8,7 @@ import { useFetchGameStats } from "../../game-stats/hooks/useFetchGameStats";
 import { useSearchGameActions } from "../hooks/useSearchGameActions";
 import type { RefObject } from "react";
 import type { IGamesSupabase } from "../types/games.types";
+import { EmptyState } from "../../../components/empty-states/empty-states";
 
 interface GamesListFooterProps {
   observerTarget: RefObject<HTMLDivElement | null>;
@@ -73,6 +74,9 @@ export const GamesList = () => {
     (isPending || isPendingBacklog || isPendingPlaying) && params.page === "1";
   const showScrollLoader = isPending && params.page !== "1";
   const showEndOfResults = !hasMore && results.length > 0;
+
+  if (results?.length === 0 && !isInitialLoading && !isPending)
+    return <EmptyState type="search" />;
 
   return (
     <div className="min-h-screen w-full py-4 transition-all duration-500">

@@ -5,6 +5,8 @@ import { useDeleteBacklogGame } from "./hooks/useDeleteBacklogGame";
 import { useFetchBacklogGames } from "./hooks/useFetchBacklogGames";
 import BookmarkRemoveIcon from "@mui/icons-material/BookmarkRemove";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
+import { FreeGameCard } from "../../components/free-game-card/free-game-card";
+import { EmptyState } from "../../components/empty-states/empty-states";
 
 export const Backlog = () => {
   const { data, isPending, isError } = useFetchBacklogGames();
@@ -44,8 +46,11 @@ export const Backlog = () => {
     },
   ];
 
+  if (data?.length === 0 && !isPending) return <EmptyState type="backlog" />;
+
   return (
     <div className="text-white">
+      <FreeGameCard />
       <GameGrid
         items={data ?? []}
         actions={gameActions}

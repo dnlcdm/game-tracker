@@ -18,3 +18,19 @@ body::-webkit-scrollbar {
   font-display: swap;
   src: url("/src/assets/BBHBogle-Regular.ttf") format("woff2");
 }
+
+.animate-marquee {
+  will-change: transform;
+  animation: marquee 40s linear infinite;
+}
+@theme {
+  --animate-marquee: marquee 25s linear infinite;
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-33.333%);
+    } /* Move exatamente uma 'unidade' da lista triplicada */
+  }
+}

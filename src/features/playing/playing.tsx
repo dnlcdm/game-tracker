@@ -7,6 +7,7 @@ import { useFetchPlayingGames } from "./hooks/useFetchPlayingGames";
 import { useUpdatePlayingGame } from "./hooks/useUpdatePlayingGame";
 import PauseOutlinedIcon from "@mui/icons-material/PauseOutlined";
 import { ConfirmationModal } from "../../components/confirmation.modal/confirmation-modal";
+import { EmptyState } from "../../components/empty-states/empty-states";
 
 export const Playing = () => {
   const { data, isPending, error } = useFetchPlayingGames();
@@ -53,6 +54,8 @@ export const Playing = () => {
   );
 
   if (error) return <p style={{ color: "red" }}>{error.message}</p>;
+
+  if (data?.length === 0 && !isPending) return <EmptyState type="playing" />;
 
   return (
     <div className="text-white">
