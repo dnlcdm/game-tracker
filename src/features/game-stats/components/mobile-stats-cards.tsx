@@ -33,17 +33,28 @@ export const MobileStatsCards = ({
     <div className="grid p-2 grid-cols-1 gap-3">
       {list.map((game) => {
         const diff = DIFFICULTY_CONFIG[game.difficult];
+        const isPlatinum = game.completion_type === "platinum";
         return (
           <div
             key={game.id}
-            className="relative overflow-hidden rounded-md border border-white/5 bg-[#0B0F1A]/80 backdrop-blur-xl shadow-2xl ring-1 ring-white/5 active:scale-[0.99] transition-transform"
+            className={`relative overflow-hidden rounded-md border border-white/5 bg-[#0B0F1A]/80 backdrop-blur-xl shadow-2xl ring-1 ring-white/5 active:scale-[0.99] transition-transform ${
+              isPlatinum
+                ? "border-yellow-400/40 ring-yellow-400/30 shadow-[0_0_35px_rgba(234,179,8,0.25)]"
+                : ""
+            }`}
           >
             <div className="absolute -right-10 -top-10 w-32 h-32 bg-blue-500/10 blur-3xl rounded-full pointer-events-none" />
             <div className="absolute -left-10 -bottom-10 w-32 h-32 bg-purple-500/10 blur-3xl rounded-full pointer-events-none" />
+            {isPlatinum && (
+              <>
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/15 via-transparent to-yellow-500/10 pointer-events-none" />
+                <div className="absolute -top-8 right-6 h-20 w-20 rounded-full bg-yellow-400/20 blur-2xl pointer-events-none" />
+              </>
+            )}
 
             <div className="relative p-3.5 flex gap-3.5">
               <img
-                src={game.coverUrl}
+                src={game.coverUrl || "/not-found-image-1.png"}
                 className="w-16 h-24 object-cover rounded-md shadow-2xl border border-white/10 shrink-0"
                 alt={game.name}
                 loading="lazy"
@@ -58,6 +69,11 @@ export const MobileStatsCards = ({
                       onClick={onNameClick}
                       className="text-left text-sm font-black text-white uppercase italic truncate max-w-[220px]"
                     />
+                    {isPlatinum && (
+                      <span className="mt-1 inline-flex items-center rounded-full border border-yellow-300/40 bg-gradient-to-r from-yellow-500/20 via-amber-300/10 to-yellow-500/20 px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.28em] text-yellow-200 shadow-[0_0_14px_rgba(234,179,8,0.4)]">
+                        Platina
+                      </span>
+                    )}
 
                     <div className="mt-2 flex flex-wrap gap-2">
                       <span className="inline-flex items-center gap-1.5 text-yellow-300 bg-yellow-500/5 px-2.5 py-1 rounded-full border border-yellow-500/10">

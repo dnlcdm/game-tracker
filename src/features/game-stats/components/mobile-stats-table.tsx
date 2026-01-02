@@ -63,11 +63,18 @@ export const MobileStatsTable = ({
         <tbody className="divide-y divide-white/[0.03]">
           {list.map((game) => {
             const diff = DIFFICULTY_CONFIG[game.difficult];
+            const isPlatinum = game.completion_type === "platinum";
             const isExpanded = expandedGameId === game.id;
 
             return (
               <Fragment key={game.id}>
-                <tr className="hover:bg-blue-500/[0.03]">
+                <tr
+                  className={`transition-colors ${
+                    isPlatinum
+                      ? "bg-gradient-to-r from-yellow-500/15 via-amber-400/5 to-transparent"
+                      : "hover:bg-blue-500/[0.03]"
+                  }`}
+                >
                   <td className="px-3 py-3 align-top">
                     <div className="flex items-start gap-3 min-w-0">
                       <button
@@ -80,7 +87,7 @@ export const MobileStatsTable = ({
                         }
                       >
                         <img
-                          src={game.coverUrl}
+                          src={game.coverUrl || "/not-found-image-1.png"}
                           className={`w-9 h-12 object-cover rounded-sm ring-1 border border-white/10 shadow-lg transition-all ${
                             isExpanded ? "ring-blue-400/40" : "ring-white/10"
                           }`}
@@ -119,6 +126,12 @@ export const MobileStatsTable = ({
                               <span className="truncate max-w-[92px] font-bold uppercase tracking-wide text-blue-200/90">
                                 {game.co_op_friend}
                               </span>
+                            </span>
+                          )}
+
+                          {isPlatinum && (
+                            <span className="inline-flex items-center rounded-full border border-yellow-300/40 bg-gradient-to-r from-yellow-500/20 via-amber-300/10 to-yellow-500/20 px-2 py-0.5 text-[8px] font-black uppercase tracking-[0.28em] text-yellow-200 shadow-[0_0_12px_rgba(234,179,8,0.35)]">
+                              Platina
                             </span>
                           )}
                         </div>
@@ -166,7 +179,13 @@ export const MobileStatsTable = ({
                           isExpanded ? "translate-y-0" : "-translate-y-2"
                         }`}
                       >
-                        <div className="bg-white/[0.03] p-3">
+                        <div
+                          className={`p-3 ${
+                            isPlatinum
+                              ? "bg-gradient-to-br from-yellow-500/15 via-white/[0.03] to-transparent border border-yellow-400/20 shadow-[inset_0_0_0_1px_rgba(234,179,8,0.2)]"
+                              : "bg-white/[0.03]"
+                          }`}
+                        >
                           <div className="text-[10px] uppercase tracking-[0.2em] font-extrabold text-white/45">
                             Detalhes
                           </div>
@@ -192,7 +211,9 @@ export const MobileStatsTable = ({
                                   readOnly
                                 />
                                 <span
-                                  className={`text-[10px] font-black uppercase ${diff?.color ?? "text-white/60"}`}
+                                  className={`text-[10px] font-black uppercase ${
+                                    diff?.color ?? "text-white/60"
+                                  }`}
                                 >
                                   {diff?.label ?? "—"}
                                 </span>

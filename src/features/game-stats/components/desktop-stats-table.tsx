@@ -57,15 +57,27 @@ export const DesktopStatsTable = ({
           <tbody className="divide-y divide-white/[0.03]">
             {list.map((game) => {
               const diff = DIFFICULTY_CONFIG[game.difficult];
+              const isPlatinum = game.completion_type === "platinum";
               return (
                 <tr
                   key={game.id}
-                  className="group hover:bg-blue-500/[0.03] transition-colors"
+                  className={`group transition-colors ${
+                    isPlatinum
+                      ? "bg-gradient-to-r from-yellow-500/15 via-amber-400/5 to-transparent hover:bg-yellow-500/20"
+                      : "hover:bg-blue-500/[0.03]"
+                  }`}
                 >
                   <td className="px-6 py-3">
-                    <div className="flex items-center gap-4 min-w-0">
+                    <div
+                      className={`flex items-center gap-4 min-w-0 ${
+                        isPlatinum ? "relative pl-2" : ""
+                      }`}
+                    >
+                      {isPlatinum && (
+                        <span className="absolute left-0 top-1 bottom-1 w-0.5 bg-gradient-to-b from-yellow-300 via-amber-500 to-yellow-200 shadow-[0_0_12px_rgba(234,179,8,0.8)]" />
+                      )}
                       <img
-                        src={game.coverUrl}
+                        src={game.coverUrl || "/not-found-image-1.png"}
                         className="w-10 h-14 object-cover rounded-md ring-1 ring-white/10 shrink-0"
                         alt={game.name}
                         loading="lazy"
@@ -82,6 +94,12 @@ export const DesktopStatsTable = ({
                         <div className="text-[11px] text-white/45 mt-0.5 truncate max-w-[320px]">
                           {game.co_op_friend && `feat. ${game.co_op_friend}`}
                         </div>
+
+                        {isPlatinum && (
+                          <span className="mt-2 inline-flex items-center rounded-full border border-yellow-300/40 bg-gradient-to-r from-yellow-500/20 via-amber-300/10 to-yellow-500/20 px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.28em] text-yellow-200 shadow-[0_0_14px_rgba(234,179,8,0.4)]">
+                            Platina
+                          </span>
+                        )}
                       </div>
                     </div>
                   </td>
@@ -109,7 +127,9 @@ export const DesktopStatsTable = ({
                         readOnly
                       />
                       <p
-                        className={`text-[10px] font-black uppercase ${diff?.color ?? "text-white/70"}`}
+                        className={`text-[10px] font-black uppercase ${
+                          diff?.color ?? "text-white/70"
+                        }`}
                       >
                         {diff?.label ?? "—"}
                       </p>
