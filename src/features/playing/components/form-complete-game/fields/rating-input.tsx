@@ -36,39 +36,45 @@ export const RatingInput = () => {
 
   return (
     <FieldWrapper label="Sua Avaliação" error={errors.user_rating?.message}>
-      <div className="flex flex-col gap-4 p-4 bg-white/5 border border-white/10 rounded-xl">
-        <div className="hidden md:flex items-center justify-between">
-          <Controller
-            name="user_rating"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <Rating
-                size="large"
-                precision={0.5}
-                value={value || 0}
-                onChange={(_, val) => onChange(val || 0)}
-                onChangeActive={(_, h) => setHover(h)}
-                emptyIcon={
-                  <StarIcon
-                    style={{ opacity: 0.2, color: "white" }}
-                    fontSize="inherit"
-                  />
-                }
-              />
-            )}
-          />
-          <span className="text-2xl font-black text-yellow-500 w-10 text-right">
-            {currentRating > 0 ? currentRating * 2 : "-"}
-          </span>
+      <div className="flex flex-col gap-4 px-4 bg-white/5 border border-white/10 rounded-lg">
+        <div className="hidden md:block py-2">
+          <div className="hidden md:flex items-center justify-between">
+            <Controller
+              name="user_rating"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <Rating
+                  size="large"
+                  precision={0.5}
+                  value={value || 0}
+                  onChange={(_, val) => onChange(val || 0)}
+                  onChangeActive={(_, h) => setHover(h)}
+                  emptyIcon={
+                    <StarIcon
+                      style={{ opacity: 0.2, color: "white" }}
+                      fontSize="inherit"
+                    />
+                  }
+                />
+              )}
+            />
+            <span className="text-2xl font-black text-yellow-500 w-10 text-right">
+              {currentRating > 0 ? currentRating * 2 : "-"}
+            </span>
+          </div>
+          <p className="hidden md:block text-[10px] text-gray-500 uppercase font-bold">
+            {displayValue > 0
+              ? RATING_LABELS[displayValue]
+              : "Selecione uma nota"}
+          </p>
         </div>
-
-        <div className="flex md:hidden flex-col gap-4">
+        <div className="flex md:hidden pt-2 flex-col">
           <div className="flex justify-between items-center">
-            <span className="text-4xl font-black text-yellow-500">
+            <span className="text-xl font-black text-yellow-500">
               {currentRating > 0 ? (currentRating * 2).toFixed(0) : "?"}
             </span>
             <div className="text-right">
-              <p className="uppercase text-lg font-black text-yellow-500">
+              <p className="uppercase text-xs font-black text-yellow-500">
                 {RATING_LABELS[currentRating] || "Deslize para avaliar"}
               </p>
             </div>
@@ -88,10 +94,10 @@ export const RatingInput = () => {
                 }}
                 sx={{
                   color: "#eab308",
-                  height: 8,
+                  height: 4,
                   "& .MuiSlider-thumb": {
-                    width: 28,
-                    height: 28,
+                    width: 18,
+                    height: 18,
                     backgroundColor: "#eab308",
                     border: "4px solid #1a1a1a",
                     "&:hover, &.Mui-focusVisible": {
@@ -107,12 +113,6 @@ export const RatingInput = () => {
             )}
           />
         </div>
-
-        <p className="hidden md:block text-[10px] text-gray-500 uppercase font-bold">
-          {displayValue > 0
-            ? RATING_LABELS[displayValue]
-            : "Selecione uma nota"}
-        </p>
       </div>
     </FieldWrapper>
   );

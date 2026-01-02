@@ -41,7 +41,7 @@ export const StatsTable = () => {
       <StatsHeader
         totalCount={data?.length ?? 0}
         totalTimeLabel={totalTimeLabel}
-        avgRating={quickStats.avgRating}
+        totalPlatinum={quickStats.totalPlatinum}
         coopCount={quickStats.coopCount}
         avgDiff={quickStats.avgDiff}
       />

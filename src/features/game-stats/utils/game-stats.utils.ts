@@ -32,12 +32,10 @@ export const getQuickStats = (list: IGamesSupabase[]) => {
     (acc, game) => acc + (game.minutes_played ?? 0),
     0,
   );
-  const avgRating =
-    list.length > 0
-      ? list.reduce((acc, game) => acc + (Number(game.user_rating) || 0), 0) /
-        list.length
-      : 0;
   const coopCount = list.filter((game) => !!game.co_op_friend).length;
+  const totalPlatinum = list.filter(
+    (game) => game.completion_type === "platinum",
+  ).length;
   const avgDiff =
     list.length > 0
       ? Math.round(
@@ -46,7 +44,7 @@ export const getQuickStats = (list: IGamesSupabase[]) => {
         )
       : 0;
 
-  return { totalMinutes, avgRating, coopCount, avgDiff };
+  return { totalMinutes, coopCount, avgDiff, totalPlatinum };
 };
 
 export const getTotalTimeLabel = (totalMinutes: number) => {

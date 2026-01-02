@@ -33,7 +33,7 @@ export const FinishGameFormFields = ({
               <input
                 {...field}
                 type="date"
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-base sm:text-sm text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-base sm:text-sm text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all"
               />
             </FieldWrapper>
           )}
@@ -71,7 +71,7 @@ export const FinishGameFormFields = ({
             <input
               {...field}
               type="text"
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-base sm:text-sm text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all"
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-base sm:text-sm text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all"
             />
           </FieldWrapper>
         )}
@@ -95,7 +95,7 @@ export const FinishGameFormFields = ({
         <button
           type="submit"
           disabled={isSaving}
-          className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-gray-800 text-white font-black py-4 rounded-xl transition-all active:scale-[0.96] shadow-lg shadow-blue-900/20 uppercase tracking-widest text-xs"
+          className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-gray-800 text-white font-black py-4 rounded-lg transition-all active:scale-[0.96] shadow-lg shadow-blue-900/20 uppercase tracking-widest text-xs"
         >
           {isSaving ? "Enviando..." : "Salvar"}
         </button>

@@ -56,7 +56,7 @@ export const GamesFilters: FC = () => {
   }, [isPending, hasMore, setParams, observerTarget]);
 
   return (
-    <div className="flex flex-col gap-6 w-full px-4 pt-4 md:px-0">
+    <div className="flex flex-col gap-6 w-full px-2 pt-4 md:px-0">
       <div className="relative w-full max-w-xl group mx-auto">
         <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10">
           {isPending ? (
@@ -75,8 +75,8 @@ export const GamesFilters: FC = () => {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           enterKeyHint="search"
-          placeholder="Pesquise por títulos"
-          className="w-full bg-slate-900/40 backdrop-blur-md border border-slate-800 text-sm text-slate-200 rounded-xl pl-11 pr-11 py-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500/50 outline-none transition-all placeholder:text-slate-600 shadow-lg"
+          placeholder="Pesquise por jogos"
+          className="w-full bg-slate-900/40 backdrop-blur-md border border-slate-800 text-sm text-slate-200 rounded-lg pl-11 pr-11 py-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500/50 outline-none transition-all placeholder:text-slate-600 shadow-lg"
         />
 
         {inputValue && (
