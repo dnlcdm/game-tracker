@@ -1,7 +1,6 @@
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import GroupsIcon from "@mui/icons-material/Groups";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
-import StarIcon from "@mui/icons-material/Star";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 
 interface StatsHeaderProps {

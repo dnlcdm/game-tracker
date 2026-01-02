@@ -5,7 +5,7 @@ import { useUserAuth, type AuthContextType } from "../hooks/useUserAuth.ts";
 const UserAuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const UserAuthProvider = ({ children }: PropsWithChildren) => {
-  const { session, isLoading, signInWithGoogle, signOut } = useUserAuth();
+  const { session, isLoading, signInWithGoogle, signOut, signInWithEmail, signUpWithEmail } = useUserAuth();
 
   return (
     <UserAuthContext.Provider
@@ -14,6 +14,8 @@ export const UserAuthProvider = ({ children }: PropsWithChildren) => {
         isLoading,
         signInWithGoogle,
         signOut,
+        signInWithEmail,
+        signUpWithEmail
       }}
     >
       {children}
