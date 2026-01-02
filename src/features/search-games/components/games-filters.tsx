@@ -14,11 +14,9 @@ const DEBOUNCE_DELAY = 500;
 export const GamesFilters: FC = () => {
   const { setParams, isPending, observerTarget, hasMore } = useDataGame();
   const [inputValue, setInputValue] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setInputValue(e.target.value);
-    setIsTyping(true);
   };
 
   const handleClear = () => {
@@ -35,7 +33,6 @@ export const GamesFilters: FC = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setParams((p) => ({ ...p, search: inputValue, page: "1" }));
-      setIsTyping(false);
     }, DEBOUNCE_DELAY);
 
     return () => clearTimeout(handler);
@@ -59,10 +56,10 @@ export const GamesFilters: FC = () => {
   }, [isPending, hasMore, setParams, observerTarget]);
 
   return (
-    <div className="flex flex-col gap-6 w-full md:px-0">
+    <div className="flex flex-col gap-6 w-full px-4 pt-4 md:px-0">
       <div className="relative w-full max-w-xl group mx-auto">
         <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10">
-          {isPending || isTyping ? (
+          {isPending ? (
             <div className="w-4 h-4 border-2 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" />
           ) : (
             <SearchIcon

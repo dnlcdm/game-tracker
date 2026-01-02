@@ -76,7 +76,7 @@ export const MainLayout = () => {
       </aside>
 
       <main className="flex-1 flex flex-col h-full overflow-y-auto bg-[#030712] pb-20 md:pb-0">
-        <div className="p-4 md:p-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+        <div className="md:p-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
           <Outlet />
         </div>
       </main>

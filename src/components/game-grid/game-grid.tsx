@@ -11,7 +11,7 @@ interface GameGridProps {
 }
 
 const GRID_LAYOUT_CLASSES =
-  "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 sm:gap-4 mt-4";
+  "p-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 sm:gap-4 mt-4";
 const SKELETON_COUNT = 28;
 
 const useSelectedGame = (items: IGamesSupabase[]) => {

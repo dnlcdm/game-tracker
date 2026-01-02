@@ -69,22 +69,23 @@ export const GamesList = () => {
     isToggling: isPendingMutate,
     togglingGameId: variables?.id,
   });
-
   const isInitialLoading =
     (isPending || isPendingBacklog || isPendingPlaying) && params.page === "1";
+  const isEmpty = results?.length === 0 && !isInitialLoading && !isPending;
   const showScrollLoader = isPending && params.page !== "1";
   const showEndOfResults = !hasMore && results.length > 0;
 
-  if (results?.length === 0 && !isInitialLoading && !isPending)
-    return <EmptyState type="search" />;
-
   return (
     <div className="min-h-screen w-full py-4 transition-all duration-500">
-      <GameGrid
-        items={results as IGamesSupabase[]}
-        actions={gameActions}
-        isLoading={isInitialLoading}
-      />
+      {isEmpty ? (
+        <EmptyState type="search" />
+      ) : (
+        <GameGrid
+          items={results as IGamesSupabase[]}
+          actions={gameActions}
+          isLoading={isInitialLoading}
+        />
+      )}
 
       <GamesListFooter
         observerTarget={observerTarget}
