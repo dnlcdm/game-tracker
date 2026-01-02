@@ -23,8 +23,6 @@ export const UserAuthProvider = ({ children }: PropsWithChildren) => {
         signUpWithEmail,
         signInWithGoogle,
         signOut,
-        signInWithEmail,
-        signUpWithEmail
       }}
     >
       {children}
