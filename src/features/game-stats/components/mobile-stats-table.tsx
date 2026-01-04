@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import GroupsIcon from "@mui/icons-material/Groups";
 import StarIcon from "@mui/icons-material/Star";
@@ -14,12 +15,14 @@ import {
   formatTime,
 } from "../utils/game-stats.utils";
 import { GameNameButton } from "./game-name-button";
+import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 
 interface MobileStatsTableProps {
   data?: IGamesSupabase[];
   expandedGameId: string | number | null;
   onToggleExpanded: (id: string | number) => void;
   onEdit: (game: IGamesSupabase) => void;
+  onDelete: (game: IGamesSupabase) => void;
   onNameClick: NamePopoverHandler;
 }
 
@@ -33,6 +36,7 @@ export const MobileStatsTable = ({
   expandedGameId,
   onToggleExpanded,
   onEdit,
+  onDelete,
   onNameClick,
 }: MobileStatsTableProps) => {
   const list = data ?? [];
@@ -80,7 +84,7 @@ export const MobileStatsTable = ({
                       <button
                         type="button"
                         onClick={() => onToggleExpanded(game.id)}
-                        className="shrink-0"
+                        className="shrink-0 relative"
                         aria-expanded={isExpanded}
                         aria-label={
                           isExpanded ? "Fechar detalhes" : "Abrir detalhes"
@@ -94,10 +98,16 @@ export const MobileStatsTable = ({
                           alt={game.name}
                           loading="lazy"
                         />
+                        {isPlatinum && (
+                          <WorkspacePremiumIcon
+                            className="absolute text-yellow-400 -top-1 -right-1 m-0 p-0"
+                            fontSize="inherit"
+                          />
+                        )}
                       </button>
 
                       <div className="min-w-0 flex-1">
-                        <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-start justify-start">
                           <GameNameButton
                             name={game.name}
                             gameId={game.id}
@@ -109,8 +119,8 @@ export const MobileStatsTable = ({
                         <div className="mt-1 flex items-center gap-2 text-[10px] text-white/45 min-w-0">
                           <span className="flex items-top font-bold uppercase text-white/60">
                             <StarIcon
-                              sx={{ fontSize: 13 }}
                               className="text-yellow-400"
+                              sx={{ fontSize: 13 }}
                             />
                             <span className="font-black ml-0.5 text-[11px]">
                               {game.user_rating}
@@ -126,12 +136,6 @@ export const MobileStatsTable = ({
                               <span className="truncate max-w-[92px] font-bold uppercase tracking-wide text-blue-200/90">
                                 {game.co_op_friend}
                               </span>
-                            </span>
-                          )}
-
-                          {isPlatinum && (
-                            <span className="inline-flex items-center rounded-full border border-yellow-300/40 bg-gradient-to-r from-yellow-500/20 via-amber-300/10 to-yellow-500/20 px-2 py-0.5 text-[8px] font-black uppercase tracking-[0.28em] text-yellow-200 shadow-[0_0_12px_rgba(234,179,8,0.35)]">
-                              Platina
                             </span>
                           )}
                         </div>
@@ -269,14 +273,47 @@ export const MobileStatsTable = ({
                               </div>
                             </div>
                           </div>
+                          {game.review && (
+                            <div className="relative mt-4 mb-2 overflow-hidden rounded-xl border border-white/10 bg-[#0B0F1A]/40 p-4">
+                              <FormatQuoteIcon
+                                className="absolute -right-1 -top-1 text-white/[0.03] transform rotate-12"
+                                sx={{ fontSize: 60 }}
+                              />
 
-                          <button
-                            type="button"
-                            onClick={() => onEdit(game)}
-                            className="mt-3 w-full rounded-lg border border-white/10 bg-white/[0.03] py-2 text-[10px] font-extrabold uppercase tracking-[0.2em] text-white/70 hover:bg-white/[0.06] transition"
-                          >
-                            Editar
-                          </button>
+                              <div className="relative z-10">
+                                <div className="flex items-center gap-2 mb-2">
+                                  <FormatQuoteIcon
+                                    className="text-blue-400/60 transform rotate-180"
+                                    sx={{ fontSize: 16 }}
+                                  />
+                                  <span className="text-[9px] font-extrabold uppercase tracking-[0.25em] text-blue-200/50">
+                                    Review
+                                  </span>
+                                </div>
+                                <p className="text-sm font-medium leading-relaxed text-gray-300 italic pl-2 border-l-2 border-blue-500/20">
+                                  "{game.review}"
+                                </p>
+                              </div>
+                            </div>
+                          )}
+
+                          <div className="flex gap-2">
+                            <button
+                              type="button"
+                              onClick={() => onDelete(game)}
+                              className="mt-3 w-full rounded-lg border text-red-400 border-red-500/20 bg-red/[0.05] py-2 text-[10px] font-extrabold uppercase tracking-[0.2em] hover:bg-white/[0.06] transition"
+                            >
+                              <span>Deletar</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => onEdit(game)}
+                              className="mt-3 w-full rounded-lg border border-white/10 bg-white/[0.03] py-2 text-[10px] font-extrabold uppercase tracking-[0.2em] text-white/70 hover:bg-white/[0.06] transition"
+                            >
+                              editar
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>

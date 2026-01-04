@@ -1,394 +1,396 @@
-import React, { useMemo, useState } from "react";
-import { useUserAuth } from "../auth/hooks/useUserAuth";
+// import React, { useMemo, useState } from "react";
+// import { useUserAuth } from "../auth/hooks/useUserAuth";
+//
+// export const LoginCard: React.FC = () => {
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+//
+//   const { signInWithGoogle, signInWithEmail, isLoading } = useUserAuth();
+//
+//   const handleEmailLogin = async (e: React.FormEvent) => {
+//     e.preventDefault();
+//     setErrorMsg(null);
+//     try {
+//       await signInWithEmail(email, password);
+//     } catch (err: unknown) {
+//       if (err instanceof Error) {
+//         setErrorMsg(err.message || "Erro ao fazer login");
+//       } else {
+//         setErrorMsg("Erro desconhecido");
+//       }
+//     }
+//   };
+//
+//   const tips = useMemo(
+//     () => [
+//       "Dica: troque de arma, não de sonho.",
+//       "Dica: checkpoints salvam — suas metas também.",
+//       "Dica: respira… boss fight não é no modo turbo.",
+//       "Dica: se travar, reinicia. Vale pra código e vida.",
+//       "Dica: grind diário > rush de um dia.",
+//     ],
+//     [],
+//   );
+//   const tip = useMemo(
+//     () => tips[Math.floor(Math.random() * tips.length)],
+//     [tips],
+//   );
+//
+//   const styles = {
+//     page: {
+//       minHeight: "100vh",
+//       display: "flex",
+//       alignItems: "center",
+//       justifyContent: "center",
+//       padding: "24px",
+//       color: "#E5E7EB",
+//       background:
+//         "radial-gradient(1200px 600px at 20% 10%, rgba(99,102,241,0.35), transparent 60%), radial-gradient(900px 500px at 80% 90%, rgba(34,197,94,0.18), transparent 55%), linear-gradient(135deg, #050816 0%, #0B1026 50%, #070A17 100%)",
+//       position: "relative" as const,
+//       overflow: "hidden" as const,
+//       fontFamily:
+//         'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif',
+//     },
+//     glowBlob1: {
+//       position: "absolute" as const,
+//       width: "520px",
+//       height: "520px",
+//       left: "-160px",
+//       top: "-160px",
+//       background:
+//         "radial-gradient(circle at 30% 30%, rgba(168,85,247,0.55), transparent 55%)",
+//       filter: "blur(18px)",
+//       animation: "float1 10s ease-in-out infinite",
+//       pointerEvents: "none" as const,
+//     },
+//     glowBlob2: {
+//       position: "absolute" as const,
+//       width: "560px",
+//       height: "560px",
+//       right: "-200px",
+//       bottom: "-220px",
+//       background:
+//         "radial-gradient(circle at 30% 30%, rgba(34,197,94,0.35), transparent 60%)",
+//       filter: "blur(18px)",
+//       animation: "float2 12s ease-in-out infinite",
+//       pointerEvents: "none" as const,
+//     },
+//
+//     card: {
+//       width: "min(440px, 100%)",
+//       borderRadius: "18px",
+//       padding: "28px",
+//       background:
+//         "linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.06) 100%)",
+//       border: "1px solid rgba(255,255,255,0.14)",
+//       boxShadow:
+//         "0 18px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(99,102,241,0.18) inset",
+//       backdropFilter: "blur(14px)",
+//       position: "relative" as const,
+//     },
+//
+//     badge: {
+//       display: "inline-flex",
+//       alignItems: "center",
+//       gap: "8px",
+//       padding: "6px 10px",
+//       borderRadius: "999px",
+//       fontSize: "12px",
+//       color: "rgba(255,255,255,0.88)",
+//       background: "rgba(99,102,241,0.14)",
+//       border: "1px solid rgba(99,102,241,0.25)",
+//       marginBottom: "12px",
+//       letterSpacing: "0.3px",
+//     },
+//
+//     title: {
+//       margin: 0,
+//       fontSize: "26px",
+//       lineHeight: 1.15,
+//       textAlign: "center" as const,
+//       letterSpacing: "0.4px",
+//       color: "#F9FAFB",
+//       textShadow: "0 0 16px rgba(99,102,241,0.35)",
+//     },
+//
+//     subtitle: {
+//       marginTop: "10px",
+//       marginBottom: "22px",
+//       textAlign: "center" as const,
+//       color: "rgba(229,231,235,0.80)",
+//       fontSize: "14px",
+//     },
+//
+//     label: {
+//       marginBottom: "6px",
+//       fontSize: "13px",
+//       color: "rgba(229,231,235,0.85)",
+//       display: "flex",
+//       alignItems: "center",
+//       justifyContent: "space-between",
+//     },
+//
+//     input: {
+//       width: "100%",
+//       padding: "12px 12px",
+//       marginBottom: "14px",
+//       borderRadius: "12px",
+//       border: "1px solid rgba(255,255,255,0.14)",
+//       outline: "none",
+//       backgroundColor: "rgba(3, 6, 23, 0.55)",
+//       color: "#F9FAFB",
+//       boxSizing: "border-box" as const,
+//       boxShadow: "0 0 0 0 rgba(99,102,241,0.0)",
+//       transition:
+//         "transform 0.08s ease, box-shadow 0.15s ease, border-color 0.15s ease",
+//     },
+//
+//     hintRow: {
+//       display: "flex",
+//       alignItems: "center",
+//       justifyContent: "space-between",
+//       marginTop: "-6px",
+//       marginBottom: "14px",
+//       fontSize: "12px",
+//       color: "rgba(229,231,235,0.65)",
+//     },
+//
+//     error: {
+//       margin: "0 0 12px 0",
+//       padding: "10px 12px",
+//       borderRadius: "12px",
+//       fontSize: "12px",
+//       color: "#FFE4E6",
+//       background: "rgba(244,63,94,0.14)",
+//       border: "1px solid rgba(244,63,94,0.25)",
+//     },
+//
+//     primaryBtn: {
+//       width: "100%",
+//       padding: "12px 14px",
+//       borderRadius: "14px",
+//       border: "1px solid rgba(255,255,255,0.16)",
+//       cursor: isLoading ? "not-allowed" : "pointer",
+//       fontWeight: 800,
+//       letterSpacing: "0.4px",
+//       color: "#0B1026",
+//       background:
+//         "linear-gradient(90deg, #22C55E 0%, #60A5FA 40%, #A78BFA 100%)",
+//       boxShadow: "0 14px 30px rgba(0,0,0,0.35), 0 0 24px rgba(99,102,241,0.25)",
+//       opacity: isLoading ? 0.72 : 1,
+//       transform: isLoading ? "translateY(0)" : "translateY(0)",
+//       transition: "transform 0.08s ease, filter 0.15s ease",
+//       display: "flex",
+//       alignItems: "center",
+//       justifyContent: "center",
+//       gap: "10px",
+//     },
+//
+//     divider: {
+//       display: "flex",
+//       alignItems: "center",
+//       width: "100%",
+//       margin: "18px 0",
+//       color: "rgba(229,231,235,0.55)",
+//       fontSize: "12px",
+//     },
+//     dividerLine: {
+//       flex: 1,
+//       height: "1px",
+//       background:
+//         "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 30%, rgba(255,255,255,0.18) 70%, transparent 100%)",
+//     },
+//     dividerText: {
+//       padding: "0 10px",
+//       letterSpacing: "2px",
+//       fontWeight: 700,
+//       opacity: 0.85,
+//     },
+//
+//     googleBtn: {
+//       width: "100%",
+//       padding: "12px 14px",
+//       borderRadius: "14px",
+//       cursor: isLoading ? "not-allowed" : "pointer",
+//       border: "1px solid rgba(255,255,255,0.18)",
+//       backgroundColor: "rgba(255,255,255,0.06)",
+//       color: "rgba(255,255,255,0.92)",
+//       display: "flex",
+//       alignItems: "center",
+//       justifyContent: "center",
+//       gap: "10px",
+//       fontSize: "15px",
+//       fontWeight: 700,
+//       opacity: isLoading ? 0.72 : 1,
+//       boxShadow: "0 10px 22px rgba(0,0,0,0.28)",
+//     },
+//
+//     tip: {
+//       marginTop: "16px",
+//       padding: "10px 12px",
+//       borderRadius: "14px",
+//       background: "rgba(34,197,94,0.10)",
+//       border: "1px solid rgba(34,197,94,0.18)",
+//       color: "rgba(229,231,235,0.85)",
+//       fontSize: "12px",
+//       lineHeight: 1.35,
+//       display: "flex",
+//       gap: "10px",
+//       alignItems: "flex-start",
+//     },
+//
+//     tinyIcon: {
+//       width: "22px",
+//       height: "22px",
+//       borderRadius: "8px",
+//       display: "grid",
+//       placeItems: "center",
+//       background: "rgba(34,197,94,0.16)",
+//       border: "1px solid rgba(34,197,94,0.22)",
+//       flex: "0 0 auto",
+//     },
+//   };
+//
+//   const keyframes = `
+//     @keyframes float1 { 0%,100%{ transform: translate(0,0) } 50%{ transform: translate(40px, 25px) } }
+//     @keyframes float2 { 0%,100%{ transform: translate(0,0) } 50%{ transform: translate(-35px, -30px) } }
+//
+//     /* foco “gamer glow” nos inputs */
+//     .gamer-input:focus {
+//       border-color: rgba(99,102,241,0.45) !important;
+//       box-shadow: 0 0 0 4px rgba(99,102,241,0.18), 0 0 24px rgba(168,85,247,0.14) !important;
+//       transform: translateY(-1px);
+//     }
+//
+//     /* hover dos botões */
+//     .gamer-primary:hover { filter: brightness(1.05); transform: translateY(-1px); }
+//     .gamer-google:hover { background-color: rgba(255,255,255,0.10); }
+//   `;
+//
+//   return (
+//     <div style={styles.page}>
+//       <style>{keyframes}</style>
+//
+//       <div style={styles.glowBlob1} />
+//       <div style={styles.glowBlob2} />
+//
+//       <div style={styles.card}>
+//         <h2 style={styles.title}>Acesse sua Biblioteca</h2>
+//         <p style={styles.subtitle}>
+//           Entre com suas credenciais e continue a campanha.
+//         </p>
+//
+//         <form onSubmit={handleEmailLogin} style={{ width: "100%" }}>
+//           <div style={styles.label}>
+//             <span>E-mail</span>
+//             <span style={{ opacity: 0.7, fontSize: 12 }}>ID do jogador</span>
+//           </div>
+//
+//           <input
+//             className="gamer-input"
+//             type="email"
+//             placeholder="seu@email.com"
+//             value={email}
+//             onChange={(e) => setEmail(e.target.value)}
+//             style={styles.input}
+//             required
+//             autoComplete="email"
+//           />
+//
+//           <div style={styles.label}>
+//             <span>Senha</span>
+//             <span style={{ opacity: 0.7, fontSize: 12 }}>chave secreta</span>
+//           </div>
+//
+//           <input
+//             className="gamer-input"
+//             type="password"
+//             placeholder="password"
+//             value={password}
+//             onChange={(e) => setPassword(e.target.value)}
+//             style={styles.input}
+//             required
+//             autoComplete="current-password"
+//           />
+//
+//           <div style={styles.hintRow}>
+//             <span style={{ display: "flex", gap: 8, alignItems: "center" }}>
+//               <span aria-hidden>🛡️</span>
+//               <span>Seus dados ficam seguros.</span>
+//             </span>
+//             <span style={{ opacity: 0.75 }}>v1.0</span>
+//           </div>
+//
+//           {errorMsg && <div style={styles.error}>⚠️ {errorMsg}</div>}
+//
+//           <button
+//             type="submit"
+//             disabled={isLoading}
+//             style={styles.primaryBtn}
+//             className="gamer-primary"
+//           >
+//             {isLoading ? "Carregando..." : "Entrar"}
+//           </button>
+//         </form>
+//
+//         <div style={styles.divider}>
+//           <div style={styles.dividerLine} />
+//           <span style={styles.dividerText}>OU</span>
+//           <div style={styles.dividerLine} />
+//         </div>
+//
+//         <button
+//           onClick={signInWithGoogle}
+//           disabled={isLoading}
+//           style={styles.googleBtn}
+//           className="gamer-google"
+//         >
+//           <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
+//             <path
+//               fill="#4285f4"
+//               d="M17.64 9.2q-.002-.956-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"
+//             />
+//             <path
+//               fill="#34a853"
+//               d="M9.003 18c2.43 0 4.467-.806 5.956-2.18l-2.909-2.26c-.806.54-1.836.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.96v2.332C2.44 15.983 5.485 18 9.003 18"
+//             />
+//             <path
+//               fill="#fbbc05"
+//               d="M3.964 10.712c-.18-.54-.282-1.117-.282-1.71 0-.593.102-1.17.282-1.71V4.96H.957C.347 6.175 0 7.55 0 9.002c0 1.452.348 2.827.957 4.042z"
+//             />
+//             <path
+//               fill="#ea4335"
+//               d="M9.003 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.464.891 11.428 0 9.002 0 5.485 0 2.44 2.017.96 4.958L3.967 7.29c.708-2.127 2.692-3.71 5.036-3.71"
+//             />
+//           </svg>
+//           <span>Continuar com Google</span>
+//         </button>
+//
+//         <div style={styles.tip}>
+//           <div style={styles.tinyIcon} aria-hidden>
+//             🧠
+//           </div>
+//           <div>
+//             <div
+//               style={{
+//                 fontWeight: 800,
+//                 marginBottom: 4,
+//                 color: "rgba(229,231,235,0.92)",
+//               }}
+//             >
+//               Dica do lobby
+//             </div>
+//             <div>{tip}</div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+//
 
-export const LoginCard: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  const { signInWithGoogle, signInWithEmail, isLoading } = useUserAuth();
-
-  const handleEmailLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMsg(null);
-    try {
-      await signInWithEmail(email, password);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setErrorMsg(err.message || "Erro ao fazer login");
-      } else {
-        setErrorMsg("Erro desconhecido");
-      }
-    }
-  };
-
-  const tips = useMemo(
-    () => [
-      "Dica: troque de arma, não de sonho.",
-      "Dica: checkpoints salvam — suas metas também.",
-      "Dica: respira… boss fight não é no modo turbo.",
-      "Dica: se travar, reinicia. Vale pra código e vida.",
-      "Dica: grind diário > rush de um dia.",
-    ],
-    [],
-  );
-  const tip = useMemo(
-    () => tips[Math.floor(Math.random() * tips.length)],
-    [tips],
-  );
-
-  const styles = {
-    page: {
-      minHeight: "100vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "24px",
-      color: "#E5E7EB",
-      background:
-        "radial-gradient(1200px 600px at 20% 10%, rgba(99,102,241,0.35), transparent 60%), radial-gradient(900px 500px at 80% 90%, rgba(34,197,94,0.18), transparent 55%), linear-gradient(135deg, #050816 0%, #0B1026 50%, #070A17 100%)",
-      position: "relative" as const,
-      overflow: "hidden" as const,
-      fontFamily:
-        'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif',
-    },
-    glowBlob1: {
-      position: "absolute" as const,
-      width: "520px",
-      height: "520px",
-      left: "-160px",
-      top: "-160px",
-      background:
-        "radial-gradient(circle at 30% 30%, rgba(168,85,247,0.55), transparent 55%)",
-      filter: "blur(18px)",
-      animation: "float1 10s ease-in-out infinite",
-      pointerEvents: "none" as const,
-    },
-    glowBlob2: {
-      position: "absolute" as const,
-      width: "560px",
-      height: "560px",
-      right: "-200px",
-      bottom: "-220px",
-      background:
-        "radial-gradient(circle at 30% 30%, rgba(34,197,94,0.35), transparent 60%)",
-      filter: "blur(18px)",
-      animation: "float2 12s ease-in-out infinite",
-      pointerEvents: "none" as const,
-    },
-
-    card: {
-      width: "min(440px, 100%)",
-      borderRadius: "18px",
-      padding: "28px",
-      background:
-        "linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.06) 100%)",
-      border: "1px solid rgba(255,255,255,0.14)",
-      boxShadow:
-        "0 18px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(99,102,241,0.18) inset",
-      backdropFilter: "blur(14px)",
-      position: "relative" as const,
-    },
-
-    badge: {
-      display: "inline-flex",
-      alignItems: "center",
-      gap: "8px",
-      padding: "6px 10px",
-      borderRadius: "999px",
-      fontSize: "12px",
-      color: "rgba(255,255,255,0.88)",
-      background: "rgba(99,102,241,0.14)",
-      border: "1px solid rgba(99,102,241,0.25)",
-      marginBottom: "12px",
-      letterSpacing: "0.3px",
-    },
-
-    title: {
-      margin: 0,
-      fontSize: "26px",
-      lineHeight: 1.15,
-      textAlign: "center" as const,
-      letterSpacing: "0.4px",
-      color: "#F9FAFB",
-      textShadow: "0 0 16px rgba(99,102,241,0.35)",
-    },
-
-    subtitle: {
-      marginTop: "10px",
-      marginBottom: "22px",
-      textAlign: "center" as const,
-      color: "rgba(229,231,235,0.80)",
-      fontSize: "14px",
-    },
-
-    label: {
-      marginBottom: "6px",
-      fontSize: "13px",
-      color: "rgba(229,231,235,0.85)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
-
-    input: {
-      width: "100%",
-      padding: "12px 12px",
-      marginBottom: "14px",
-      borderRadius: "12px",
-      border: "1px solid rgba(255,255,255,0.14)",
-      outline: "none",
-      backgroundColor: "rgba(3, 6, 23, 0.55)",
-      color: "#F9FAFB",
-      boxSizing: "border-box" as const,
-      boxShadow: "0 0 0 0 rgba(99,102,241,0.0)",
-      transition:
-        "transform 0.08s ease, box-shadow 0.15s ease, border-color 0.15s ease",
-    },
-
-    hintRow: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      marginTop: "-6px",
-      marginBottom: "14px",
-      fontSize: "12px",
-      color: "rgba(229,231,235,0.65)",
-    },
-
-    error: {
-      margin: "0 0 12px 0",
-      padding: "10px 12px",
-      borderRadius: "12px",
-      fontSize: "12px",
-      color: "#FFE4E6",
-      background: "rgba(244,63,94,0.14)",
-      border: "1px solid rgba(244,63,94,0.25)",
-    },
-
-    primaryBtn: {
-      width: "100%",
-      padding: "12px 14px",
-      borderRadius: "14px",
-      border: "1px solid rgba(255,255,255,0.16)",
-      cursor: isLoading ? "not-allowed" : "pointer",
-      fontWeight: 800,
-      letterSpacing: "0.4px",
-      color: "#0B1026",
-      background:
-        "linear-gradient(90deg, #22C55E 0%, #60A5FA 40%, #A78BFA 100%)",
-      boxShadow: "0 14px 30px rgba(0,0,0,0.35), 0 0 24px rgba(99,102,241,0.25)",
-      opacity: isLoading ? 0.72 : 1,
-      transform: isLoading ? "translateY(0)" : "translateY(0)",
-      transition: "transform 0.08s ease, filter 0.15s ease",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: "10px",
-    },
-
-    divider: {
-      display: "flex",
-      alignItems: "center",
-      width: "100%",
-      margin: "18px 0",
-      color: "rgba(229,231,235,0.55)",
-      fontSize: "12px",
-    },
-    dividerLine: {
-      flex: 1,
-      height: "1px",
-      background:
-        "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 30%, rgba(255,255,255,0.18) 70%, transparent 100%)",
-    },
-    dividerText: {
-      padding: "0 10px",
-      letterSpacing: "2px",
-      fontWeight: 700,
-      opacity: 0.85,
-    },
-
-    googleBtn: {
-      width: "100%",
-      padding: "12px 14px",
-      borderRadius: "14px",
-      cursor: isLoading ? "not-allowed" : "pointer",
-      border: "1px solid rgba(255,255,255,0.18)",
-      backgroundColor: "rgba(255,255,255,0.06)",
-      color: "rgba(255,255,255,0.92)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: "10px",
-      fontSize: "15px",
-      fontWeight: 700,
-      opacity: isLoading ? 0.72 : 1,
-      boxShadow: "0 10px 22px rgba(0,0,0,0.28)",
-    },
-
-    tip: {
-      marginTop: "16px",
-      padding: "10px 12px",
-      borderRadius: "14px",
-      background: "rgba(34,197,94,0.10)",
-      border: "1px solid rgba(34,197,94,0.18)",
-      color: "rgba(229,231,235,0.85)",
-      fontSize: "12px",
-      lineHeight: 1.35,
-      display: "flex",
-      gap: "10px",
-      alignItems: "flex-start",
-    },
-
-    tinyIcon: {
-      width: "22px",
-      height: "22px",
-      borderRadius: "8px",
-      display: "grid",
-      placeItems: "center",
-      background: "rgba(34,197,94,0.16)",
-      border: "1px solid rgba(34,197,94,0.22)",
-      flex: "0 0 auto",
-    },
-  };
-
-  const keyframes = `
-    @keyframes float1 { 0%,100%{ transform: translate(0,0) } 50%{ transform: translate(40px, 25px) } }
-    @keyframes float2 { 0%,100%{ transform: translate(0,0) } 50%{ transform: translate(-35px, -30px) } }
-
-    /* foco “gamer glow” nos inputs */
-    .gamer-input:focus {
-      border-color: rgba(99,102,241,0.45) !important;
-      box-shadow: 0 0 0 4px rgba(99,102,241,0.18), 0 0 24px rgba(168,85,247,0.14) !important;
-      transform: translateY(-1px);
-    }
-
-    /* hover dos botões */
-    .gamer-primary:hover { filter: brightness(1.05); transform: translateY(-1px); }
-    .gamer-google:hover { background-color: rgba(255,255,255,0.10); }
-  `;
-
-  return (
-    <div style={styles.page}>
-      <style>{keyframes}</style>
-
-      <div style={styles.glowBlob1} />
-      <div style={styles.glowBlob2} />
-
-      <div style={styles.card}>
-        <h2 style={styles.title}>Acesse sua Biblioteca</h2>
-        <p style={styles.subtitle}>
-          Entre com suas credenciais e continue a campanha.
-        </p>
-
-        <form onSubmit={handleEmailLogin} style={{ width: "100%" }}>
-          <div style={styles.label}>
-            <span>E-mail</span>
-            <span style={{ opacity: 0.7, fontSize: 12 }}>ID do jogador</span>
-          </div>
-
-          <input
-            className="gamer-input"
-            type="email"
-            placeholder="seu@email.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={styles.input}
-            required
-            autoComplete="email"
-          />
-
-          <div style={styles.label}>
-            <span>Senha</span>
-            <span style={{ opacity: 0.7, fontSize: 12 }}>chave secreta</span>
-          </div>
-
-          <input
-            className="gamer-input"
-            type="password"
-            placeholder="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={styles.input}
-            required
-            autoComplete="current-password"
-          />
-
-          <div style={styles.hintRow}>
-            <span style={{ display: "flex", gap: 8, alignItems: "center" }}>
-              <span aria-hidden>🛡️</span>
-              <span>Seus dados ficam seguros.</span>
-            </span>
-            <span style={{ opacity: 0.75 }}>v1.0</span>
-          </div>
-
-          {errorMsg && <div style={styles.error}>⚠️ {errorMsg}</div>}
-
-          <button
-            type="submit"
-            disabled={isLoading}
-            style={styles.primaryBtn}
-            className="gamer-primary"
-          >
-            {isLoading ? "Carregando..." : "Entrar"}
-          </button>
-        </form>
-
-        <div style={styles.divider}>
-          <div style={styles.dividerLine} />
-          <span style={styles.dividerText}>OU</span>
-          <div style={styles.dividerLine} />
-        </div>
-
-        <button
-          onClick={signInWithGoogle}
-          disabled={isLoading}
-          style={styles.googleBtn}
-          className="gamer-google"
-        >
-          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden>
-            <path
-              fill="#4285f4"
-              d="M17.64 9.2q-.002-.956-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"
-            />
-            <path
-              fill="#34a853"
-              d="M9.003 18c2.43 0 4.467-.806 5.956-2.18l-2.909-2.26c-.806.54-1.836.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.96v2.332C2.44 15.983 5.485 18 9.003 18"
-            />
-            <path
-              fill="#fbbc05"
-              d="M3.964 10.712c-.18-.54-.282-1.117-.282-1.71 0-.593.102-1.17.282-1.71V4.96H.957C.347 6.175 0 7.55 0 9.002c0 1.452.348 2.827.957 4.042z"
-            />
-            <path
-              fill="#ea4335"
-              d="M9.003 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.464.891 11.428 0 9.002 0 5.485 0 2.44 2.017.96 4.958L3.967 7.29c.708-2.127 2.692-3.71 5.036-3.71"
-            />
-          </svg>
-          <span>Continuar com Google</span>
-        </button>
-
-        <div style={styles.tip}>
-          <div style={styles.tinyIcon} aria-hidden>
-            🧠
-          </div>
-          <div>
-            <div
-              style={{
-                fontWeight: 800,
-                marginBottom: 4,
-                color: "rgba(229,231,235,0.92)",
-              }}
-            >
-              Dica do lobby
-            </div>
-            <div>{tip}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
+//
 // import React, { useMemo, useState } from "react";
 // import { useUserAuth } from "../auth/hooks/useUserAuth";
 //
@@ -992,3 +994,125 @@ export const LoginCard: React.FC = () => {
 //     </div>
 //   );
 // };
+
+import { Google as GoogleIcon } from "@mui/icons-material";
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
+import ShieldIcon from "@mui/icons-material/Shield";
+import BoltIcon from "@mui/icons-material/Bolt";
+import { useUserAuth } from "../auth/hooks/useUserAuth";
+
+export const LoginCard = () => {
+  const { signInWithGoogle, isLoading } = useUserAuth();
+
+  return (
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#05070A] text-white">
+      {/* Glows */}
+      <div className="absolute -top-28 -left-28 w-[420px] h-[420px] rounded-full bg-blue-600/12 blur-[120px]" />
+      <div className="absolute -bottom-32 -right-32 w-[460px] h-[460px] rounded-full bg-purple-600/12 blur-[140px]" />
+
+      {/* Grid sutil */}
+      <div className="absolute inset-0 opacity-[0.10] bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.35)_1px,transparent_0)] [background-size:26px_26px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(5,7,10,0.1),rgba(5,7,10,0.95))]" />
+
+      <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-[520px] flex-col justify-center px-5 py-10">
+        {/* Logo + título */}
+        <div className="mb-6 flex flex-col items-center text-center">
+          <div className="relative mb-4">
+            <div className="absolute inset-0 rounded-3xl bg-blue-500/25 blur-2xl" />
+            <div className="relative grid h-14 w-14 place-items-center rounded-3xl border border-white/10 bg-white/[0.03] shadow-2xl">
+              <SportsEsportsIcon
+                sx={{ fontSize: 34 }}
+                className="text-blue-300"
+              />
+            </div>
+          </div>
+
+          <h1 className="text-4xl font-black uppercase tracking-tight leading-tight">
+            <span className="text-blue-400">Tracker</span>
+          </h1>
+          <p className="mt-2 max-w-[34ch] text-xs text-white/60">
+            Registre nota, dificuldade, tempo, co-op e data de conclusão —
+            rápido e bonito no celular.
+          </p>
+        </div>
+
+        <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-5 backdrop-blur-xl shadow-2xl ring-1 ring-white/5">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-black uppercase tracking-tight">
+                Entrar
+              </h2>
+              <p className="mt-1 text-xs text-white/55">
+                Um clique e você já está dentro.
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={signInWithGoogle}
+            disabled={isLoading}
+            className="group relative mt-4 flex w-full items-center justify-center gap-3 rounded-2xl border border-white/10 bg-white py-4 text-[11px] font-extrabold uppercase tracking-[0.22em] text-black transition hover:bg-gray-100 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isLoading ? (
+              <>
+                <span className="h-5 w-5 animate-spin rounded-full border-2 border-black/20 border-t-black" />
+                Entrando…
+              </>
+            ) : (
+              <>
+                <GoogleIcon sx={{ fontSize: 18 }} />
+                Entrar com Google
+              </>
+            )}
+
+            {/* brilho no hover */}
+            <span className="pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100 bg-[radial-gradient(500px_circle_at_50%_0%,rgba(59,130,246,0.22),transparent_45%)]" />
+          </button>
+
+          {/* Micro-benefícios */}
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-3">
+              <div className="flex items-center gap-2 text-white/80">
+                <BoltIcon sx={{ fontSize: 16 }} className="text-blue-300" />
+                <span className="text-xs font-extrabold">Rápido</span>
+              </div>
+              <p className="mt-1 text-[11px] text-white/55">
+                Sem senha, sem fricção.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-3">
+              <div className="flex items-center gap-2 text-white/80">
+                <ShieldIcon
+                  sx={{ fontSize: 16 }}
+                  className="text-emerald-300"
+                />
+                <span className="text-xs font-extrabold">Seguro</span>
+              </div>
+              <p className="mt-1 text-[11px] text-white/55">
+                OAuth com Google.
+              </p>
+            </div>
+          </div>
+
+          <p className="mt-4 text-center text-[10px] font-extrabold uppercase tracking-[0.22em] text-white/45 leading-relaxed">
+            Ao entrar, você concorda com{" "}
+            <span className="cursor-pointer text-white/70 hover:underline">
+              Termos
+            </span>
+            .
+          </p>
+        </div>
+
+        {/* Footer simples */}
+        <div className="mt-6 flex items-center justify-center gap-4 opacity-35">
+          <div className="h-[1px] w-10 bg-white" />
+          <span className="text-[10px] font-black uppercase tracking-[0.3em]">
+            Mobile first
+          </span>
+          <div className="h-[1px] w-10 bg-white" />
+        </div>
+      </main>
+    </div>
+  );
+};

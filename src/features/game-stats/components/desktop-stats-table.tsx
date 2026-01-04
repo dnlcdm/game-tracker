@@ -1,4 +1,5 @@
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import type { IconContainerProps } from "@mui/material/Rating";
@@ -12,6 +13,7 @@ import { GameNameButton } from "./game-name-button";
 interface DesktopStatsTableProps {
   data?: IGamesSupabase[];
   onEdit: (game: IGamesSupabase) => void;
+  onDelete: (game: IGamesSupabase) => void;
   onNameClick: NamePopoverHandler;
 }
 
@@ -23,6 +25,7 @@ const IconContainer = (props: IconContainerProps) => {
 export const DesktopStatsTable = ({
   data,
   onEdit,
+  onDelete,
   onNameClick,
 }: DesktopStatsTableProps) => {
   const list = data ?? [];
@@ -48,7 +51,7 @@ export const DesktopStatsTable = ({
               <th className="px-4 py-4 text-[10px] font-extrabold uppercase tracking-[0.2em] text-gray-500">
                 Conclusão
               </th>
-              <th className="px-4 py-4 text-[10px] font-extrabold uppercase tracking-[0.2em] text-gray-500 text-right">
+              <th className="px-4 py-4 text-[10px] font-extrabold uppercase tracking-[0.2em] text-gray-500 text-center">
                 Ações
               </th>
             </tr>
@@ -162,13 +165,20 @@ export const DesktopStatsTable = ({
                     </div>
                   </td>
 
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-4 py-3 text-center">
                     <button
                       onClick={() => onEdit(game)}
                       className="inline-flex items-center justify-center w-9 h-9 rounded-xl text-white/45 hover:text-white hover:bg-white/10 transition-all active:scale-95"
                       title="Editar"
                     >
                       <EditNoteIcon fontSize="small" />
+                    </button>
+                    <button
+                      onClick={() => onDelete(game)}
+                      className="inline-flex items-center justify-center w-9 h-9 rounded-xl text-white/45 hover:text-white hover:bg-white/10 transition-all active:scale-95"
+                      title="Excluir"
+                    >
+                      <DeleteOutlineIcon fontSize="small" />
                     </button>
                   </td>
                 </tr>

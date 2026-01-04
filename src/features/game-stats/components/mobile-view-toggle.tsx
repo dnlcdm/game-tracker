@@ -11,7 +11,10 @@ export const MobileViewToggle = ({
   value,
   onChange,
 }: MobileViewToggleProps) => (
-  <div className="md:hidden flex mx-2 items-center justify-end">
+  <div className="md:hidden flex mx-2 items-end justify-between">
+    <p className="text-[10px] font-extrabold italic text-white/60">
+      {value == "table" && "Toque na capa para mais detalhes"}
+    </p>
     <div className="flex items-center rounded-lg border border-white/10 bg-white/[0.03] p-0.5">
       <button
         type="button"

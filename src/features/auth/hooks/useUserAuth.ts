@@ -71,6 +71,7 @@ export const useUserAuth = (): AuthContextType => {
   }, []);
 
   const signInWithGoogle = async () => {
+    setIsLoading(true);
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
     });

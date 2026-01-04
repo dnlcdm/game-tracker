@@ -12,6 +12,11 @@ import { MobileStatsTable } from "./components/mobile-stats-table";
 import { MobileViewToggle } from "./components/mobile-view-toggle";
 import { NamePopover } from "./components/name-popover";
 import { StatsHeader } from "./components/stats-header";
+import { useDeleteBacklogGame } from "../backlog/hooks/useDeleteBacklogGame";
+import { ConfirmationModal } from "../../components/confirmation.modal/confirmation-modal";
+import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { GAME_STATS_QUERY_KEY } from "../playing/constants";
 
 export const StatsTable = () => {
   const { data, isPending } = useFetchGameStats();
@@ -28,6 +33,25 @@ export const StatsTable = () => {
   } = useNamePopover();
   const { quickStats, totalTimeLabel } = useGameStatsSummary(data);
 
+  const { mutate: onDelete, isPending: isPendingMutation } =
+    useDeleteBacklogGame();
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [gameIdToDelete, setGameIdToDelete] = useState<number | null>(null);
+  const queryClient = useQueryClient();
+
+  const handleConfirmMoveToBacklog = () => {
+    if (gameIdToDelete) {
+      onDelete(gameIdToDelete, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: [GAME_STATS_QUERY_KEY] });
+
+          setIsConfirming(false);
+          setGameIdToDelete(null);
+        },
+      });
+    }
+  };
+
   if (isPending)
     return (
       <div className="animate-pulse h-screen bg-white/[0.02] rounded-md border border-white/5" />
@@ -38,6 +62,21 @@ export const StatsTable = () => {
 
   return (
     <div className="w-full space-y-4">
+      <ConfirmationModal
+        isOpen={isConfirming}
+        onClose={() => {
+          setIsConfirming(false);
+          setGameIdToDelete(null);
+        }}
+        onConfirm={handleConfirmMoveToBacklog}
+        title="Atenção: Ação Irreversível"
+        message="Você está prestes a excluir este jogo da sua biblioteca. Todos os dados salvos (incluindo sua avaliação) serão perdidos."
+        confirmLabel="Sim, excluir"
+        cancelLabel="Cancelar"
+        variant="danger"
+        isLoading={isPendingMutation}
+      />
+
       <StatsHeader
         totalCount={data?.length ?? 0}
         totalTimeLabel={totalTimeLabel}
@@ -49,6 +88,10 @@ export const StatsTable = () => {
       <DesktopStatsTable
         data={data}
         onEdit={openModal}
+        onDelete={(game) => {
+          setGameIdToDelete(game.id);
+          setIsConfirming(true);
+        }}
         onNameClick={handleToggleNamePopover}
       />
 
@@ -61,12 +104,20 @@ export const StatsTable = () => {
             expandedGameId={expandedGameId}
             onToggleExpanded={toggleExpanded}
             onEdit={openModal}
+            onDelete={(game) => {
+              setGameIdToDelete(game.id);
+              setIsConfirming(true);
+            }}
             onNameClick={handleToggleNamePopover}
           />
         ) : (
           <MobileStatsCards
             data={data}
             onEdit={openModal}
+            onDelete={(game) => {
+              setGameIdToDelete(game.id);
+              setIsConfirming(true);
+            }}
             onNameClick={handleToggleNamePopover}
           />
         )}

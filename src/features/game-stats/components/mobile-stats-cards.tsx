@@ -1,4 +1,5 @@
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import GroupsIcon from "@mui/icons-material/Groups";
@@ -14,6 +15,7 @@ import { GameNameButton } from "./game-name-button";
 interface MobileStatsCardsProps {
   data?: IGamesSupabase[];
   onEdit: (game: IGamesSupabase) => void;
+  onDelete: (game: IGamesSupabase) => void;
   onNameClick: NamePopoverHandler;
 }
 
@@ -25,6 +27,7 @@ const IconContainer = (props: IconContainerProps) => {
 export const MobileStatsCards = ({
   data,
   onEdit,
+  onDelete,
   onNameClick,
 }: MobileStatsCardsProps) => {
   const list = data ?? [];
@@ -95,13 +98,22 @@ export const MobileStatsCards = ({
                     </div>
                   </div>
 
-                  <button
-                    onClick={() => onEdit(game)}
-                    className="shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-2xl text-white/45 hover:text-white hover:bg-white/10 transition-all active:scale-95"
-                    title="Editar"
-                  >
-                    <EditNoteIcon fontSize="medium" />
-                  </button>
+                  <div>
+                    <button
+                      onClick={() => onEdit(game)}
+                      className="shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-2xl text-white/45 hover:text-white hover:bg-white/10 transition-all active:scale-95"
+                      title="Editar"
+                    >
+                      <EditNoteIcon fontSize="medium" />
+                    </button>
+                    <button
+                      onClick={() => onDelete(game)}
+                      className="shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-2xl text-white/45 hover:text-white hover:bg-white/10 transition-all active:scale-95"
+                      title="Excluir"
+                    >
+                      <DeleteOutlineIcon fontSize="medium" />
+                    </button>
+                  </div>
                 </div>
 
                 <div className="mt-3 grid grid-cols-1 gap-2">
