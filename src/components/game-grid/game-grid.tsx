@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { GameDetailsModal } from "./game-details-modal";
 import type { IGamesSupabase } from "../../features/search-games/types/games.types";
 import type { IGameAction } from "./types";
@@ -45,15 +46,30 @@ export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
 
   return (
     <div className={GRID_LAYOUT_CLASSES}>
-      {items.map((item) => (
-        <GameGridCard
-          key={item.id}
-          game={item}
-          status={primaryAction ? primaryAction.gameStatus(item) : ""}
-          actions={actions}
-          onSelect={setSelectedGame}
-        />
-      ))}
+      <AnimatePresence mode="popLayout">
+        {items.map((item) => (
+          <motion.div
+            key={item.id}
+            layout
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 25,
+              opacity: { duration: 0.2 },
+            }}
+          >
+            <GameGridCard
+              game={item}
+              status={primaryAction ? primaryAction.gameStatus(item) : ""}
+              actions={actions}
+              onSelect={setSelectedGame}
+            />
+          </motion.div>
+        ))}
+      </AnimatePresence>
 
       {selectedGame && (
         <GameDetailsModal
