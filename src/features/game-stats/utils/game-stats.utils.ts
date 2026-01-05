@@ -48,8 +48,22 @@ export const getQuickStats = (list: IGamesSupabase[]) => {
 };
 
 export const getTotalTimeLabel = (totalMinutes: number) => {
-  const h = Math.floor(totalMinutes / 60);
-  const m = totalMinutes % 60;
-  if (h <= 0) return `${m}m`;
-  return `${h}h${m ? ` ${m}m` : ""}`;
+  const minsInHour = 60;
+  const minsInDay = minsInHour * 24;
+  const minsInMonth = minsInDay * 30;
+  const minsInYear = minsInDay * 365;
+
+  const years = Math.floor(totalMinutes / minsInYear);
+  let remainder = totalMinutes % minsInYear;
+
+  const months = Math.floor(remainder / minsInMonth);
+  remainder %= minsInMonth;
+
+  const days = Math.floor(remainder / minsInDay);
+  remainder %= minsInDay;
+
+  const hrs = Math.floor(remainder / minsInHour);
+  const mins = remainder % minsInHour;
+
+  return { years, months, days, hrs, mins };
 };
