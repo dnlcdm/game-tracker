@@ -1,7 +1,7 @@
 import { useDataGame } from "../hooks/useDataGames";
 
 import { useToggleBacklog } from "../hooks/useToggleBacklog";
-import { GameGrid } from "../../../components/game-grid/game-grid";
+import { GameGrid } from "../../../components/game-grid/grid/game-grid";
 import { useFetchBacklogGames } from "../../backlog/hooks/useFetchBacklogGames";
 import { useFetchPlayingGames } from "../../playing/hooks/useFetchPlayingGames";
 import { useFetchGameStats } from "../../game-stats/hooks/useFetchGameStats";

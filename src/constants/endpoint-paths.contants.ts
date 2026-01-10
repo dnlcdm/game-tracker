@@ -4,4 +4,5 @@ export const PATHS = {
   IGDB_GAMES: baseUrl + "/node-api/api/games",
   IGDB_TOKEN: baseUrl + "/node-api/auth/token",
   FREE_GAME_EPIC: baseUrl + "/hyper-api",
+  GAME_TIME_TO_BEAT: baseUrl + "/game-time",
 };

@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { GameDetailsModal } from "./game-details-modal";
-import type { IGamesSupabase } from "../../features/search-games/types/games.types";
-import type { IGameAction } from "./types";
-import { GameGridCard } from "./game-grid-card";
+import type { IGamesSupabase } from "../../../features/search-games/types/games.types";
+import type { IGameAction } from "../types";
+import { GameDetailsModal } from "../details/game-details-modal";
+import { GameGridCard } from "../card/game-grid-card";
+import { GameGridSkeleton } from "./game-grid-skeleton";
+import { useSelectedGame } from "../hooks/useSelectedGame";
 
 interface GameGridProps {
   items: IGamesSupabase[];
@@ -15,32 +16,16 @@ const GRID_LAYOUT_CLASSES =
   "p-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 sm:gap-4 mt-4";
 const SKELETON_COUNT = 28;
 
-const useSelectedGame = (items: IGamesSupabase[]) => {
-  const [selectedGame, setSelectedGame] = useState<IGamesSupabase | null>(null);
-
-  useEffect(() => {
-    if (!selectedGame) return;
-    const gameExists = items.some((item) => item.id === selectedGame.id);
-    if (!gameExists) setSelectedGame(null);
-  }, [items, selectedGame]);
-
-  return { selectedGame, setSelectedGame };
-};
-
 export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
   const { selectedGame, setSelectedGame } = useSelectedGame(items);
   const primaryAction = actions?.[0];
 
   if (isLoading) {
     return (
-      <div className={GRID_LAYOUT_CLASSES}>
-        {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
-          <div
-            key={i}
-            className="w-full aspect-[3/4] bg-gray-800/50 animate-pulse rounded-xl"
-          />
-        ))}
-      </div>
+      <GameGridSkeleton
+        className={GRID_LAYOUT_CLASSES}
+        count={SKELETON_COUNT}
+      />
     );
   }
 

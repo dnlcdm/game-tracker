@@ -17,7 +17,7 @@ export const ConfirmationModal = ({
   isOpen,
   onClose,
   onConfirm,
-  title = "Comfirmar?",
+  title = "Confirmar?",
   message,
   confirmLabel = "Confirmar",
   cancelLabel = "Cancelar",

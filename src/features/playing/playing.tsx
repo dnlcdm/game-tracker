@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react";
 import SportsScoreIcon from "@mui/icons-material/SportsScore";
-import { GameGrid } from "../../components/game-grid/game-grid";
+import { GameGrid } from "../../components/game-grid/grid/game-grid";
 import type { IGamesSupabase } from "../search-games/types/games.types";
 import { FinishGameModal } from "./components/form-complete-game/form-complete-game";
 import { useFetchPlayingGames } from "./hooks/useFetchPlayingGames";
 import { useUpdatePlayingGame } from "./hooks/useUpdatePlayingGame";
 import PauseOutlinedIcon from "@mui/icons-material/PauseOutlined";
-import { ConfirmationModal } from "../../components/confirmation.modal/confirmation-modal";
+import { ConfirmationModal } from "../../components/confirmation-modal/confirmation-modal";
 import { EmptyState } from "../../components/empty-states/empty-states";
 
 export const Playing = () => {

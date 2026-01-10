@@ -1,40 +1,12 @@
-import type { IGamesSupabase } from "../../features/search-games/types/games.types";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
-import type { GameStatus, IGameAction } from "./types";
+import type { GameStatus } from "../types";
 
-interface GameGridCardProps {
-  game: IGamesSupabase;
+interface GameStatusOverlayProps {
   status: GameStatus;
-  actions?: IGameAction[];
-  onSelect: (game: IGamesSupabase) => void;
 }
 
-const getStatusBorderClass = (status: GameStatus) => {
-  if (status === "playing") {
-    return "border-2 border-cyan-500 shadow-[0_0_20px_rgba(6,182,212,0.4)]";
-  }
-
-  if (status === "platinum") {
-    return "border-2 border-yellow-500 shadow-[0_0_25px_rgba(234,179,8,0.5)]";
-  }
-
-  if (status === "completed") {
-    return "border-2 border-green-500/50";
-  }
-
-  return "";
-};
-
-const getStatusOverlayClass = (status: GameStatus) =>
-  status === "playing"
-    ? "bg-gradient-to-t from-cyan-900/90 via-transparent to-transparent opacity-80"
-    : "bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-100";
-
-const hasMutedCover = (status: GameStatus) =>
-  status === "completed" || status === "platinum" || status === "playing";
-
-const GameStatusOverlay = ({ status }: { status: GameStatus }) => (
+export const GameStatusOverlay = ({ status }: GameStatusOverlayProps) => (
   <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
     {status === "playing" && (
       <div className="animate-in zoom-in drop-shadow-[0_0_30px_rgba(6,182,212)] animate-in zoom-in duration-100 flex flex-col items-center">
@@ -88,84 +60,3 @@ const GameStatusOverlay = ({ status }: { status: GameStatus }) => (
     )}
   </div>
 );
-
-const GameActionButton = ({
-  action,
-  game,
-}: {
-  action: IGameAction;
-  game: IGamesSupabase;
-}) => {
-  const isCurrentlyLoading = action.isLoadingAction?.(game);
-  const renderedIcon = action.icon(game);
-  const dynamicColorClass = action.colorClass
-    ? action.colorClass(game)
-    : "md:hover:text-blue-400";
-
-  return (
-    <button
-      disabled={isCurrentlyLoading}
-      onClick={(event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        action.onClick(game);
-      }}
-      className={`flex cursor-pointer items-center justify-center rounded-md text-white transition-all bg-black/60 backdrop-blur-md border border-white/10
-        ${isCurrentlyLoading ? "opacity-50" : "active:scale-125 "} 
-        ${dynamicColorClass}`}
-    >
-      {isCurrentlyLoading ? (
-        <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-      ) : (
-        renderedIcon
-      )}
-    </button>
-  );
-};
-
-export const GameGridCard = ({
-  game,
-  status,
-  actions,
-  onSelect,
-}: GameGridCardProps) => {
-  return (
-    <div
-      onClick={() => onSelect(game)}
-      className={`relative w-full aspect-[3/4] overflow-hidden rounded-xl shadow-lg group bg-gray-900 active:scale-[0.98] transition-all duration-300
-        ${getStatusBorderClass(status)}
-      `}
-    >
-      <img
-        src={game.coverUrl || '/not-found-image-1.png'}
-        className="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 transition-opacity duration-300 group-hover:opacity-50"
-      />
-
-      <img
-        src={game.coverUrl || '/not-found-image-1.png'}
-        alt={game.name}
-        loading="lazy"
-        className={`absolute inset-0 m-auto w-full h-full object-cover z-0 transition-transform duration-500 group-hover:scale-105 ${hasMutedCover(status) ? "grayscale-[0.4] brightness-[0.6]" : ""}`} />
-
-      <div
-        className={`absolute inset-0 z-10 transition-opacity duration-500 ${getStatusOverlayClass(
-          status,
-        )}`}
-      />
-
-      <GameStatusOverlay status={status} />
-
-      <div className="absolute inset-0 z-30 flex flex-col justify-end p-3">
-        <span className="text-[11px] sm:text-xs font-black text-white line-clamp-2 leading-tight uppercase tracking-wider drop-shadow-md mb-1">
-          {game.name}
-        </span>
-
-        <div className="absolute flex gap-1.5 top-1 right-1 opacity-100 transition-opacity duration-300">
-          {actions?.map((action, index) => (
-            <GameActionButton key={index} action={action} game={game} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};

@@ -13,7 +13,7 @@ import { MobileViewToggle } from "./components/mobile-view-toggle";
 import { NamePopover } from "./components/name-popover";
 import { StatsHeader } from "./components/stats-header";
 import { useDeleteBacklogGame } from "../backlog/hooks/useDeleteBacklogGame";
-import { ConfirmationModal } from "../../components/confirmation.modal/confirmation-modal";
+import { ConfirmationModal } from "../../components/confirmation-modal/confirmation-modal";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { GAME_STATS_QUERY_KEY } from "../playing/constants";

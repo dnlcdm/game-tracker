@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { GameGrid } from "../../components/game-grid/game-grid";
+import { GameGrid } from "../../components/game-grid/grid/game-grid";
 import { useUpdatePlayingGame } from "../playing/hooks/useUpdatePlayingGame";
 import type { IGames } from "../search-games/types/games.types";
 import { useDeleteBacklogGame } from "./hooks/useDeleteBacklogGame";
@@ -10,7 +10,7 @@ import { FreeGameCard } from "../../components/free-game-card/free-game-card";
 import { EmptyState } from "../../components/empty-states/empty-states";
 import { Toast } from "../../components/snackbar/toast";
 import { useToast } from "../../components/snackbar/hooks/useToast";
-import { ConfirmationModal } from "../../components/confirmation.modal/confirmation-modal";
+import { ConfirmationModal } from "../../components/confirmation-modal/confirmation-modal";
 
 export const Backlog = () => {
   const { data, isPending, isError, error } = useFetchBacklogGames();
