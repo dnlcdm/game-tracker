@@ -1,5 +1,5 @@
-import type { IGamesSupabase } from "../../../features/search-games/types/games.types";
-import type { IGameAction } from "../types";
+import type { IGamesSupabase } from "../../../../features/search-games/types/games.types";
+import type { IGameAction } from "../../types";
 
 interface GameActionButtonProps {
   action: IGameAction;

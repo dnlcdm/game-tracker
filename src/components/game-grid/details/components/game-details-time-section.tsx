@@ -1,6 +1,6 @@
 import type { ElementType } from "react";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { TimeRow } from "../time-row/time-row";
+import { TimeRow } from "../../time-row/time-row";
 
 interface TimeRowData {
   label: string;

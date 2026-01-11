@@ -1,5 +1,5 @@
-import { parseTime, pad2 } from "../utils/time-format";
-import { SlotNumber } from "./components/slot-number";
+import { pad2, parseTime } from "../../utils/time-format";
+import { SlotNumber } from "./slot-number";
 
 interface SlotTimeProps {
   time?: string;

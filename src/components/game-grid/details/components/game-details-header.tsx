@@ -1,6 +1,6 @@
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import Rating from "@mui/material/Rating";
-import type { IGamesSupabase } from "../../../features/search-games/types/games.types";
+import type { IGamesSupabase } from "../../../../features/search-games/types/games.types";
 
 interface GameDetailsHeaderProps {
   game: IGamesSupabase;

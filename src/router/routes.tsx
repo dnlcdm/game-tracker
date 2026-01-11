@@ -24,7 +24,7 @@ const SearchGames = lazy(() => import("../pages/search-games-page"));
 const Playing = lazy(() => import("../pages/playing-page"));
 const StatsTable = lazy(() => import("../pages/game-stats"));
 const LoginCard = lazy(() =>
-  import("../features/login/login").then((m) => ({ default: m.LoginCard }))
+  import("../features/login/login").then((m) => ({ default: m.LoginCard })),
 );
 
 export const RouterProvider = () => {

@@ -13,7 +13,8 @@ import { useToast } from "../../components/snackbar/hooks/useToast";
 import { ConfirmationModal } from "../../components/confirmation-modal/confirmation-modal";
 
 export const Backlog = () => {
-  const { data, isPending, isError, error } = useFetchBacklogGames();
+  const { data, isPending, isError, isSuccess, isFetching, error } =
+    useFetchBacklogGames();
 
   const {
     mutate: deleteBacklog,
@@ -39,7 +40,7 @@ export const Backlog = () => {
             err instanceof Error
               ? err.message
               : `Erro ao remover o jogo da lista`,
-            "error",
+            "error"
           ),
       });
       setIsConfirming(false);
@@ -60,7 +61,7 @@ export const Backlog = () => {
                 err instanceof Error
                   ? err.message
                   : `Erro ao mover "${game.name}" para Jogando`,
-                "error",
+                "error"
               ),
           }),
         isLoadingAction: (game: IGames) => isMoving && movingId === game.id,
@@ -77,10 +78,11 @@ export const Backlog = () => {
         isLoadingAction: (game: IGames) => isDeleting && deletingId === game.id,
       },
     ],
-    [moveToPlaying, showToast, isMoving, movingId, isDeleting, deletingId],
+    [moveToPlaying, showToast, isMoving, movingId, isDeleting, deletingId]
   );
 
-  if (data?.length === 0 && !isPending) return <EmptyState type="backlog" />;
+  if (isSuccess && !isFetching && !isPending && (data?.length ?? 0) === 0)
+    return <EmptyState type="backlog" />;
 
   if (isError) {
     return (

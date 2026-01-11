@@ -1,6 +1,6 @@
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
-import type { GameStatus } from "../types";
+import type { GameStatus } from "../../types";
 
 interface GameStatusOverlayProps {
   status: GameStatus;

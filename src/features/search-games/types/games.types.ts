@@ -8,6 +8,7 @@ export interface IGames {
   platforms: {
     id: number;
     name: string;
+    abbr: string;
   }[];
 }
 

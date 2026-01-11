@@ -1,4 +1,4 @@
-import type { IGamesSupabase } from "../../../features/search-games/types/games.types";
+import type { IGamesSupabase } from "../../../../features/search-games/types/games.types";
 
 interface GameDetailsPlatformsProps {
   platforms?: IGamesSupabase["platforms"];
@@ -20,7 +20,7 @@ export const GameDetailsPlatforms = ({
             key={plat.id}
             className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-md text-[9px] font-bold text-gray-400 uppercase tracking-tight hover:text-white transition-colors"
           >
-            {plat.name}
+            {plat.abbr || plat.name}
           </span>
         ))}
       </div>

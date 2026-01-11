@@ -1,5 +1,10 @@
-import { useEffect, useMemo } from "react";
-import { motion, animate, useMotionValue } from "framer-motion";
+import { useEffect, useMemo, useRef } from "react";
+import {
+  motion,
+  animate,
+  useMotionValue,
+  type AnimationPlaybackControls,
+} from "framer-motion";
 
 interface SlotDigitProps {
   digit: number;
@@ -14,51 +19,82 @@ export const SlotDigit = ({
   spinIntervalMs = 70,
   stopDelayMs = 0,
 }: SlotDigitProps) => {
+  const REPEATS = 60; // 60 * 10 = 600 linhas
+
   const reel = useMemo(() => {
     const base = Array.from({ length: 10 }, (_, i) => String(i));
-    return [...base, ...base, ...base, ...base, ...base, ...base];
+    const out: string[] = [];
+    for (let r = 0; r < REPEATS; r++) out.push(...base);
+    return out;
   }, []);
 
-  const lineH = 18;
+  const lineH = 18; // px
   const reelLen = reel.length;
 
   const y = useMotionValue(0);
+  const loadingControls = useRef<AnimationPlaybackControls | null>(null);
 
   useEffect(() => {
-    let intervalId: number | undefined;
+    if (!isLoading) return;
 
-    if (isLoading) {
-      let idx = Math.floor(Math.random() * reelLen);
+    loadingControls.current?.stop();
+    loadingControls.current = null;
 
-      intervalId = window.setInterval(() => {
-        const jump = 2 + Math.floor(Math.random() * 5);
-        idx = (idx + jump) % reelLen;
-        y.set(-idx * lineH);
-      }, spinIntervalMs);
+    const extraTurns = 20;
+    const safety = 10 + extraTurns + 10;
+    const maxStart = Math.max(0, reelLen - safety);
 
-      return () => {
-        if (intervalId) window.clearInterval(intervalId);
-      };
-    }
+    const startBase = Math.floor(Math.random() * Math.floor(maxStart / 10));
+    const phase = Math.floor(Math.random() * 10);
+    const startIndex = startBase * 10 + phase;
 
-    const safeDigit = ((digit % 10) + 10) % 10;
-    const targetIndex = reelLen - 10 + safeDigit;
+    y.set(-startIndex * lineH);
 
-    const stopTimer = window.setTimeout(() => {
-      const controls = animate(y, -targetIndex * lineH, {
-        duration: 0.65,
+    const baseDurationSec = Math.max(0.45, (spinIntervalMs * 10) / 1000);
+    const jitter = Math.random() * 0.2;
+
+    loadingControls.current = animate(y, [y.get(), y.get() - lineH * 10], {
+      duration: baseDurationSec + jitter,
+      ease: "linear",
+      repeat: Infinity,
+      repeatType: "loop",
+    });
+
+    return () => {
+      loadingControls.current?.stop();
+      loadingControls.current = null;
+    };
+  }, [isLoading, spinIntervalMs, lineH, reelLen, y]);
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    loadingControls.current?.stop();
+    loadingControls.current = null;
+
+    const timer = window.setTimeout(() => {
+      const targetDigit = ((digit % 10) + 10) % 10;
+
+      const currentSteps = Math.round(-y.get() / lineH);
+      const currentDigit = ((currentSteps % 10) + 10) % 10;
+
+      const delta = (targetDigit - currentDigit + 10) % 10;
+
+      const extraTurns = 20;
+      const targetSteps = currentSteps + extraTurns + delta;
+
+      animate(y, -targetSteps * lineH, {
+        duration: 0.75,
         ease: [0.16, 1, 0.3, 1],
       });
-
-      return () => controls.stop();
     }, stopDelayMs);
 
-    return () => window.clearTimeout(stopTimer);
-  }, [digit, isLoading, lineH, reelLen, spinIntervalMs, stopDelayMs, y]);
+    return () => window.clearTimeout(timer);
+  }, [digit, isLoading, stopDelayMs, lineH, y]);
 
   return (
     <div className="relative h-[18px] overflow-hidden">
-      <motion.div style={{ y }}>
+      <motion.div style={{ y }} className={isLoading ? "blur-[0.3px]" : ""}>
         {reel.map((txt, idx) => (
           <div
             key={`${txt}-${idx}`}
@@ -68,6 +104,7 @@ export const SlotDigit = ({
           </div>
         ))}
       </motion.div>
+
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.06] to-transparent" />
     </div>
   );

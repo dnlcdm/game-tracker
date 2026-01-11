@@ -91,7 +91,7 @@ export const EmptyState = ({
       </div>
 
       <div className="text-center space-y-2 max-w-[320px] md:max-w-[720px]">
-        <h3 className="mb-2 text-2xl md:text-3xl font-black text-white uppercase tracking-tighter italic">
+        <h3 data-testid="empty-state-message" className="mb-2 text-2xl md:text-3xl font-black text-white uppercase tracking-tighter italic">
           {randomMessage}
         </h3>
       </div>
