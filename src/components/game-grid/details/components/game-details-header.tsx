@@ -1,5 +1,4 @@
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import Rating from "@mui/material/Rating";
 import type { IGamesSupabase } from "../../../../features/search-games/types/games.types";
 
 interface GameDetailsHeaderProps {
@@ -7,36 +6,41 @@ interface GameDetailsHeaderProps {
 }
 
 export const GameDetailsHeader = ({ game }: GameDetailsHeaderProps) => {
-  return (
-    <div className="space-y-4">
-      <h2 className="text-3xl md:text-4xl font-black text-white leading-[1.1] italic uppercase tracking-tighter">
-        {game.name}
-      </h2>
+  const release = game.first_release_date ?? "N/A";
+  const rating10 =
+    typeof game.rating === "number"
+      ? (Math.round(game.rating) / 10).toFixed(1)
+      : null;
 
-      <div className="flex flex-wrap items-center gap-3 text-gray-400 text-[10px] md:text-xs font-bold uppercase tracking-widest">
-        <span className="flex items-center gap-2 px-3 py-2 bg-white/5 rounded-lg border border-white/5">
-          <CalendarMonthIcon sx={{ fontSize: 16 }} className="text-blue-400" />
-          {game.first_release_date ?? "N/A"}
+  return (
+    <div className="relative">
+      <div
+        className="
+          inline-flex items-center gap-2
+          rounded-md px-2.5 py-1.5
+          bg-black/70 backdrop-blur-md
+          border border-white/15
+          shadow-[0_10px_30px_rgba(0,0,0,0.55)]
+        "
+      >
+        <div className="pointer-events-none absolute inset-0 rounded-md ring-1 ring-white/10" />
+
+        <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white">
+          <CalendarMonthIcon sx={{ fontSize: 14 }} className="text-blue-400" />
+          <span className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
+            {release}
+          </span>
         </span>
 
-        {game.rating && (
-          <div className="flex items-center gap-3 px-3 py-2 bg-white/5 rounded-lg border border-white/5">
-            <Rating
-              precision={0.5}
-              value={game.rating / 20}
-              readOnly
-              size="small"
-              sx={{
-                "& .MuiRating-iconFilled": { color: "#60a5fa" },
-                "& .MuiRating-iconEmpty": {
-                  color: "rgba(255,255,255,0.1)",
-                },
-              }}
-            />
-            <span className="text-white">
-              {Math.round(game.rating) / 10}/10
+        {rating10 && (
+          <>
+            <span className="h-3 w-px bg-white/15" />
+            <span className="inline-flex items-center text-[10px] font-black uppercase tracking-widest text-white">
+              <span className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
+                {rating10}
+              </span>
             </span>
-          </div>
+          </>
         )}
       </div>
     </div>

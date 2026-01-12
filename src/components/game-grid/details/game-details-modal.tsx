@@ -7,9 +7,9 @@ import type { IGameAction } from "../types";
 import { useHltb } from "../hooks/useFetchGameTimeToBeat";
 import { GameDetailsCover } from "./components/game-details-cover";
 import { GameDetailsActions } from "./components/game-details-actions";
-import { GameDetailsHeader } from "./components/game-details-header";
 import { GameDetailsTimeSection } from "./components/game-details-time-section";
 import { GameDetailsPlatforms } from "./components/game-details-platforms";
+import { GameDetailsMediaGrid } from "./components/game-details-video";
 
 interface Props {
   game: IGamesSupabase;
@@ -62,12 +62,16 @@ export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
           <CloseIcon fontSize="medium" />
         </button>
 
-        <GameDetailsCover coverUrl={game.coverUrl} name={game.name} />
+        <GameDetailsCover game={game} />
 
         <div className="w-full md:w-7/12 p-6 md:p-8 flex flex-col gap-6 overflow-y-auto custom-scrollbar">
-          <GameDetailsHeader game={game} />
+          <GameDetailsMediaGrid
+            trailers={game.trailers}
+            screenshots={game.screenshots}
+          />
           <GameDetailsTimeSection rows={rows} isLoading={isPending} />
           <GameDetailsActions actions={actions} game={game} onClose={onClose} />
+
           <GameDetailsPlatforms platforms={game.platforms} />
         </div>
       </div>

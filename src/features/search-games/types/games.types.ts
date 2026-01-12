@@ -25,6 +25,13 @@ export interface IGamesSupabase extends IGames {
   platform_used: string;
   difficult: number;
   minutes_played: number;
+  trailers: {
+    name?: string | null;
+    youtubeId: string;
+    watchUrl?: string;
+    embedUrl?: string;
+  }[];
+  screenshots: string[];
 }
 
 export interface IRequirements {
