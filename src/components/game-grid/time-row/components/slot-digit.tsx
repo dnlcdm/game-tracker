@@ -19,7 +19,7 @@ export const SlotDigit = ({
   spinIntervalMs = 70,
   stopDelayMs = 0,
 }: SlotDigitProps) => {
-  const REPEATS = 60; // 60 * 10 = 600 linhas
+  const REPEATS = 60;
 
   const reel = useMemo(() => {
     const base = Array.from({ length: 10 }, (_, i) => String(i));
@@ -28,7 +28,7 @@ export const SlotDigit = ({
     return out;
   }, []);
 
-  const lineH = 18; // px
+  const lineH = 18;
   const reelLen = reel.length;
 
   const y = useMotionValue(0);

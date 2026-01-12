@@ -301,7 +301,7 @@ export const MobileStatsTable = ({
                             <button
                               type="button"
                               onClick={() => onDelete(game)}
-                              className="mt-3 w-full rounded-lg border text-red-400 border-red-500/20 bg-red/[0.05] py-2 text-[10px] font-extrabold uppercase tracking-[0.2em] hover:bg-white/[0.06] transition"
+                              className="mt-3 w-full rounded-lg border text-red-400 border-red-500/20 bg-red-600/[0.05] py-2 text-[10px] font-extrabold uppercase tracking-[0.2em] hover:bg-white/[0.06] transition"
                             >
                               <span>Deletar</span>
                             </button>

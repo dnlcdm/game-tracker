@@ -85,7 +85,7 @@ export const GamesFilters: FC = () => {
             className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-white transition-colors animate-in fade-in slide-in-from-right-2 duration-200"
             aria-label="Limpar pesquisa"
           >
-            <div className="bg-slate-800/50 hover:bg-slate-700 px-1 rounded-full transition-colors">
+            <div className="flex items-center justify-center bg-slate-800/50 hover:bg-slate-700 p-1 rounded-full transition-colors">
               <CloseIcon sx={{ fontSize: 16 }} />
             </div>
           </button>

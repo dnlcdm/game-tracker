@@ -74,7 +74,7 @@ export const Backlog = () => {
           setIsConfirming(true);
         },
         gameStatus: (): string => "",
-        colorClass: () => "hover:text-pink-500",
+        colorClass: () => "border-red-500/20 text-red-400 bg-red-600/[0.05]",
         isLoadingAction: (game: IGames) => isDeleting && deletingId === game.id,
       },
     ],

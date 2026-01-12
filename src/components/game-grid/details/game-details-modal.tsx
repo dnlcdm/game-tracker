@@ -19,9 +19,6 @@ interface Props {
 
 export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
   const { isPending, data } = useHltb(game.name);
-  if (!isPending) {
-    console.log(data);
-  }
 
   const hltb = data?.[0];
   const times = hltb?.times;
@@ -48,23 +45,23 @@ export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
   ] as const;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 md:p-8 animate-in fade-in duration-300">
       <div
-        className="absolute inset-0 bg-black/95 backdrop-blur-xl hidden md:block"
+        className="absolute inset-0 bg-black/85 backdrop-blur-2xl hidden md:block"
         onClick={onClose}
       />
 
-      <div className="relative w-full h-full md:h-auto md:max-w-4xl md:max-h-[85vh] bg-gray-950 md:border md:border-white/10 md:rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row animate-in md:zoom-in-95 duration-300">
+      <div className="relative w-full h-full md:h-[85vh] md:max-w-7xl bg-gray-950 md:border md:border-white/10 md:rounded-2xl shadow-2xl overflow-hidden grid grid-rows-[auto_1fr] md:grid-rows-1 md:grid-cols-[0.45fr_0.55fr] animate-in md:zoom-in-95 duration-300">
         <button
+          className="absolute z-10 top-4 right-4 flex items-center justify-center bg-slate-800/50 hover:bg-slate-700 p-1 rounded-full transition-colors"
           onClick={onClose}
-          className="absolute top-4 right-4 z-[110] p-3 rounded-full bg-black/50 text-white/90 hover:bg-white/10 transition-all border border-white/10 backdrop-blur-md"
         >
-          <CloseIcon fontSize="medium" />
+          <CloseIcon fontSize="small" />
         </button>
 
         <GameDetailsCover game={game} />
 
-        <div className="w-full md:w-7/12 p-6 md:p-8 flex flex-col gap-6 overflow-y-auto custom-scrollbar">
+        <div className="min-h-0 w-full p-6 md:p-10 flex flex-col gap-6 md:gap-8 overflow-y-auto custom-scrollbar md:border-l md:border-white/10">
           <GameDetailsMediaGrid
             trailers={game.trailers}
             screenshots={game.screenshots}

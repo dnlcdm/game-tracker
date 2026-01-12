@@ -63,7 +63,7 @@ export const useSearchGameActions = ({
         label: (game: IGames) => {
           const state = getGameState(game);
           if (!canToggleBacklog(state)) return "";
-          return state.isInBacklog ? "Remover da lista" : "Vou jogar";
+          return state.isInBacklog ? "Remover da lista" : "Jogarei";
         },
         gameStatus: (game: IGames) => {
           const state = getGameState(game);
@@ -77,15 +77,6 @@ export const useSearchGameActions = ({
           const state = getGameState(game);
           if (!canToggleBacklog(state)) return null;
           return state.isInBacklog ? <BookmarkIcon /> : <BookmarkBorderIcon />;
-        },
-        colorClass: (game: IGames) => {
-          const state = getGameState(game);
-          if (state.isPlaying) {
-            return "border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.3)]";
-          }
-          return state.isInBacklog
-            ? "hover:text-green-400 md:hover:scale-105 md:hover:bg-gray-800"
-            : "hover:text-blue-400 text-gray-400 md:hover:scale-105 md:hover:bg-gray-800";
         },
         onClick: (game: IGames) => {
           const state = getGameState(game);

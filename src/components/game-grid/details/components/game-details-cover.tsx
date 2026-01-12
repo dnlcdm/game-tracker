@@ -11,9 +11,9 @@ export const GameDetailsCover: FC<Props> = ({ game }) => {
     : game.coverUrl;
 
   return (
-    <div className="w-full md:w-5/12 relative shrink-0 h-[35vh] md:h-auto overflow-hidden">
+    <div className="relative w-full h-[35vh] md:h-full overflow-hidden">
       <img
-        src={src}
+        src={src || "/not-found-image-1.png"}
         alt={game.name}
         className="absolute inset-0 w-full h-full object-cover scale-[1.03] blur-0"
       />

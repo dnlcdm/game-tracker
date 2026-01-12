@@ -27,7 +27,7 @@ export const GameDetailsTimeSection = ({
         </span>
       </div>
 
-      <div className="grid grid-cols-1 gap-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
         {rows.map((row) => (
           <TimeRow key={row.label} {...row} isLoading={isLoading} />
         ))}

@@ -1,10 +1,11 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { useMemo } from "react";
 import type { IGamesSupabase } from "../../../features/search-games/types/games.types";
 import type { IGameAction } from "../types";
 import { GameDetailsModal } from "../details/game-details-modal";
 import { GameGridCard } from "../card/game-grid-card";
 import { GameGridSkeleton } from "./game-grid-skeleton";
-import { useSelectedGame } from "../hooks/useSelectedGame";
+import { useSearchParams } from "react-router";
 
 interface GameGridProps {
   items: IGamesSupabase[];
@@ -16,9 +17,36 @@ const GRID_LAYOUT_CLASSES =
   "p-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-3 sm:gap-4 mt-4";
 const SKELETON_COUNT = 28;
 
+const GAME_QP = "game";
+
+const toGameId = (v: string | null) => {
+  if (!v) return null;
+  const n = Number(v);
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
+
 export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
-  const { selectedGame, setSelectedGame } = useSelectedGame(items);
+  const [searchParams, setSearchParams] = useSearchParams();
   const primaryAction = actions?.[0];
+
+  const selectedGameId = toGameId(searchParams.get(GAME_QP));
+
+  const selectedGame = useMemo(() => {
+    if (!selectedGameId) return null;
+    return items.find((g) => Number(g.id) === selectedGameId) ?? null;
+  }, [items, selectedGameId]);
+
+  const openModal = (game: IGamesSupabase) => {
+    const next = new URLSearchParams(searchParams);
+    next.set(GAME_QP, String(game.id));
+    setSearchParams(next, { replace: false });
+  };
+
+  const closeModal = () => {
+    const next = new URLSearchParams(searchParams);
+    next.delete(GAME_QP);
+    setSearchParams(next, { replace: false });
+  };
 
   if (isLoading) {
     return (
@@ -50,7 +78,7 @@ export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
               game={item}
               status={primaryAction ? primaryAction.gameStatus(item) : ""}
               actions={actions}
-              onSelect={setSelectedGame}
+              onSelect={openModal} 
             />
           </motion.div>
         ))}
@@ -60,7 +88,7 @@ export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
         <GameDetailsModal
           game={selectedGame}
           actions={actions || []}
-          onClose={() => setSelectedGame(null)}
+          onClose={closeModal}
         />
       )}
     </div>

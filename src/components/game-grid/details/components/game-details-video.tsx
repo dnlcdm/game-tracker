@@ -19,6 +19,7 @@ type Props = {
 const ytThumb = (id: string) => {
   return `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
 };
+
 const ytThumbFallback = (id: string) => {
   return `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
 };
