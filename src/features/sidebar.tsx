@@ -18,10 +18,10 @@ export const MainLayout = () => {
     { icon: ShowChartIcon, label: "Stats", url: "/game-stats" },
   ];
 
-  const displayName = session?.user?.user_metadata?.display_name ?? "Player";
+  const displayName = session?.user?.user_metadata?.name ?? "Player";
   const email =
     session?.user?.email ?? session?.user?.user_metadata?.email ?? "";
-  const avatarUrl = session?.user?.user_metadata?.avatar_url;
+  const avatarUrl = session?.user?.user_metadata?.picture;
 
   return (
     <div className="flex flex-col md:flex-row h-screen w-full bg-[#030712] overflow-hidden text-white font-sans">

@@ -10,6 +10,7 @@ import { PublicRoute } from "./PublicRoute";
 import { MainLayout } from "../features/sidebar";
 import { PageLoader } from "../pages/page-loader";
 import { ErrorPage } from "../pages/error-page";
+import { LoginCardWithRegister } from "../features/login/login-register";
 
 export const PATHS = {
   LOGIN: "/login",
@@ -17,6 +18,7 @@ export const PATHS = {
   BACKLOG: "/backlog",
   PLAYING: "/playing",
   STATS: "/game-stats",
+  LOGIN_REGISTER: "/login-register",
 } as const;
 
 const Backlog = lazy(() => import("../pages/backlog-page"));
@@ -87,6 +89,14 @@ export const RouterProvider = () => {
               element: (
                 <Suspense fallback={<PageLoader />}>
                   <LoginCard />
+                </Suspense>
+              ),
+            },
+            {
+              path: PATHS.LOGIN_REGISTER,
+              element: (
+                <Suspense fallback={<PageLoader />}>
+                  <LoginCardWithRegister />
                 </Suspense>
               ),
             },

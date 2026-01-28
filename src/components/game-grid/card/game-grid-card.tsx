@@ -24,6 +24,7 @@ export const GameGridCard = ({
   return (
     <div
       onClick={() => onSelect(game)}
+      data-testid="card-game"
       className={`relative w-full aspect-[3/4] overflow-hidden rounded-xl shadow-lg group bg-gray-900 active:scale-[0.98] transition-all duration-300
         ${getStatusBorderClass(status)}
       `}

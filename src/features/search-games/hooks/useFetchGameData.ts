@@ -6,5 +6,8 @@ import type { IGames } from "../types/games.types";
 export const useFetchGameData = (params: Record<string, string>) => {
   return useApiQuery<ApiIgdbPaginationResponse<IGames>>(PATHS.IGDB_GAMES, {
     params,
+    options: {
+      staleTime: Infinity,
+    },
   });
 };

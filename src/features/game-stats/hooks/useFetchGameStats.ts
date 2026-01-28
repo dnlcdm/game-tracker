@@ -22,5 +22,6 @@ export function useFetchGameStats() {
   return useQuery<IGamesSupabase[], Error>({
     queryKey: [GAME_STATS_QUERY_KEY],
     queryFn: getBacklogGames,
+    staleTime: Infinity,
   });
 }

@@ -15,15 +15,13 @@ export default function Header() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const menuOpen = Boolean(anchorEl);
 
-  const displayName =
-    session?.user?.user_metadata?.display_name ??
-    session?.user?.user_metadata?.name ??
-    "Player";
+  console.log(session?.user.user_metadata.picture);
+  const displayName = session?.user?.user_metadata?.name ?? "Player";
 
   const email =
     session?.user?.email ?? session?.user?.user_metadata?.email ?? "";
 
-  const avatarUrl = session?.user?.user_metadata?.avatar_url ?? "";
+  const avatarUrl = session?.user?.user_metadata?.picture ?? "";
 
   const handleOpenMenu = (e: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget);

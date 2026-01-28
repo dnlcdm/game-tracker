@@ -7,5 +7,6 @@ export function useFetchPlayingGames() {
   return useQuery<IGamesSupabase[], Error>({
     queryKey: [PLAYING_QUERY_KEY],
     queryFn: getPlayingGames,
+    staleTime: Infinity,
   });
 }

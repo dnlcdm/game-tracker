@@ -34,13 +34,13 @@ export const Backlog = () => {
   const handleConfirmMoveToBacklog = () => {
     if (gameIdToDelete) {
       deleteBacklog(gameIdToDelete, {
-        onSuccess: () => showToast(`Jogo removido do lista.`, "success"),
+        onSuccess: () => showToast(`Jogo removido da lista.`, "success"),
         onError: (err: unknown) =>
           showToast(
             err instanceof Error
               ? err.message
               : `Erro ao remover o jogo da lista`,
-            "error"
+            "error",
           ),
       });
       setIsConfirming(false);
@@ -61,7 +61,7 @@ export const Backlog = () => {
                 err instanceof Error
                   ? err.message
                   : `Erro ao mover "${game.name}" para Jogando`,
-                "error"
+                "error",
               ),
           }),
         isLoadingAction: (game: IGames) => isMoving && movingId === game.id,
@@ -78,11 +78,8 @@ export const Backlog = () => {
         isLoadingAction: (game: IGames) => isDeleting && deletingId === game.id,
       },
     ],
-    [moveToPlaying, showToast, isMoving, movingId, isDeleting, deletingId]
+    [moveToPlaying, showToast, isMoving, movingId, isDeleting, deletingId],
   );
-
-  if (isSuccess && !isFetching && !isPending && (data?.length ?? 0) === 0)
-    return <EmptyState type="backlog" />;
 
   if (isError) {
     return (
@@ -92,30 +89,39 @@ export const Backlog = () => {
     );
   }
 
+  const isEmpty =
+    isSuccess && !isFetching && !isPending && (data?.length ?? 0) === 0;
+
   return (
     <div className="text-white">
-      <FreeGameCard />
+      {isEmpty ? (
+        <EmptyState type="backlog" />
+      ) : (
+        <>
+          <FreeGameCard />
 
-      <GameGrid
-        items={data ?? []}
-        actions={gameActions}
-        isLoading={isPending}
-      />
+          <GameGrid
+            items={data ?? []}
+            actions={gameActions}
+            isLoading={isPending}
+          />
 
-      <ConfirmationModal
-        isOpen={isConfirming}
-        onClose={() => {
-          setIsConfirming(false);
-          setGameIdToDelete(null);
-        }}
-        onConfirm={handleConfirmMoveToBacklog}
-        title="Atenção: Ação Irreversível"
-        message="Você está prestes a remover o jogo dessa lista."
-        confirmLabel="Sim, remover"
-        cancelLabel="Cancelar"
-        variant="danger"
-        isLoading={isDeleting}
-      />
+          <ConfirmationModal
+            isOpen={isConfirming}
+            onClose={() => {
+              setIsConfirming(false);
+              setGameIdToDelete(null);
+            }}
+            onConfirm={handleConfirmMoveToBacklog}
+            title="Atenção: Ação Irreversível"
+            message="Você está prestes a remover o jogo dessa lista."
+            confirmLabel="Sim, remover"
+            cancelLabel="Cancelar"
+            variant="danger"
+            isLoading={isDeleting}
+          />
+        </>
+      )}
       <Toast
         open={open}
         message={message}

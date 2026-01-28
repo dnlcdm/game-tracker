@@ -7,5 +7,6 @@ export function useFetchBacklogGames() {
   return useQuery<IGamesSupabase[], Error>({
     queryKey: [BACKLOG_QUERY_KEY],
     queryFn: getBacklogGames,
+    staleTime: Infinity,
   });
 }
