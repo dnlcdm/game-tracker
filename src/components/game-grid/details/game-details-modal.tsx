@@ -56,7 +56,7 @@ export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
           className="absolute z-10 top-4 right-4 flex items-center justify-center bg-slate-800/50 hover:bg-slate-700 p-1 rounded-full transition-colors"
           onClick={onClose}
         >
-          <CloseIcon fontSize="small" />
+          <CloseIcon data-testid="CloseIcon" fontSize="small" />
         </button>
 
         <GameDetailsCover game={game} />

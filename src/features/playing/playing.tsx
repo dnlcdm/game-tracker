@@ -35,12 +35,12 @@ export const Playing = () => {
       {
         label: (): string => "Concluir Jogo",
         gameStatus: (): string => "",
-        icon: () => <SportsScoreIcon />,
+        icon: () => <SportsScoreIcon data-testid="SportsScoreIcon" />,
         onClick: (game: IGamesSupabase) => setSelectedGameToFinish(game),
       },
       {
         label: (): string => "Voltar para Jogarei",
-        icon: () => <PauseOutlinedIcon />,
+        icon: () => <PauseOutlinedIcon data-testid="PauseOutlinedIcon" />,
         onClick: (game: IGamesSupabase) => {
           setGameIdToMove(game.id);
           setIsConfirmingBacklog(true);

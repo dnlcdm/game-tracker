@@ -50,7 +50,7 @@ export const Backlog = () => {
   const gameActions = useMemo(
     () => [
       {
-        icon: () => <SportsEsportsIcon />,
+        icon: () => <SportsEsportsIcon data-testid="SportsEsportsIcon" />,
         label: (): string => "Jogar",
         gameStatus: (): string => "",
         onClick: (game: IGames) =>
@@ -67,7 +67,7 @@ export const Backlog = () => {
         isLoadingAction: (game: IGames) => isMoving && movingId === game.id,
       },
       {
-        icon: () => <BookmarkRemoveIcon />,
+        icon: () => <BookmarkRemoveIcon data-testid="BookmarkRemoveIcon" />,
         label: (): string => "Remover",
         onClick: (game: IGames) => {
           setGameIdToDelete(game.id);

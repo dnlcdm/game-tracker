@@ -182,7 +182,7 @@ export const GameDetailsMediaGrid = ({
                 className="absolute top-3 right-3 z-10 p-2 rounded-full bg-black/60 text-white/90 hover:bg-white/10 transition border border-white/10 backdrop-blur"
                 aria-label="Fechar vídeo"
               >
-                <CloseIcon fontSize="small" />
+                <CloseIcon data-testid="CloseIcon" fontSize="small" />
               </button>
 
               <div className="aspect-video">
@@ -253,7 +253,7 @@ export const GameDetailsMediaGrid = ({
                 className="absolute top-3 right-3 z-10 p-2 rounded-full bg-black/60 text-white/90 hover:bg-white/10 transition border border-white/10 backdrop-blur"
                 aria-label="Fechar imagem"
               >
-                <CloseIcon fontSize="small" />
+                <CloseIcon data-testid="CloseIcon" fontSize="small" />
               </button>
 
               <div className="bg-black">

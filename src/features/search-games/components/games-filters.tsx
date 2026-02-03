@@ -86,7 +86,7 @@ export const GamesFilters: FC = () => {
             aria-label="Limpar pesquisa"
           >
             <div className="flex items-center justify-center bg-slate-800/50 hover:bg-slate-700 p-1 rounded-full transition-colors">
-              <CloseIcon sx={{ fontSize: 16 }} />
+              <CloseIcon data-testid="CloseIcon" sx={{ fontSize: 16 }} />
             </div>
           </button>
         )}

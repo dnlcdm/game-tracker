@@ -20,7 +20,7 @@ export const FinishGameHeader = ({ game, onClose }: FinishGameHeaderProps) => (
       className="absolute top-2 right-2 p-1 cursor-pointer bg-black/40 hover:bg-black/60 rounded-lg text-white transition-colors"
       aria-label="Fechar modal"
     >
-      <CloseIcon />
+      <CloseIcon data-testid="CloseIcon" />
     </button>
     <div className="absolute bottom-4 left-6">
       <h2 className="text-xl font-bold text-white uppercase tracking-tight">

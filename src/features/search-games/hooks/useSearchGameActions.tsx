@@ -76,7 +76,7 @@ export const useSearchGameActions = ({
         icon: (game: IGames) => {
           const state = getGameState(game);
           if (!canToggleBacklog(state)) return null;
-          return state.isInBacklog ? <BookmarkIcon /> : <BookmarkBorderIcon />;
+          return state.isInBacklog ? <BookmarkIcon data-testid="BookmarkIcon" /> : <BookmarkBorderIcon data-testid="BookmarkBorderIcon" />;
         },
         onClick: (game: IGames) => {
           const state = getGameState(game);
