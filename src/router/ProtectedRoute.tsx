@@ -14,9 +14,11 @@ export const ProtectedRoute = () => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col h-screen overflow-hidden">
       <Header />
-      <Outlet />
+      <div className="flex-1 overflow-hidden relative">
+        <Outlet />
+      </div>
     </div>
   );
 };

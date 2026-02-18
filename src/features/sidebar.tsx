@@ -24,7 +24,7 @@ export const MainLayout = () => {
   const avatarUrl = session?.user?.user_metadata?.picture;
 
   return (
-    <div className="flex flex-col md:flex-row h-screen w-full bg-[#030712] overflow-hidden text-white font-sans">
+    <div className="flex flex-col md:flex-row w-full h-full bg-[#030712] overflow-hidden text-white font-sans">
       <aside className="hidden md:flex flex-col h-full w-64 bg-[#111827] text-[#9CA3AF] border-r border-gray-800">
         <div className="p-4 border-b border-gray-800 bg-[#0F172A]/30">
           <div className="flex items-center p-2 rounded-xl">

@@ -15,7 +15,6 @@ export default function Header() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const menuOpen = Boolean(anchorEl);
 
-  console.log(session?.user.user_metadata.picture);
   const displayName = session?.user?.user_metadata?.name ?? "Player";
 
   const email =
@@ -37,8 +36,8 @@ export default function Header() {
   };
 
   return (
-    <header className="flex items-center justify-between h-14 px-4 bg-blue-950 border-b border-blue-900/40">
-      <p className="font-[BHHBogle] text-4xl text-white">Tracker</p>
+    <div className="flex items-center justify-between sm:h-14 h-11 px-4 bg-blue-950 border-b border-blue-900/40">
+      <p className="font-[BHHBogle] text-2xl sm:text-4xl text-white">Tracker</p>
 
       <div className="md:hidden flex items-center gap-3">
         <IconButton
@@ -47,7 +46,7 @@ export default function Header() {
           sx={{ p: 0.5 }}
           aria-label="Abrir menu do perfil"
         >
-          <Avatar src={avatarUrl} sx={{ width: 32, height: 32 }} />
+          <Avatar src={avatarUrl} sx={{ width: 24, height: 24 }} />
         </IconButton>
 
         <Menu
@@ -94,6 +93,6 @@ export default function Header() {
           </MenuItem>
         </Menu>
       </div>
-    </header>
+    </div>
   );
 }

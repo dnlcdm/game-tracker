@@ -56,8 +56,8 @@ export const GamesFilters: FC = () => {
   }, [isPending, hasMore, setParams, observerTarget]);
 
   return (
-    <div className="flex flex-col gap-6 w-full px-2 pt-4 md:px-0">
-      <div className="relative w-full max-w-xl group mx-auto">
+    <div className="flex flex-col gap-6 w-full md:px-2 md:pt-4">
+      <div className="relative w-full group mx-auto">
         <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10">
           {isPending ? (
             <div className="w-4 h-4 border-2 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" />
@@ -76,7 +76,7 @@ export const GamesFilters: FC = () => {
           onKeyDown={handleKeyDown}
           enterKeyHint="search"
           placeholder="Pesquise por jogos"
-          className="w-full bg-slate-900/40 backdrop-blur-md border border-slate-800 text-sm text-slate-200 rounded-lg pl-11 pr-11 py-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500/50 outline-none transition-all placeholder:text-slate-600 shadow-lg"
+          className="w-full bg-slate-900/40 backdrop-blur-md border border-slate-800 text-sm text-slate-200 md:rounded-lg pl-11 pr-11 py-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500/50 outline-none transition-all placeholder:text-slate-600 shadow-lg"
         />
 
         {inputValue && (
@@ -85,7 +85,7 @@ export const GamesFilters: FC = () => {
             className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-white transition-colors animate-in fade-in slide-in-from-right-2 duration-200"
             aria-label="Limpar pesquisa"
           >
-            <div className="flex items-center justify-center bg-slate-800/50 hover:bg-slate-700 p-1 rounded-full transition-colors">
+            <div className="flex items-center justify-center bg-slate-800/50 hover:bg-slate-700 p-1 rounded-full transition-colors mr-10 sm:mr-0">
               <CloseIcon data-testid="CloseIcon" sx={{ fontSize: 16 }} />
             </div>
           </button>

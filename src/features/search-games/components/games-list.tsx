@@ -76,7 +76,7 @@ export const GamesList = () => {
   const showEndOfResults = !hasMore && results.length > 0;
 
   return (
-    <div className="min-h-screen w-full py-4 transition-all duration-500">
+    <div className="min-h-screen w-full transition-all duration-500">
       {isEmpty ? (
         <EmptyState type="search" />
       ) : (
