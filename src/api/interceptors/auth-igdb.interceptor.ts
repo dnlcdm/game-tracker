@@ -1,24 +1,24 @@
 import type { AxiosInstance } from "axios";
 import { authService } from "../../services/auth.service";
+import { PATHS } from "../../constants/endpoint-paths.contants";
+import { supabase } from "../../services/supabase-client.service";
 
 export const authIgdbRequest = (apiClient: AxiosInstance) =>
-  apiClient.interceptors.request.use((request) => {
-    const urlBase = "/api/games";
-    const isIgbdEndpoint = urlBase === request.url;
-    if (!isIgbdEndpoint) return request;
+  apiClient.interceptors.request.use(async (request) => {
+    const isRequiredIGDBEndpoint = request.url?.includes(PATHS.IGDB_GAMES);
 
     const token = authService.getToken();
+    const { data } = await supabase.auth.getSession();
+      const supabaseToken = data.session?.access_token;
 
-    if (token) {
-      request.headers.Authorization = `Bearer ${token}`;
-    }
+    request.headers.Authorization = `Bearer ${isRequiredIGDBEndpoint ? token : supabaseToken}`;
 
     return request;
   });
 
 export const authIgdbResponse = (apiClient: AxiosInstance) =>
   apiClient.interceptors.response.use((response) => {
-    const path = "/auth/token";
+    const path = "/get-token";
     const isAuthEndpoint = response.config.url?.includes(path);
 
     if (!isAuthEndpoint) return response;
