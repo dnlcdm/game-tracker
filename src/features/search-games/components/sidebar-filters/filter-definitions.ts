@@ -1,5 +1,7 @@
 import type { FilterGroup } from "../../../../components/filters/filter-types";
 
+const MAX_GAME_DATE = Math.floor(new Date(new Date().setFullYear(new Date().getFullYear() + 5)).getTime() / 1000);
+
 export const FILTER_GROUPS: FilterGroup[] = [
   {
     id: "platforms",
@@ -57,7 +59,7 @@ export const FILTER_GROUPS: FilterGroup[] = [
       fromParam: "first_release_date_from",
       toParam: "first_release_date_to",
       min: 0,
-      max: 9999999999,
+      max: MAX_GAME_DATE,
       step: 1,
       fromPlaceholder: "",
       toPlaceholder: "",
