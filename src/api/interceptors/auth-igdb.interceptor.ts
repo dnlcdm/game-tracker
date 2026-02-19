@@ -9,7 +9,7 @@ export const authIgdbRequest = (apiClient: AxiosInstance) =>
 
     const token = authService.getToken();
     const { data } = await supabase.auth.getSession();
-      const supabaseToken = data.session?.access_token;
+    const supabaseToken = data.session?.access_token;
 
     request.headers.Authorization = `Bearer ${isRequiredIGDBEndpoint ? token : supabaseToken}`;
 
@@ -17,13 +17,12 @@ export const authIgdbRequest = (apiClient: AxiosInstance) =>
   });
 
 export const authIgdbResponse = (apiClient: AxiosInstance) =>
-  apiClient.interceptors.response.use((response) => {
-    const path = "/get-token";
-    const isAuthEndpoint = response.config.url?.includes(path);
+  apiClient.interceptors.response.use(async (response) => {
+    const isAuthEndpoint = response.config.url?.includes(PATHS.IGDB_TOKEN);
 
     if (!isAuthEndpoint) return response;
 
-    authService.setToken(response.data.access_token);
+    await authService.setToken(response.data.access_token);
 
     return response;
   });
