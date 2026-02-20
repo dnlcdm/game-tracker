@@ -14,7 +14,7 @@ interface GameGridProps {
 }
 
 const GRID_LAYOUT_CLASSES = 
-  "grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-2 md:gap-3 mt-4";
+  "grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-2 md:gap-3 mt-4 min-h-screen";
 
 const SKELETON_COUNT = 28;
 
@@ -67,12 +67,12 @@ export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
             layout
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+            exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.1 } }}
             transition={{
               type: "spring",
               stiffness: 300,
               damping: 25,
-              opacity: { duration: 0.2 },
+              opacity: { duration: 0.1 },
             }}
           >
             <GameGridCard

@@ -1,59 +1,67 @@
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import {
+  useCallback,
   useEffect,
   useState,
+  type Dispatch,
+  type FC,
+  type SetStateAction,
   type ChangeEvent,
   type KeyboardEvent,
-  type FC,
 } from "react";
 import { useDataGame } from "../hooks/useDataGames";
+import { useInfinitePagination, type GameParams } from "./hooks/useInfinitePagination";
 
-const DEBOUNCE_DELAY = 500;
+const DEBOUNCE_DELAY_MS = 500;
+const FIRST_PAGE = "1";
+
+
+const useDebouncedSearch = (
+  value: string,
+  setParams: Dispatch<SetStateAction<GameParams>>,
+) => {
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setParams((prev) => ({
+        ...prev,
+        search: value,
+        page: FIRST_PAGE,
+      }));
+    }, DEBOUNCE_DELAY_MS);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [value, setParams]);
+};
+
+
+
+
 
 export const GamesFilters: FC = () => {
   const { setParams, isPending, observerTarget, hasMore } = useDataGame();
   const [inputValue, setInputValue] = useState("");
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setInputValue(e.target.value);
-  };
+  useDebouncedSearch(inputValue, setParams);
+  useInfinitePagination({ observerTarget, isPending, hasMore, setParams });
 
-  const handleClear = () => {
+  const handleInputChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setInputValue(event.target.value);
+    },
+    [],
+  );
+
+  const handleClear = useCallback(() => {
     setInputValue("");
-    setParams((p) => ({ ...p, search: "", page: "1" }));
-  };
+    setParams((prev) => ({ ...prev, search: "", page: FIRST_PAGE }));
+  }, [setParams]);
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>): void => {
-    if (e.key === "Enter") {
-      e.currentTarget.blur();
+  const handleKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.currentTarget.blur();
     }
-  };
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setParams((p) => ({ ...p, search: inputValue, page: "1" }));
-    }, DEBOUNCE_DELAY);
-
-    return () => clearTimeout(handler);
-  }, [inputValue, setParams]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !isPending && hasMore) {
-          setParams((p) => ({
-            ...p,
-            page: String(Number(p.page || "1") + 1),
-          }));
-        }
-      },
-      { threshold: 0.1 },
-    );
-
-    if (observerTarget.current) observer.observe(observerTarget.current);
-    return () => observer.disconnect();
-  }, [isPending, hasMore, setParams, observerTarget]);
+  }, []);
 
   return (
     <div className="flex flex-col gap-6 w-full md:px-2 md:pt-4">
