@@ -14,7 +14,7 @@ interface GameGridProps {
 }
 
 const GRID_LAYOUT_CLASSES = 
-  "grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-2 md:gap-3 mt-4 min-h-screen";
+  "grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-2 md:gap-3 mt-4";
 
 const SKELETON_COUNT = 28;
 
