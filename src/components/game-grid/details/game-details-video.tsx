@@ -24,6 +24,138 @@ const ytThumbFallback = (id: string) => {
   return `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
 };
 
+type SwipeProps = {
+  screenshots: string[];
+  initialIndex: number;
+  onChange: (idx: number) => void;
+};
+
+const SWIPE_THRESHOLD = 60;
+
+const ScreenshotSwipe = ({
+  screenshots,
+  initialIndex,
+  onChange,
+}: SwipeProps) => {
+  const [index, setIndex] = useState(initialIndex);
+  const [dragDir, setDragDir] = useState<"left" | "right" | null>(null);
+  const [loaded, setLoaded] = useState<Set<number>>(() => new Set([initialIndex]));
+
+  const markLoaded = (i: number) =>
+    setLoaded((prev) => {
+      if (prev.has(i)) return prev;
+      const next = new Set(prev);
+      next.add(i);
+      return next;
+    });
+
+  const preload = (offset: -1 | 1) => {
+    const next = index + offset;
+    if (next >= 0 && next < screenshots.length && !loaded.has(next)) {
+      const img = new Image();
+      img.src = screenshots[next];
+      img.onload = () => markLoaded(next);
+    }
+  };
+
+  const variants = {
+    enter: (dir: "left" | "right") => ({
+      x: dir === "left" ? "100%" : "-100%",
+      opacity: 0,
+    }),
+    center: { x: "0%", opacity: 1 },
+    exit: (dir: "left" | "right") => ({
+      x: dir === "left" ? "-50%" : "50%",
+      opacity: 0,
+    }),
+  };
+
+  const handleDragEnd = (
+    _e: MouseEvent | TouchEvent | PointerEvent,
+    info: { offset: { x: number }; velocity: { x: number } },
+  ) => {
+    if (info.offset.x < -SWIPE_THRESHOLD || info.velocity.x < -200) {
+      setDragDir("left");
+      setIndex((i) => Math.min(screenshots.length - 1, i + 1));
+    } else if (info.offset.x > SWIPE_THRESHOLD || info.velocity.x > 200) {
+      setDragDir("right");
+      setIndex((i) => Math.max(0, i - 1));
+    }
+  };
+
+  return (
+    <>
+      <div className="relative bg-black select-none overflow-hidden">
+        <motion.div
+          key={index}
+          custom={dragDir ?? "left"}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.4}
+          onDragEnd={handleDragEnd}
+          onTouchStart={() => {
+            preload(-1);
+            preload(1);
+          }}
+          onDragStart={() => {
+            preload(-1);
+            preload(1);
+          }}
+          className="relative cursor-grab active:cursor-grabbing aspect-video min-h-[200px]"
+        >
+          <img
+            src={screenshots[index]}
+            alt={`Screenshot ${index + 1}`}
+            className="w-full h-full object-contain pointer-events-none"
+            onLoad={() => markLoaded(index)}
+            style={{ transition: "opacity 0.15s ease" }}
+            loading={loaded.has(index) ? "eager" : "lazy"}
+          />
+        </motion.div>
+
+        {!loaded.has(index) && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white/70" />
+          </div>
+        )}
+
+        {screenshots.length > 1 && (
+          <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+            {screenshots.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDragDir(i > index ? "left" : "right");
+                  setIndex(i);
+                }}
+                className={`h-1.5 rounded-full transition-all duration-200 ${
+                  i === index
+                    ? "w-6 bg-white"
+                    : "w-1.5 bg-white/30 hover:bg-white/50"
+                }`}
+                aria-label={`Jump to image ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="p-3 border-t border-white/10 flex items-center justify-center">
+        <div className="text-xs font-black uppercase tracking-widest text-gray-400">
+          {index + 1} / {screenshots.length}
+        </div>
+      </div>
+    </>
+  );
+};
+
 export const GameDetailsMediaGrid = ({
   trailers,
   screenshots,
@@ -228,7 +360,7 @@ export const GameDetailsMediaGrid = ({
       </AnimatePresence>
 
       <AnimatePresence>
-        {shotOpen && screenshots?.[shotOpen.idx] && (
+        {shotOpen && screenshots?.[shotOpen.idx] != null && (
           <motion.div
             className="fixed inset-0 z-[120] flex items-center justify-center"
             initial={{ opacity: 0 }}
@@ -256,48 +388,11 @@ export const GameDetailsMediaGrid = ({
                 <CloseIcon data-testid="CloseIcon" fontSize="small" />
               </button>
 
-              <div className="bg-black">
-                <img
-                  src={screenshots[shotOpen.idx]}
-                  alt={`Screenshot ${shotOpen.idx + 1}`}
-                  className="w-full h-auto max-h-[75vh] object-contain"
-                />
-              </div>
-
-              <div className="p-4 border-t border-white/10 flex items-center justify-between">
-                <div className="text-xs font-black uppercase tracking-widest text-gray-400">
-                  Screenshot {shotOpen.idx + 1} / {screenshots.length}
-                </div>
-
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setShotOpen((s) =>
-                        s ? { idx: Math.max(0, s.idx - 1) } : s,
-                      )
-                    }
-                    className="px-3 py-2 rounded-lg border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] text-[10px] font-black uppercase tracking-[0.2em] text-gray-300"
-                    disabled={shotOpen.idx === 0}
-                  >
-                    Anterior
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setShotOpen((s) =>
-                        s
-                          ? { idx: Math.min(screenshots.length - 1, s.idx + 1) }
-                          : s,
-                      )
-                    }
-                    className="px-3 py-2 rounded-lg border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] text-[10px] font-black uppercase tracking-[0.2em] text-gray-300"
-                    disabled={shotOpen.idx === screenshots.length - 1}
-                  >
-                    Próxima
-                  </button>
-                </div>
-              </div>
+              <ScreenshotSwipe
+                screenshots={screenshots}
+                initialIndex={shotOpen.idx}
+                onChange={(idx) => setShotOpen({ idx })}
+              />
             </motion.div>
           </motion.div>
         )}
