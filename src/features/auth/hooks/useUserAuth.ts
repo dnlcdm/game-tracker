@@ -78,10 +78,21 @@ export const useUserAuth = (): AuthContextType => {
     if (error) throw error;
   };
 
+  const ACCESS_TOKEN_KEY = "access_token";
+
   const signOut = async () => {
-    await supabase.auth.signOut();
-    localStorage.clear();
-    window.location.reload();
+    try {
+      await supabase.auth.signOut();
+    } catch {
+      // ignore errors on signOut (e.g. already expired session)
+    }
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
+    for (const key of Object.keys(localStorage)) {
+      if (key.startsWith("sb-") || key.startsWith("@supabase")) {
+        localStorage.removeItem(key);
+      }
+    }
+    window.location.href = "/login";
   };
 
   return {

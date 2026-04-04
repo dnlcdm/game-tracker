@@ -5,11 +5,11 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import type { IGameAction } from "../types";
 import { useHltb } from "../hooks/useFetchGameTimeToBeat";
-import { GameDetailsCover } from "./components/game-details-cover";
-import { GameDetailsActions } from "./components/game-details-actions";
-import { GameDetailsTimeSection } from "./components/game-details-time-section";
-import { GameDetailsPlatforms } from "./components/game-details-platforms";
-import { GameDetailsMediaGrid } from "./components/game-details-video";
+import { GameDetailsCover } from "./game-details-cover";
+import { GameDetailsActions } from "./game-details-actions";
+import { GameDetailsTimeSection } from "./game-details-time-section";
+import { GameDetailsPlatforms } from "./game-details-platforms";
+import { GameDetailsMediaGrid } from "./game-details-video";
 
 interface Props {
   game: IGamesSupabase;

@@ -1,4 +1,4 @@
-import { pad2, parseTime } from "../../utils/time-format";
+import { pad2, parseTime } from "../utils/time-format";
 import { SlotNumber } from "./slot-number";
 
 interface SlotTimeProps {

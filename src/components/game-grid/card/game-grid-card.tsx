@@ -5,8 +5,8 @@ import {
   getStatusOverlayClass,
   hasMutedCover,
 } from "../utils/game-status";
-import { GameActionButton } from "./components/game-action-button";
-import { GameStatusOverlay } from "./components/game-status-overlay";
+import { GameActionButton } from "./game-action-button";
+import { GameStatusOverlay } from "./game-status-overlay";
 
 interface GameGridCardProps {
   game: IGamesSupabase;

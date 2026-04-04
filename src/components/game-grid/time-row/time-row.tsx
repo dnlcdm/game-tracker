@@ -1,6 +1,6 @@
 import type { ElementType } from "react";
 import { motion } from "framer-motion";
-import { SlotTime } from "./components/slot-time";
+import { SlotTime } from "./slot-time";
 
 interface TimeRowProps {
   label: string;
