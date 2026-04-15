@@ -70,13 +70,18 @@ export const useUserAuth = (): AuthContextType => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signInWithGoogle = async () => {
-    setIsLoading(true);
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-    });
-    if (error) throw error;
-  };
+   const signInWithGoogle = async () => {
+     setIsLoading(true);
+     try {
+       const { error } = await supabase.auth.signInWithOAuth({
+         provider: "google",
+       });
+       if (error) throw error;
+     } catch (error) {
+       setIsLoading(false);
+       throw error;
+     }
+   };
 
   const ACCESS_TOKEN_KEY = "access_token";
 
