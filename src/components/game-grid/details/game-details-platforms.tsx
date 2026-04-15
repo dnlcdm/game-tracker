@@ -1,4 +1,4 @@
-import type { IGamesSupabase } from "../../../../features/search-games/types/games.types";
+import type { IGamesSupabase } from "../../../features/search-games/types/games.types";
 
 interface GameDetailsPlatformsProps {
   platforms?: IGamesSupabase["platforms"];

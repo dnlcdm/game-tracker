@@ -32,14 +32,12 @@ type SwipeProps = {
 
 const SWIPE_THRESHOLD = 60;
 
-const ScreenshotSwipe = ({
-  screenshots,
-  initialIndex,
-  onChange,
-}: SwipeProps) => {
+const ScreenshotSwipe = ({ screenshots, initialIndex }: SwipeProps) => {
   const [index, setIndex] = useState(initialIndex);
   const [dragDir, setDragDir] = useState<"left" | "right" | null>(null);
-  const [loaded, setLoaded] = useState<Set<number>>(() => new Set([initialIndex]));
+  const [loaded, setLoaded] = useState<Set<number>>(
+    () => new Set([initialIndex]),
+  );
 
   const markLoaded = (i: number) =>
     setLoaded((prev) => {

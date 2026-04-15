@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import type { IGamesSupabase } from "../../../../features/search-games/types/games.types";
 import { GameDetailsHeader } from "./game-details-header";
+import type { IGamesSupabase } from "../../../features/search-games/types/games.types";
 
 type Props = {
   game: IGamesSupabase;
