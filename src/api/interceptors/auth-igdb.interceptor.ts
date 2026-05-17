@@ -5,9 +5,16 @@ import { supabase } from "../../services/supabase-client.service";
 
 let igdbTokenRequest: Promise<string | null> | null = null;
 
-const ensureIgdbToken = async (apiClient: AxiosInstance) => {
-  const cachedToken = authService.getToken();
-  if (cachedToken) return cachedToken;
+const ensureIgdbToken = async (
+  apiClient: AxiosInstance,
+  forceRefresh = false,
+) => {
+  if (!forceRefresh) {
+    const cachedToken = authService.getToken();
+    if (cachedToken) return cachedToken;
+  } else {
+    authService.setToken("");
+  }
 
   if (!igdbTokenRequest) {
     igdbTokenRequest = apiClient
@@ -59,12 +66,51 @@ export const authIgdbRequest = (apiClient: AxiosInstance) =>
   });
 
 export const authIgdbResponse = (apiClient: AxiosInstance) =>
-  apiClient.interceptors.response.use(async (response) => {
-    const isAuthEndpoint = response.config.url?.includes(PATHS.IGDB_TOKEN);
+  apiClient.interceptors.response.use(
+    async (response) => {
+      const isAuthEndpoint = response.config.url?.includes(PATHS.IGDB_TOKEN);
 
-    if (!isAuthEndpoint) return response;
+      if (!isAuthEndpoint) return response;
 
-    await authService.setToken(response.data.access_token);
+      authService.setToken(response.data.access_token);
 
-    return response;
-  });
+      console.log(response.data);
+
+      return response;
+    },
+    async (error) => {
+      const originalRequest = error.config;
+
+      if (!originalRequest || originalRequest._retry) {
+        return Promise.reject(error);
+      }
+
+      const errorData = error.response?.data;
+      const errorMessage =
+        typeof errorData === "string" ? errorData : errorData?.error;
+
+      const isIgdbAuthError =
+        originalRequest.url?.includes(PATHS.IGDB_GAMES) &&
+        errorMessage &&
+        typeof errorMessage === "string" &&
+        errorMessage.includes("IGDB games error (401)");
+
+      if (isIgdbAuthError) {
+        originalRequest._retry = true;
+
+        try {
+          const newToken = await ensureIgdbToken(apiClient, true);
+
+          if (newToken) {
+            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+
+            return apiClient(originalRequest);
+          }
+        } catch (refreshError) {
+          return Promise.reject(refreshError);
+        }
+      }
+
+      return Promise.reject(error);
+    },
+  );
