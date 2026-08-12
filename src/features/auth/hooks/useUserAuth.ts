@@ -21,6 +21,22 @@ export const useUserAuth = (): AuthContextType => {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const signInWithGoogle = async () => {
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/login`,
+        },
+      });
+      if (error) throw error;
+    } catch (error) {
+      setIsLoading(false);
+      throw error;
+    }
+  };
+
   const signInWithEmail = async (email: string, password: string) => {
     setIsLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
@@ -69,19 +85,6 @@ export const useUserAuth = (): AuthContextType => {
 
     return () => subscription.unsubscribe();
   }, []);
-
-   const signInWithGoogle = async () => {
-     setIsLoading(true);
-     try {
-       const { error } = await supabase.auth.signInWithOAuth({
-         provider: "google",
-       });
-       if (error) throw error;
-     } catch (error) {
-       setIsLoading(false);
-       throw error;
-     }
-   };
 
   const ACCESS_TOKEN_KEY = "access_token";
 
