@@ -1,6 +1,8 @@
 export const BACKLOG_QUERY_KEY = ["backlog"] as const;
 export const PLAYING_QUERY_KEY = ["backlog_playing"] as const;
 export const GAME_STATS_QUERY_KEY = ["game_stats"] as const;
+export const GAME_LISTS_QUERY_KEY = ["game_lists"] as const;
+export const GAME_LIST_ITEMS_QUERY_KEY = ["game_list_items"] as const;
 
 export const PLATFORMS = [
   { value: "PC", label: "PC" },

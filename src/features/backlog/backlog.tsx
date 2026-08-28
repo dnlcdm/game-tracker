@@ -1,9 +1,14 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { GameGrid } from "../../components/game-grid/grid/game-grid";
 import { useUpdatePlayingGame } from "../playing/hooks/useUpdatePlayingGame";
-import type { IGames } from "../search-games/types/games.types";
+import type {
+  IGames,
+  IGamesSupabase,
+} from "../search-games/types/games.types";
 import { useDeleteBacklogGame } from "./hooks/useDeleteBacklogGame";
 import { useFetchBacklogGames } from "./hooks/useFetchBacklogGames";
+import { useFetchLists } from "./hooks/useFetchLists";
+import { useFetchListItems } from "./hooks/useFetchListItems";
 import BookmarkRemoveIcon from "@mui/icons-material/BookmarkRemove";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import { FreeGameCard } from "../../components/free-game-card/free-game-card";
@@ -11,10 +16,17 @@ import { EmptyState } from "../../components/empty-states/empty-states";
 import { Toast } from "../../components/snackbar/toast";
 import { useToast } from "../../components/snackbar/hooks/useToast";
 import { ConfirmationModal } from "../../components/confirmation-modal/confirmation-modal";
+import { BacklogListsSidebar } from "./components/backlog-lists-sidebar";
+import { ListAssignModal } from "./components/list-assign-modal";
+
+const SELECTED_LIST_KEY = "backlog-selected-list";
 
 export const Backlog = () => {
   const { data, isPending, isError, isSuccess, isFetching, error } =
     useFetchBacklogGames();
+
+  const { data: lists = [] } = useFetchLists();
+  const { data: listItems = [] } = useFetchListItems();
 
   const {
     mutate: deleteBacklog,
@@ -30,6 +42,54 @@ export const Backlog = () => {
   const { open, message, severity, showToast, hideToast } = useToast();
   const [isConfirming, setIsConfirming] = useState(false);
   const [gameIdToDelete, setGameIdToDelete] = useState<number | null>(null);
+  const [assignGame, setAssignGame] = useState<IGamesSupabase | null>(null);
+
+  const [selectedListId, setSelectedListId] = useState<string | null>(() => {
+    const stored = localStorage.getItem(SELECTED_LIST_KEY);
+    return stored || null;
+  });
+
+  const handleSelectList = useCallback((listId: string | null) => {
+    setSelectedListId(listId);
+    if (listId) {
+      localStorage.setItem(SELECTED_LIST_KEY, listId);
+    } else {
+      localStorage.removeItem(SELECTED_LIST_KEY);
+    }
+  }, []);
+
+  const gameCountByList = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const item of listItems) {
+      counts[item.list_id] = (counts[item.list_id] ?? 0) + 1;
+    }
+    return counts;
+  }, [listItems]);
+
+  const uncategorizedCount = useMemo(() => {
+    if (!data) return 0;
+    const allAssignedGameIds = new Set(listItems.map((item) => item.game_id));
+    return data.filter((game) => !allAssignedGameIds.has(game.id)).length;
+  }, [data, listItems]);
+
+
+  const filteredGames = useMemo(() => {
+    if (!data) return [];
+    if (!selectedListId) return data;
+
+    if (selectedListId === "uncategorized") {
+      const allAssignedGameIds = new Set(listItems.map((item) => item.game_id));
+      return data.filter((game) => !allAssignedGameIds.has(game.id));
+    }
+
+    const gameIdsInList = new Set(
+      listItems
+        .filter((item) => item.list_id === selectedListId)
+        .map((item) => item.game_id),
+    );
+
+    return data.filter((game) => gameIdsInList.has(game.id));
+  }, [data, selectedListId, listItems]);
 
   const handleConfirmMoveToBacklog = () => {
     if (gameIdToDelete) {
@@ -47,6 +107,7 @@ export const Backlog = () => {
       setGameIdToDelete(null);
     }
   };
+
   const gameActions = useMemo(
     () => [
       {
@@ -98,13 +159,39 @@ export const Backlog = () => {
         <EmptyState type="backlog" />
       ) : (
         <>
-          <FreeGameCard />
 
-          <GameGrid
-            items={data ?? []}
-            actions={gameActions}
-            isLoading={isPending}
-          />
+          <FreeGameCard />
+          <div className="block md:hidden">
+            <BacklogListsSidebar
+              lists={lists}
+              selectedListId={selectedListId}
+              onSelectList={handleSelectList}
+              gameCountByList={gameCountByList}
+              totalCount={data?.length || 0}
+              uncategorizedCount={uncategorizedCount}
+            />
+          </div>
+          <div className="flex">
+            <div className="hidden md:block">
+              <BacklogListsSidebar
+                lists={lists}
+                selectedListId={selectedListId}
+                onSelectList={handleSelectList}
+                gameCountByList={gameCountByList}
+                totalCount={data?.length || 0}
+                uncategorizedCount={uncategorizedCount}
+              />
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <GameGrid
+                items={filteredGames}
+                actions={gameActions}
+                isLoading={isPending}
+                onListAssign={(game) => setAssignGame(game)}
+              />
+            </div>
+          </div>
 
           <ConfirmationModal
             isOpen={isConfirming}
@@ -120,6 +207,15 @@ export const Backlog = () => {
             variant="danger"
             isLoading={isDeleting}
           />
+
+          {assignGame && (
+            <ListAssignModal
+              game={assignGame}
+              lists={lists}
+              listItems={listItems}
+              onClose={() => setAssignGame(null)}
+            />
+          )}
         </>
       )}
       <Toast
@@ -131,3 +227,4 @@ export const Backlog = () => {
     </div>
   );
 };
+

@@ -306,14 +306,13 @@ export const GameDetailsMediaGrid = ({
               exit={{ scale: 0.98, y: 8, opacity: 0 }}
               transition={{ duration: 0.18 }}
             >
-              <button
-                type="button"
+              <CloseIcon
                 onClick={() => setVideoOpen(false)}
-                className="absolute top-3 right-3 z-10 p-2 rounded-full bg-black/60 text-white/90 hover:bg-white/10 transition border border-white/10 backdrop-blur"
+                data-testid="CloseIcon"
+                fontSize="small"
+                className="text-white cursor-pointer absolute right-3 top-3 bg-black"
                 aria-label="Fechar vídeo"
-              >
-                <CloseIcon data-testid="CloseIcon" fontSize="small" />
-              </button>
+              />
 
               <div className="aspect-video">
                 <iframe
@@ -380,10 +379,13 @@ export const GameDetailsMediaGrid = ({
               <button
                 type="button"
                 onClick={() => setShotOpen(null)}
-                className="absolute top-3 right-3 z-10 p-2 rounded-full bg-black/60 text-white/90 hover:bg-white/10 transition border border-white/10 backdrop-blur"
                 aria-label="Fechar imagem"
               >
-                <CloseIcon data-testid="CloseIcon" fontSize="small" />
+                <CloseIcon
+                  className="text-white z-10 cursor-pointer absolute right-3 top-3 bg-black"
+                  data-testid="CloseIcon"
+                  fontSize="small"
+                />
               </button>
 
               <ScreenshotSwipe

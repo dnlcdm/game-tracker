@@ -11,10 +11,11 @@ interface GameGridProps {
   items: IGamesSupabase[];
   actions?: IGameAction[];
   isLoading?: boolean;
+  onListAssign?: (game: IGamesSupabase) => void;
 }
 
-const GRID_LAYOUT_CLASSES = 
-  "grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-2 md:gap-3 mt-4";
+const GRID_LAYOUT_CLASSES =
+  "grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-2 md:gap-3 mt-2";
 
 const SKELETON_COUNT = 28;
 
@@ -26,7 +27,7 @@ const toGameId = (v: string | null) => {
   return Number.isFinite(n) && n > 0 ? n : null;
 }
 
-export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
+export const GameGrid = ({ items, actions, isLoading, onListAssign }: GameGridProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const primaryAction = actions?.[0];
 
@@ -79,7 +80,8 @@ export const GameGrid = ({ items, actions, isLoading }: GameGridProps) => {
               game={item}
               status={primaryAction ? primaryAction.gameStatus(item) : ""}
               actions={actions}
-              onSelect={openModal} 
+              onSelect={openModal}
+              onListAssign={onListAssign}
             />
           </motion.div>
         ))}

@@ -1,3 +1,4 @@
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import type { IGamesSupabase } from "../../../features/search-games/types/games.types";
 import type { GameStatus, IGameAction } from "../types";
 import {
@@ -7,12 +8,14 @@ import {
 } from "../utils/game-status";
 import { GameActionButton } from "./game-action-button";
 import { GameStatusOverlay } from "./game-status-overlay";
+import { useLongPress } from "../../../hooks/useLongPress";
 
 interface GameGridCardProps {
   game: IGamesSupabase;
   status: GameStatus;
   actions?: IGameAction[];
   onSelect: (game: IGamesSupabase) => void;
+  onListAssign?: (game: IGamesSupabase) => void;
 }
 
 export const GameGridCard = ({
@@ -20,12 +23,34 @@ export const GameGridCard = ({
   status,
   actions,
   onSelect,
+  onListAssign,
 }: GameGridCardProps) => {
+  const longPress = useLongPress(
+    () => onListAssign?.(game),
+    {
+      ms: 500,
+      onStart: undefined,
+      onCancel: undefined,
+    },
+  );
+
+  const handleClick = () => {
+    if (longPress.triggered.current) return;
+    onSelect(game);
+  };
+
   return (
     <div
-      onClick={() => onSelect(game)}
+      onClick={handleClick}
+      {...(onListAssign
+        ? {
+            onTouchStart: longPress.onTouchStart,
+            onTouchMove: longPress.onTouchMove,
+            onTouchEnd: longPress.onTouchEnd,
+          }
+        : {})}
       data-testid="card-game"
-      className={`relative w-full aspect-[3/4] overflow-hidden rounded-xl shadow-lg group bg-gray-900 active:scale-[0.98] transition-all duration-300
+      className={`relative w-full aspect-[3/4] overflow-hidden rounded-lg shadow-lg group bg-gray-900 active:scale-[0.98] transition-all duration-300
         ${getStatusBorderClass(status)}
       `}
     >
@@ -55,6 +80,18 @@ export const GameGridCard = ({
         </span>
 
         <div className="absolute flex gap-1.5 top-1 right-1 opacity-100 transition-opacity duration-300">
+          {onListAssign && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onListAssign(game);
+              }}
+              className="hidden md:flex items-center justify-center w-6 h-6 rounded-md bg-black/50 backdrop-blur-sm border border-white/10 text-white/50 opacity-0 group-hover:opacity-100 hover:!text-white hover:bg-black/70 transition-all duration-200"
+              aria-label={`Gerenciar listas de ${game.name}`}
+            >
+              <MoreVertIcon sx={{ fontSize: 14 }} />
+            </button>
+          )}
           {actions?.map((action, index) => (
             <GameActionButton key={index} action={action} game={game} />
           ))}
@@ -63,3 +100,4 @@ export const GameGridCard = ({
     </div>
   );
 };
+
