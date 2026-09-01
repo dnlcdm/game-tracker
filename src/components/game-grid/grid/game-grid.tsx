@@ -66,14 +66,12 @@ export const GameGrid = ({ items, actions, isLoading, onListAssign }: GameGridPr
           <motion.div
             key={item.id}
             layout
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.1 } }}
+            exit={{ opacity: 0, scale: 0.98, transition: { duration: 0.15, ease: "easeIn" } }}
             transition={{
-              type: "spring",
-              stiffness: 300,
-              damping: 25,
-              opacity: { duration: 0.1 },
+              duration: 0.2,
+              ease: "easeOut",
             }}
           >
             <GameGridCard

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { GAME_LISTS_QUERY_KEY } from "../../playing/constants";
-import { reorderLists } from "../utils/listUtils";
+import { reorderLists } from "../services/lists.service";
 import type { IGameList } from "../types/list.types";
 
 export function useReorderLists() {

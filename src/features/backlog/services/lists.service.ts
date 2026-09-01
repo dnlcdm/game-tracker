@@ -49,9 +49,7 @@ export const renameList = async (listId: string, name: string): Promise<void> =>
   if (error) throw new Error(error.message || "Falha ao renomear lista.");
 };
 
-export const reorderLists = async (
-  orderedIds: string[],
-): Promise<void> => {
+export const reorderLists = async (orderedIds: string[]): Promise<void> => {
   const updates = orderedIds.map((id, index) => ({ id, sort_order: index }));
 
   for (const { id, sort_order } of updates) {

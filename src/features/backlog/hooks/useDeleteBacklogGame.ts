@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteGameFromBacklog } from "../utils/deleteGameFromBacklog";
+import { deleteGameFromBacklog } from "../services/backlog-games.service";
 import { BACKLOG_QUERY_KEY, PLAYING_QUERY_KEY } from "../../playing/constants";
 
 export const useDeleteBacklogGame = () => {

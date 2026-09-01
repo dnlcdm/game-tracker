@@ -1,7 +1,11 @@
 import { useFreeGames } from "./hooks/UseFreeGames";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, type ReactNode } from "react";
 
-export const FreeGameCard = () => {
+interface FreeGameCardProps {
+  skeleton?: ReactNode;
+}
+
+export const FreeGameCard = ({ skeleton }: FreeGameCardProps) => {
   const { data: games = [], isLoading, isError } = useFreeGames();
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -21,7 +25,8 @@ export const FreeGameCard = () => {
     return () => window.removeEventListener("resize", checkOverflow);
   }, [games]);
 
-  if (isLoading || isError || games.length === 0) return null;
+  if (isLoading) return skeleton ?? null;
+  if (isError || games.length === 0) return null;
 
   const tickerItems = shouldAnimate ? [...games, ...games, ...games] : games;
 
@@ -44,11 +49,10 @@ export const FreeGameCard = () => {
         >
           <div
             ref={contentRef}
-            className={`flex items-center py-2 md:py-3 ${
-              shouldAnimate
+            className={`flex items-center py-2 md:py-3 ${shouldAnimate
                 ? "animate-marquee hover:[animation-play-state:paused]"
                 : "justify-start"
-            }`}
+              }`}
             style={{
               width: shouldAnimate ? "max-content" : "auto",
             }}

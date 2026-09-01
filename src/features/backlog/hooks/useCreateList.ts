@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { GAME_LISTS_QUERY_KEY } from "../../playing/constants";
-import { createList } from "../utils/listUtils";
+import { createList } from "../services/lists.service";
 import type { IGameList } from "../types/list.types";
 
 export function useCreateList() {

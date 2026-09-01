@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { GAME_LISTS_QUERY_KEY } from "../../playing/constants";
-import { renameList } from "../utils/listUtils";
+import { renameList } from "../services/lists.service";
 
 export function useRenameList() {
   const queryClient = useQueryClient();

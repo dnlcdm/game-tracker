@@ -3,7 +3,7 @@ import {
   GAME_LISTS_QUERY_KEY,
   GAME_LIST_ITEMS_QUERY_KEY,
 } from "../../playing/constants";
-import { deleteList } from "../utils/listUtils";
+import { deleteList } from "../services/lists.service";
 
 export function useDeleteList() {
   const queryClient = useQueryClient();

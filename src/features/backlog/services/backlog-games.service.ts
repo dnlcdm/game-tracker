@@ -14,3 +14,16 @@ export const getBacklogGames = async (): Promise<IGamesSupabase[]> => {
 
   return data;
 };
+
+export const deleteGameFromBacklog = async (gameId: number): Promise<void> => {
+  const { error } = await supabase
+    .from("games_backlog")
+    .delete()
+    .eq("id", gameId);
+
+  if (error) {
+    throw new Error(
+      error.message || `Falha ao deletar o jogo de ID: ${gameId}`,
+    );
+  }
+};

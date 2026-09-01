@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getBacklogGames } from "../utils/getBacklogGames";
+import { getBacklogGames } from "../services/backlog-games.service";
 import type { IGamesSupabase } from "../../search-games/types/games.types";
 import { BACKLOG_QUERY_KEY } from "../../playing/constants";
 

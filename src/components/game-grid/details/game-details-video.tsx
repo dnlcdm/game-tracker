@@ -91,7 +91,7 @@ const ScreenshotSwipe = ({ screenshots, initialIndex }: SwipeProps) => {
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.4}
@@ -133,11 +133,10 @@ const ScreenshotSwipe = ({ screenshots, initialIndex }: SwipeProps) => {
                   setDragDir(i > index ? "left" : "right");
                   setIndex(i);
                 }}
-                className={`h-1.5 rounded-full transition-all duration-200 ${
-                  i === index
+                className={`h-1.5 rounded-full transition-all duration-200 ${i === index
                     ? "w-6 bg-white"
                     : "w-1.5 bg-white/30 hover:bg-white/50"
-                }`}
+                  }`}
                 aria-label={`Jump to image ${i + 1}`}
               />
             ))}
@@ -175,12 +174,12 @@ export const GameDetailsMediaGrid = ({
   const tiles = useMemo(() => {
     const out: Array<
       | {
-          type: "video";
-          key: string;
-          title: string;
-          thumb: string;
-          youtubeId: string;
-        }
+        type: "video";
+        key: string;
+        title: string;
+        thumb: string;
+        youtubeId: string;
+      }
       | { type: "shot"; key: string; url: string; idx: number }
     > = [];
 
