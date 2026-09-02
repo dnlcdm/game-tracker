@@ -150,15 +150,6 @@ const FullscreenLightbox: FC<LightboxProps> = ({ src, alt, onClose }) => {
         <CloseIcon fontSize="small" className="text-white" />
       </button>
 
-      <motion.span
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[11px] font-medium tracking-wide text-white/50"
-        initial={{ opacity: 1 }}
-        animate={{ opacity: 0 }}
-        transition={{ delay: 2.5, duration: 0.6 }}
-      >
-        Pinça para zoom · Toque duplo para ampliar
-      </motion.span>
-
       <motion.img
         ref={imgRef}
         src={src}

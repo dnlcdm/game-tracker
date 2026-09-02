@@ -44,22 +44,18 @@ export const authIgdbRequest = (apiClient: AxiosInstance) =>
       const igdbToken = await ensureIgdbToken(apiClient);
 
       if (igdbToken) {
-        request.headers.Authorization = `Bearer ${igdbToken}`;
+        request.headers["x-igdb-token"] = `Bearer ${igdbToken}`;
       }
-
-      return request;
     }
 
     const hasAuthorizationHeader = Boolean(request.headers.Authorization);
-    if (hasAuthorizationHeader) {
-      return request;
-    }
+    if (!hasAuthorizationHeader) {
+      const { data } = await supabase.auth.getSession();
+      const supabaseToken = data.session?.access_token;
 
-    const { data } = await supabase.auth.getSession();
-    const supabaseToken = data.session?.access_token;
-
-    if (supabaseToken) {
-      request.headers.Authorization = `Bearer ${supabaseToken}`;
+      if (supabaseToken) {
+        request.headers.Authorization = `Bearer ${supabaseToken}`;
+      }
     }
 
     return request;
@@ -102,7 +98,7 @@ export const authIgdbResponse = (apiClient: AxiosInstance) =>
           const newToken = await ensureIgdbToken(apiClient, true);
 
           if (newToken) {
-            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            originalRequest.headers["x-igdb-token"] = `Bearer ${newToken}`;
 
             return apiClient(originalRequest);
           }
