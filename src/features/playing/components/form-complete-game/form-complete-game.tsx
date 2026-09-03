@@ -64,7 +64,7 @@ export const FinishGameModal = ({
           <FinishGameHeader game={game} onClose={handleClose} />
         </div>
 
-        <div className="flex-1 overflow-y-auto custom-scrollbar bg-[#0B0F1A]">
+        <div className="flex-1 overflow-y-auto overscroll-contain custom-scrollbar bg-[#0B0F1A]">
           <div className="w-full">
             <FormProvider {...formMethods}>
               <FinishGameFormFields

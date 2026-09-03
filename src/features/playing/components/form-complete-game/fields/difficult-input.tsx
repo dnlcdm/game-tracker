@@ -35,7 +35,7 @@ export const DifficultyInput = () => {
 
   return (
     <FieldWrapper label="Dificuldade" error={fieldError}>
-      <div className="flex flex-col gap-2 p-3 bg-white/5 border border-white/10 rounded-lg">
+      <div className="flex flex-col gap-2 p-3.5 sm:p-3 bg-white/5 border border-white/10 rounded-lg">
         <div className="flex items-center justify-between">
           <Controller<FinishGameFormData, "difficult">
             name="difficult"
@@ -60,7 +60,7 @@ export const DifficultyInput = () => {
             </span>
           )}
         </div>
-        <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">
+        <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold">
           {displayValue > 0
             ? `Nível de desafio: ${displayValue}/5`
             : "Como foi o desafio?"}

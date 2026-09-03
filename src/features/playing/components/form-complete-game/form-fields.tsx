@@ -19,7 +19,7 @@ export const FinishGameFormFields = ({
   const { control } = useFormContext<FinishGameFormData>();
 
   return (
-    <form className="p-5 sm:p-6 space-y-6 bg-[#0B0F1A]" onSubmit={onSubmit}>
+    <form className="p-5 sm:p-6 space-y-5 sm:space-y-6 bg-[#0B0F1A]" onSubmit={onSubmit}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="flex gap-2 w-full">
           <TimeInputField />
@@ -33,14 +33,14 @@ export const FinishGameFormFields = ({
               <input
                 {...field}
                 type="date"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-base sm:text-sm text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 sm:py-2.5 text-base sm:text-sm text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all"
               />
             </FieldWrapper>
           )}
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         <CustomSelect
           name="platform_used"
           label="Plataforma"
@@ -71,7 +71,7 @@ export const FinishGameFormFields = ({
             <input
               {...field}
               type="text"
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-base sm:text-sm text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all"
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 sm:py-2.5 text-base sm:text-sm text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all"
             />
           </FieldWrapper>
         )}
@@ -91,11 +91,11 @@ export const FinishGameFormFields = ({
         )}
       />
 
-      <div className="pt-2 pb-4 sm:pb-0">
+      <div className="sticky bottom-0 bg-[#0B0F1A] pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] sm:relative sm:pt-2 sm:pb-0 -mx-5 px-5 sm:mx-0 sm:px-0 border-t border-white/5 sm:border-0">
         <button
           type="submit"
           disabled={isSaving}
-          className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-gray-800 text-white font-black py-4 rounded-lg transition-all active:scale-[0.96] shadow-lg shadow-blue-900/20 uppercase tracking-widest text-xs"
+          className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-gray-800 text-white font-black py-4 rounded-xl sm:rounded-lg transition-all active:scale-[0.97] shadow-lg shadow-blue-900/20 uppercase tracking-widest text-xs"
         >
           {isSaving ? "Enviando..." : "Salvar"}
         </button>

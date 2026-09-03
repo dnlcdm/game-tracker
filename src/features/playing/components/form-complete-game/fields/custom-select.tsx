@@ -32,7 +32,7 @@ export const CustomSelect = ({
           <div className="relative group">
             <select
               {...field}
-              className="w-full bg-gray-900 border border-gray-800 rounded-lg px-3 py-2 text-sm text-white focus:ring-1 focus:ring-blue-500 outline-none appearance-none"
+              className="w-full bg-white/5 border border-gray-800 rounded-lg px-3 py-3 sm:py-2 text-base sm:text-sm text-white focus:ring-1 focus:ring-blue-500 outline-none appearance-none"
             >
               <option value="" disabled className="bg-gray-900">
                 Selecione...

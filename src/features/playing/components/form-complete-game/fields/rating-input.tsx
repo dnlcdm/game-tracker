@@ -62,7 +62,7 @@ export const RatingInput = () => {
               {currentRating > 0 ? currentRating * 2 : "-"}
             </span>
           </div>
-          <p className="hidden md:block text-[10px] text-gray-500 uppercase font-bold">
+          <p className="hidden md:block text-xs text-gray-500 uppercase font-semibold">
             {displayValue > 0
               ? RATING_LABELS[displayValue]
               : "Selecione uma nota"}
@@ -94,10 +94,10 @@ export const RatingInput = () => {
                 }}
                 sx={{
                   color: "#eab308",
-                  height: 4,
+                  height: 6,
                   "& .MuiSlider-thumb": {
-                    width: 18,
-                    height: 18,
+                    width: 24,
+                    height: 24,
                     backgroundColor: "#eab308",
                     border: "4px solid #1a1a1a",
                     "&:hover, &.Mui-focusVisible": {

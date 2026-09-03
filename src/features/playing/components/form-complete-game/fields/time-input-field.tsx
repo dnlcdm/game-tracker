@@ -21,15 +21,15 @@ export const FieldWrapper = ({
   error,
 }: FieldWrapperProps) => (
   <div className="space-y-1.5 flex-1">
-    <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-2">
+    <label className="text-xs font-semibold uppercase tracking-wider text-gray-500 flex items-center gap-1.5">
       {Icon && <Icon size={12} className="text-blue-500" />}
       {label}
     </label>
     {children}
     {error && (
-      <span className="text-[10px] absolute text-red-500 text-nowrap font-medium">
+      <p className="text-xs text-red-400 font-medium mt-1">
         {error}
-      </span>
+      </p>
     )}
   </div>
 );
@@ -78,7 +78,7 @@ export const TimeInputField = () => {
                 inputMode="numeric"
                 onKeyDown={handleNumericKeyDown}
                 placeholder="00"
-                className=" [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [appearance:textfield] w-full bg-white/5 border border-white/10 rounded-lg ml px-3 py-2.5 text-sm text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all placeholder:text-gray-700"
+                className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [appearance:textfield] w-full bg-white/5 border border-white/10 rounded-lg px-3 py-3 sm:py-2.5 text-base sm:text-sm text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all placeholder:text-gray-700"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-black text-gray-600 pointer-events-none group-focus-within:text-blue-500">
                 H
@@ -118,7 +118,7 @@ export const TimeInputField = () => {
                 inputMode="numeric"
                 onKeyDown={handleNumericKeyDown}
                 placeholder="00"
-                className=" [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [appearance:textfield] w-full bg-white/5 border border-white/10 rounded-lg ml px-3 py-2.5 text-sm text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all placeholder:text-gray-700"
+                className="[&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [appearance:textfield] w-full bg-white/5 border border-white/10 rounded-lg px-3 py-3 sm:py-2.5 text-base sm:text-sm text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all placeholder:text-gray-700"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-black text-gray-600 pointer-events-none group-focus-within:text-blue-500">
                 M
