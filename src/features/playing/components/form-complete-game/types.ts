@@ -17,7 +17,7 @@ export const finishGameSchema = z.object({
   co_op_friend: z.string().max(50, "Nome muito longo").optional(),
   review: z
     .string()
-    .max(500, "A review deve ter no maximo 500 caracteres")
+    .max(3000, "A review deve ter no maximo 3000 caracteres")
     .optional(),
 });
 
