@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import CloseIcon from "@mui/icons-material/Close";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
+import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
 
 type Trailer = {
   name?: string | null;
@@ -134,8 +135,8 @@ const ScreenshotSwipe = ({ screenshots, initialIndex }: SwipeProps) => {
                   setIndex(i);
                 }}
                 className={`h-1.5 rounded-full transition-all duration-200 ${i === index
-                    ? "w-6 bg-white"
-                    : "w-1.5 bg-white/30 hover:bg-white/50"
+                  ? "w-6 bg-white"
+                  : "w-1.5 bg-white/30 hover:bg-white/50"
                   }`}
                 aria-label={`Jump to image ${i + 1}`}
               />
@@ -144,7 +145,7 @@ const ScreenshotSwipe = ({ screenshots, initialIndex }: SwipeProps) => {
         )}
       </div>
 
-      <div className="p-3 border-t border-white/10 flex items-center justify-center">
+      <div className="p-3 border-t border-white/10 flex items-center justify-center bg-gray-900 rounded-b-2xl">
         <div className="text-xs font-black uppercase tracking-widest text-gray-400">
           {index + 1} / {screenshots.length}
         </div>
@@ -203,16 +204,20 @@ export const GameDetailsMediaGrid = ({
     return out.slice(0, maxTiles);
   }, [hasTrailers, hasShots, trailers, screenshots, maxTiles]);
 
-  if (!hasTrailers && !hasShots) return null;
-  return (
-    <div className="space-y-2">
-      <div className="flex items-center gap-2 opacity-70">
-        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
-          Mídia
-        </span>
+  if (!hasTrailers && !hasShots) {
+    return (
+      <div className="w-full flex-col flex items-center justify-center gap-4 bg-slate-900/30 border border-slate-700/50 rounded-xl px-4 py-10 text-center">
+        <div className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-800/80 mb-2">
+          <PhotoLibraryOutlinedIcon className="text-slate-500" fontSize="small" />
+        </div>
+        <p className="text-sm font-semibold text-slate-300">Nenhuma mídia encontrada</p>
       </div>
+    );
+  }
 
-      <div className="grid grid-cols-2 gap-2">
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
         {tiles.map((tile) => {
           if (tile.type === "video") {
             return (
@@ -223,7 +228,7 @@ export const GameDetailsMediaGrid = ({
                   setActiveTrailerIndex(0);
                   setVideoOpen(true);
                 }}
-                className="relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] transition-colors"
+                className="relative overflow-hidden rounded-md border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] transition-colors"
               >
                 <div className="relative aspect-video">
                   <img
@@ -269,7 +274,7 @@ export const GameDetailsMediaGrid = ({
               key={tile.key}
               type="button"
               onClick={() => setShotOpen({ idx: tile.idx })}
-              className="relative overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] transition-colors"
+              className="relative overflow-hidden rounded-md border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] transition-colors"
             >
               <div className="relative aspect-video">
                 <img

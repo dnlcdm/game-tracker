@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { IGamesSupabase } from "../../../features/search-games/types/games.types";
 import CloseIcon from "@mui/icons-material/Close";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
@@ -10,6 +11,7 @@ import { GameDetailsActions } from "./game-details-actions";
 import { GameDetailsTimeSection } from "./game-details-time-section";
 import { GameDetailsPlatforms } from "./game-details-platforms";
 import { GameDetailsMediaGrid } from "./game-details-video";
+import { GameDetailsDescription } from "./game-details-description";
 
 interface Props {
   game: IGamesSupabase;
@@ -17,8 +19,12 @@ interface Props {
   actions: IGameAction[];
 }
 
+const TABS = ["Mídia", "Tempo", "Descrição"] as const;
+type Tab = (typeof TABS)[number];
+
 export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
   const { isPending, data } = useHltb(game.name);
+  const [activeTab, setActiveTab] = useState<Tab>("Mídia");
 
   const hltb = data?.[0];
   const times = hltb?.times;
@@ -61,15 +67,60 @@ export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
 
         <GameDetailsCover game={game} />
 
-        <div className="min-h-0 w-full p-6 md:p-10 flex flex-col gap-6 md:gap-8 overflow-y-auto custom-scrollbar md:border-l md:border-white/10">
-          <GameDetailsMediaGrid
-            trailers={game.trailers}
-            screenshots={game.screenshots}
-          />
-          <GameDetailsTimeSection rows={rows} isLoading={isPending} />
-          <GameDetailsActions actions={actions} game={game} onClose={onClose} />
+        <div className="min-h-0 w-full flex flex-col overflow-hidden md:border-l md:border-white/10">
+          <div className="flex-none bg-gray-950/80 backdrop-blur-sm border-b border-white/10">
+            <div className="flex px-6 md:px-10 pt-1 gap-1">
+              {TABS.map((tab) => {
+                const isDisabled =
+                  (tab === "Descrição" && !game.review) ||
+                  (tab === "Tempo" && !isPending && !data?.length);
 
-          <GameDetailsPlatforms platforms={game.platforms} />
+                return (
+                  <button
+                    key={tab}
+                    type="button"
+                    disabled={isDisabled}
+                    onClick={() => !isDisabled && setActiveTab(tab)}
+                    className={`relative px-4 py-2.5 text-xs font-semibold uppercase tracking-wider transition-colors ${isDisabled
+                        ? "text-gray-600 opacity-50 cursor-not-allowed"
+                        : activeTab === tab
+                          ? "text-blue-400"
+                          : "text-gray-500 hover:text-gray-300"
+                      }`}
+                    title={isDisabled ? `Sem dados para ${tab}` : ""}
+                  >
+                    {tab}
+                    {activeTab === tab && !isDisabled && (
+                      <span className="absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-blue-500" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-10 flex flex-col gap-6 md:gap-8">
+            {activeTab === "Mídia" && (
+              <GameDetailsMediaGrid
+                trailers={game.trailers}
+                screenshots={game.screenshots}
+              />
+            )}
+
+            {activeTab === "Tempo" && (
+              <GameDetailsTimeSection rows={rows} isLoading={isPending} />
+            )}
+
+            {activeTab === "Descrição" && (
+              <GameDetailsDescription gameDescription={game.review} />
+            )}
+          </div>
+          <div className="px-6 md:px-10 py-4">
+            <GameDetailsPlatforms platforms={game.platforms} />
+          </div>
+          <div className="flex-none bg-gray-950/90 backdrop-blur-sm border-t border-white/10 px-6 md:px-10 py-3">
+            <GameDetailsActions actions={actions} game={game} onClose={onClose} />
+          </div>
         </div>
       </div>
     </div>
