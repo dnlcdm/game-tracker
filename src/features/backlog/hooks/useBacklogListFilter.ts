@@ -15,11 +15,15 @@ export const useBacklogListFilter = ({
 }: UseBacklogListFilterParams) => {
   const gameCountByList = useMemo(() => {
     const counts: Record<string, number> = {};
+    const validGameIds = new Set(games?.map((g) => g.id) ?? []);
+
     for (const item of listItems) {
-      counts[item.list_id] = (counts[item.list_id] ?? 0) + 1;
+      if (validGameIds.has(item.game_id)) {
+        counts[item.list_id] = (counts[item.list_id] ?? 0) + 1;
+      }
     }
     return counts;
-  }, [listItems]);
+  }, [listItems, games]);
 
   const uncategorizedCount = useMemo(() => {
     if (!games) return 0;
