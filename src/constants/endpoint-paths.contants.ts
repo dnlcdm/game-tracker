@@ -5,4 +5,5 @@ export const PATHS = {
   IGDB_TOKEN: baseUrl + "/get-token",
   FREE_GAME_EPIC: baseUrl + "/hyper-api",
   GAME_TIME_TO_BEAT: baseUrl + "/game-time",
+  AI_GAME_INSIGHTS: baseUrl + "/ai-game-insights",
 };

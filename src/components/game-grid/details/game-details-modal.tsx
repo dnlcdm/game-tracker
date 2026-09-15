@@ -12,6 +12,7 @@ import { GameDetailsTimeSection } from "./game-details-time-section";
 import { GameDetailsPlatforms } from "./game-details-platforms";
 import { GameDetailsMediaGrid } from "./game-details-video";
 import { GameDetailsDescription } from "./game-details-description";
+import { useFetchCachedTranslation } from "../../../hooks/useFetchCachedTranslation";
 
 interface Props {
   game: IGamesSupabase;
@@ -24,6 +25,7 @@ type Tab = (typeof TABS)[number];
 
 export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
   const { isPending, data } = useHltb(game.name);
+  const { data: cachedTranslation } = useFetchCachedTranslation(game.id);
   const [activeTab, setActiveTab] = useState<Tab>("Mídia");
 
   const hltb = data?.[0];
@@ -82,10 +84,10 @@ export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
                     disabled={isDisabled}
                     onClick={() => !isDisabled && setActiveTab(tab)}
                     className={`relative px-4 py-2.5 text-xs font-semibold uppercase tracking-wider transition-colors ${isDisabled
-                        ? "text-gray-600 opacity-50 cursor-not-allowed"
-                        : activeTab === tab
-                          ? "text-blue-400"
-                          : "text-gray-500 hover:text-gray-300"
+                      ? "text-gray-600 opacity-50 cursor-not-allowed"
+                      : activeTab === tab
+                        ? "text-blue-400"
+                        : "text-gray-500 hover:text-gray-300"
                       }`}
                     title={isDisabled ? `Sem dados para ${tab}` : ""}
                   >
@@ -112,7 +114,11 @@ export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
             )}
 
             {activeTab === "Descrição" && (
-              <GameDetailsDescription gameDescription={game.review} />
+              <GameDetailsDescription
+                gameId={game.id}
+                gameDescription={game.review}
+                cachedTranslation={cachedTranslation ?? null}
+              />
             )}
           </div>
           <div className="px-6 md:px-10 py-4">
