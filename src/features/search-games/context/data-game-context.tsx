@@ -13,6 +13,8 @@ type ContextType = {
   setParams: Dispatch<SetStateAction<Record<string, string>>>;
   observerTarget: RefObject<HTMLDivElement | null>;
   hasMore: boolean;
+  isMobileFilterOpen: boolean;
+  setIsMobileFilterOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 export const DataGameContext = createContext<ContextType | undefined>(

@@ -1,5 +1,4 @@
 import { useState, type FC } from "react";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import type {
   FilterGroup as FilterGroupType,
   FilterState,
@@ -13,6 +12,8 @@ interface FilterSidebarProps {
   hasChanges: boolean;
   activeCount: number;
   draftCount: number;
+  isMobileOpen?: boolean;
+  onCloseMobile?: () => void;
   onUpdateFilter: (
     group: FilterGroupType,
     value: string,
@@ -33,14 +34,17 @@ export const FilterSidebar: FC<FilterSidebarProps> = ({
   hasChanges,
   activeCount,
   draftCount,
+  isMobileOpen,
+  onCloseMobile,
   onUpdateFilter,
   onUpdateRange,
   onApply,
   onReset,
 }) => {
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
 
-  const closeMobile = () => setIsMobileOpen(false);
+  const isOpen = isMobileOpen ?? internalIsOpen;
+  const closeMobile = onCloseMobile ?? (() => setInternalIsOpen(false));
 
   const handleApply = () => {
     onApply();
@@ -56,25 +60,8 @@ export const FilterSidebar: FC<FilterSidebarProps> = ({
 
   return (
     <>
-      <div className="relative lg:hidden">
-        <button
-          type="button"
-          onClick={() => setIsMobileOpen(true)}
-          className="absolute right-2 top-1.5 z-20 flex cursor-pointer items-center rounded-lg bg-slate-900/80 px-2 py-1 text-slate-200 transition-colors hover:bg-slate-800"
-        >
-          <span className="relative">
-            <FilterListIcon className="h-5 w-5 text-blue-400" />
-            {activeCount > 0 && (
-              <span className="absolute -bottom-1 -right-1 rounded-full bg-blue-500/20 px-[6px] py-[1px] text-[10px] font-bold text-blue-300">
-                {activeCount}
-              </span>
-            )}
-          </span>
-        </button>
-      </div>
-
       <MobileFilterDrawer
-        isOpen={isMobileOpen}
+        isOpen={isOpen}
         onClose={closeMobile}
         draftCount={draftCount}
         onClear={onReset}
@@ -98,10 +85,9 @@ export const FilterSidebar: FC<FilterSidebarProps> = ({
             <button
               className={`
                 mt-3 w-auto rounded-full px-4 py-3 text-xs font-semibold shadow-lg transition-all sm:hidden sm:rounded-sm
-                ${
-                  draftCount > 0
-                    ? "bg-blue-600 text-white ring-1 ring-blue-400/50 shadow-blue-500/20 hover:bg-blue-500"
-                    : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+                ${draftCount > 0
+                  ? "bg-blue-600 text-white ring-1 ring-blue-400/50 shadow-blue-500/20 hover:bg-blue-500"
+                  : "bg-slate-800 text-slate-400 hover:bg-slate-700"
                 }
               `}
               disabled={draftCount === 0}
@@ -115,10 +101,9 @@ export const FilterSidebar: FC<FilterSidebarProps> = ({
               disabled={!canApply}
               className={`
                 mt-3 w-1/2 rounded-full px-4 py-3 text-nowrap text-xs font-semibold shadow-lg transition-all sm:w-full sm:rounded-sm
-                ${
-                  canApply
-                    ? "bg-blue-600 text-white ring-1 ring-blue-400/50 shadow-blue-500/20 hover:bg-blue-500"
-                    : "bg-slate-800 text-slate-400 hover:bg-slate-700"
+                ${canApply
+                  ? "bg-blue-600 text-white ring-1 ring-blue-400/50 shadow-blue-500/20 hover:bg-blue-500"
+                  : "bg-slate-800 text-slate-400 hover:bg-slate-700"
                 }
               `}
             >

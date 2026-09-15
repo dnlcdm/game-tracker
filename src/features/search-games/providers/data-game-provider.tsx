@@ -16,6 +16,7 @@ export const DataGameProvider = ({ children }: PropsWithChildren) => {
   const [results, setResults] = useState<IGames[]>([]);
   const observerTarget = useRef<HTMLDivElement>(null);
   const [hasMore, setHasMore] = useState(true);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   useEffect(() => {
     if (data?.results) {
@@ -42,6 +43,8 @@ export const DataGameProvider = ({ children }: PropsWithChildren) => {
         params,
         observerTarget,
         hasMore,
+        isMobileFilterOpen,
+        setIsMobileFilterOpen,
       }}
     >
       {children}

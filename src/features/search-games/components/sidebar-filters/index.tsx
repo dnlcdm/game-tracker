@@ -13,7 +13,7 @@ const scrollToTop = () => {
 };
 
 export const SidebarFilters: FC = () => {
-  const { params, setParams } = useDataGame();
+  const { params, setParams, isMobileFilterOpen, setIsMobileFilterOpen } = useDataGame();
 
   const { filters, setFilters, updateFilter, updateRange, clearFilters, hasChanges } =
     useFilterState(params);
@@ -51,6 +51,8 @@ export const SidebarFilters: FC = () => {
       hasChanges={hasChanges}
       activeCount={activeCount}
       draftCount={draftCount}
+      isMobileOpen={isMobileFilterOpen}
+      onCloseMobile={() => setIsMobileFilterOpen(false)}
       onUpdateFilter={updateFilter}
       onUpdateRange={updateRange}
       onApply={handleApply}
