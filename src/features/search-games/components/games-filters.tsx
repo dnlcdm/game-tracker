@@ -70,7 +70,17 @@ export const GamesFilters: FC = () => {
 
   const handleClear = useCallback(() => {
     setInputValue("");
-    setParams((prev) => ({ ...prev, search: "", page: FIRST_PAGE }));
+    setParams((prev) => {
+      setTimeout(() => {
+        const mainContainer = document.querySelector("main");
+        if (mainContainer) {
+          mainContainer.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }, 50);
+      return { ...prev, search: "", page: FIRST_PAGE };
+    });
   }, [setParams]);
 
   const handleKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
