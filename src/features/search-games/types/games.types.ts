@@ -10,6 +10,17 @@ export interface IGames {
     name: string;
     abbr: string;
   }[];
+  websites?: {
+    id: number;
+    category: number;
+    url: string;
+  }[];
+  external_games?: {
+    id: number;
+    category: number;
+    uid: string;
+    url: string;
+  }[];
 }
 
 export interface IGamesSupabase extends IGames {

@@ -1,5 +1,6 @@
 /// <reference types="vite-client" />
 declare module "*.css";
+declare module "*.svg";
 
 interface ImportMetaEnv {
   readonly VITE_ENVIRONMENT: string;

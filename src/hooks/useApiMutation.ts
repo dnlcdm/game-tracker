@@ -2,23 +2,24 @@ import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import apiClient from "../api/api-client";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
-type Props = {
+type Props<TData, TError, TVariables, TContext = unknown> = {
   endpoint: string;
   method: Exclude<HttpMethod, "GET">;
-  options?: UseMutationOptions<unknown, unknown, unknown>;
-  headers: Record<string, string>;
+  options?: UseMutationOptions<TData, TError, TVariables, TContext>;
+  headers?: Record<string, string>;
 };
 
 export const useApiMutation = <
   TData = unknown,
   TError = unknown,
   TVariables = unknown,
+  TContext = unknown,
 >({
   endpoint,
   method,
   options,
   headers,
-}: Props) => {
+}: Props<TData, TError, TVariables, TContext>) => {
   const mutationFn = async (variables: TVariables) => {
     const { data } = await apiClient({
       url: endpoint,
@@ -29,7 +30,7 @@ export const useApiMutation = <
     return data;
   };
 
-  return useMutation<TData, TError, TVariables>({
+  return useMutation<TData, TError, TVariables, TContext>({
     mutationFn,
     retry: 0,
     ...options,

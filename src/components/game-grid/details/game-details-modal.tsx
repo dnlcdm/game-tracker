@@ -13,6 +13,9 @@ import { GameDetailsPlatforms } from "./game-details-platforms";
 import { GameDetailsMediaGrid } from "./game-details-video";
 import { GameDetailsDescription } from "./game-details-description";
 import { useFetchCachedTranslation } from "../../../hooks/useFetchCachedTranslation";
+import { GameDetailsPrice } from "./game-details-price";
+import { useFetchGamePricing } from "../hooks/useFetchGamePricing";
+import { extractPsnId } from "./pricing/psn.utils";
 
 interface Props {
   game: IGamesSupabase;
@@ -20,13 +23,17 @@ interface Props {
   actions: IGameAction[];
 }
 
-const TABS = ["Mídia", "Tempo", "Descrição"] as const;
+const TABS = ["Mídia", "Tempo", "Descrição", "Preços"] as const;
 type Tab = (typeof TABS)[number];
 
 export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
   const { isPending, data } = useHltb(game.name);
   const { data: cachedTranslation } = useFetchCachedTranslation(game.id);
   const [activeTab, setActiveTab] = useState<Tab>("Mídia");
+
+  const finalPsnId = extractPsnId(game);
+  const { data: pricingData, isPending: isQueryPending } = useFetchGamePricing(finalPsnId);
+  const isLoadingPricing = isQueryPending && !!finalPsnId;
 
   const hltb = data?.[0];
   const times = hltb?.times;
@@ -75,7 +82,8 @@ export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
               {TABS.map((tab) => {
                 const isDisabled =
                   (tab === "Descrição" && !game.review) ||
-                  (tab === "Tempo" && !isPending && !data?.length);
+                  (tab === "Tempo" && !isPending && !data?.length) ||
+                  (tab === "Preços" && !finalPsnId);
 
                 return (
                   <button
@@ -119,6 +127,10 @@ export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
                 gameDescription={game.review}
                 cachedTranslation={cachedTranslation ?? null}
               />
+            )}
+
+            {activeTab === "Preços" && (
+              <GameDetailsPrice data={pricingData || null} isLoading={isLoadingPricing} searchedId={finalPsnId} />
             )}
           </div>
           <div className="px-6 md:px-10 py-4">
