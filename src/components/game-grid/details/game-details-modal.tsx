@@ -72,7 +72,7 @@ export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
 
       <div className="relative w-full h-full md:h-[85vh] md:max-w-7xl bg-gray-950 md:border md:border-white/10 md:rounded-2xl shadow-2xl overflow-hidden grid grid-rows-[auto_1fr] md:grid-rows-1 md:grid-cols-[0.45fr_0.55fr] animate-in md:zoom-in-95 duration-300">
         <button
-          className="absolute z-10 top-4 right-4 flex items-center justify-center bg-slate-800/50 hover:bg-slate-700 p-1 rounded-full transition-colors"
+          className="absolute z-10 top-4 right-4 md:hidden flex items-center justify-center bg-slate-800/50 hover:bg-slate-700 p-1 rounded-full transition-colors"
           onClick={onClose}
         >
           <CloseIcon data-testid="CloseIcon" fontSize="small" />
@@ -81,7 +81,7 @@ export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
         <GameDetailsCover game={game} />
 
         <div className="min-h-0 w-full flex flex-col overflow-hidden md:border-l md:border-white/10">
-          <div className="flex-none bg-gray-950/80 backdrop-blur-sm border-b border-white/10">
+          <div className="flex-none bg-gray-950/80 backdrop-blur-sm border-b border-white/10 flex items-center justify-between pr-4 md:pr-6">
             <div className="flex px-6 md:px-10 pt-1 gap-1">
               {TABS.map((tab) => {
                 const isDisabled =
@@ -111,6 +111,14 @@ export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
                 );
               })}
             </div>
+
+            <button
+              className="hidden md:flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 p-2 rounded-full transition-colors cursor-pointer"
+              onClick={onClose}
+              aria-label="Fechar modal"
+            >
+              <CloseIcon data-testid="CloseIcon" fontSize="small" />
+            </button>
           </div>
 
           <div className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-10 flex flex-col gap-6 md:gap-8">
