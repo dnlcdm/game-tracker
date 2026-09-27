@@ -1,3 +1,4 @@
+import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import type { PsnGameData } from "../hooks/useFetchGamePricing";
@@ -9,9 +10,21 @@ interface Props {
     data: PsnGameData | null;
     isLoading: boolean;
     searchedId?: string | null;
+    igdbUrl?: string | null;
 }
 
-export const GameDetailsPrice = ({ data, isLoading, searchedId }: Props) => {
+export const GameDetailsPrice = ({ data, isLoading, searchedId, igdbUrl }: Props) => {
+    const [monthsRange, setMonthsRangeState] = useState<1 | 3 | 6>(() => {
+        const saved = localStorage.getItem("marvel-tracker:chart-range");
+        if (saved === "1" || saved === "3" || saved === "6") return Number(saved) as 1 | 3 | 6;
+        return 6;
+    });
+
+    const setMonthsRange = (range: 1 | 3 | 6) => {
+        setMonthsRangeState(range);
+        localStorage.setItem("marvel-tracker:chart-range", range.toString());
+    };
+
     if (isLoading) {
         return (
             <div className="flex justify-center items-center py-24">
@@ -37,8 +50,8 @@ export const GameDetailsPrice = ({ data, isLoading, searchedId }: Props) => {
         );
     }
 
-    const stores = buildStoreList(data);
-    const { points, lines } = buildChartData(data);
+    const stores = buildStoreList(data, igdbUrl);
+    const { points, lines, ticks } = buildChartData(data, monthsRange);
 
     return (
         <div className="flex flex-col gap-4 w-full">
@@ -49,7 +62,13 @@ export const GameDetailsPrice = ({ data, isLoading, searchedId }: Props) => {
             </div>
 
             {points.length > 0 && (
-                <PriceHistoryChart data={points} lines={lines} />
+                <PriceHistoryChart
+                    data={points}
+                    lines={lines}
+                    ticks={ticks}
+                    range={monthsRange}
+                    onRangeChange={setMonthsRange}
+                />
             )}
         </div>
     );

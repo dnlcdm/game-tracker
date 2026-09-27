@@ -31,9 +31,13 @@ export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
   const { data: cachedTranslation } = useFetchCachedTranslation(game.id);
   const [activeTab, setActiveTab] = useState<Tab>("Mídia");
 
-  const finalPsnId = extractPsnId(game);
-  const { data: pricingData, isPending: isQueryPending } = useFetchGamePricing(finalPsnId);
-  const isLoadingPricing = isQueryPending && !!finalPsnId;
+  const psnTarget = extractPsnId(game);
+  const finalPsnId = psnTarget?.id || null;
+  const { data: pricingData, isPending: isQueryPending } = useFetchGamePricing(psnTarget);
+  const isLoadingPricing = isQueryPending && !!psnTarget;
+
+  const igdbUrl = game.websites?.find((w) => w.url?.includes("store.playstation.com"))?.url ||
+    game.external_games?.find((e) => e.url?.includes("store.playstation.com"))?.url || null;
 
   const hltb = data?.[0];
   const times = hltb?.times;
@@ -130,7 +134,7 @@ export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
             )}
 
             {activeTab === "Preços" && (
-              <GameDetailsPrice data={pricingData || null} isLoading={isLoadingPricing} searchedId={finalPsnId} />
+              <GameDetailsPrice data={pricingData || null} isLoading={isLoadingPricing} searchedId={finalPsnId} igdbUrl={igdbUrl} />
             )}
           </div>
           <div className="px-6 md:px-10 py-4">

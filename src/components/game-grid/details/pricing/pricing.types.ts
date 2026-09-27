@@ -19,6 +19,7 @@ export interface PriceHistoryPoint {
   id: string; 
   date: string;
   fullDate: string;
+  timestamp: number;
   [storeName: string]: number | string | null;
 }
 

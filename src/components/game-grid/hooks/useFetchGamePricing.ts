@@ -1,41 +1,41 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../../../services/supabase-client.service";
+import type { PsnIdResult } from "../details/pricing/psn.utils";
 
 export type PsnGameData = {
     id: string;
-    psn_concept_id: string;
-    psn_product_id: string | null;
-    name: string;
-    base_price: number | null;
-    discounted_price: number | null;
-    is_free: boolean;
-    discount_badge: string | null;
-    upsell_text: string | null;
-    psn_prices?: {
-        base_price: number | null;
-        discounted_price: number | null;
+    type: "product" | "concept";
+    psn_prices_history: {
+        base_price_numeric: number | null;
+        discounted_price_numeric: number | null;
         is_free: boolean;
-        snapshot_timestamp: string;
+        scraped_at: string;
+        discount_text: string | null;
+        upsell_text: string | null;
     }[];
 };
 
-const fetchGamePricing = async (psnConceptId: string): Promise<PsnGameData | null> => {
+const fetchGamePricing = async (target: NonNullable<PsnIdResult>): Promise<PsnGameData | null> => {
   const { data, error } = await supabase
-    .from("psn_games")
-    .select("*, psn_prices(*)")
-    .or(`psn_concept_id.eq.${psnConceptId},psn_product_id.eq.${psnConceptId}`)
-    .limit(1)
-    .single();
+    .from("psn_prices_history")
+    .select("*")
+    .eq("game_id", target.id);
 
-  if (error || !data) return null;
-  return data;
+
+  if (error || !data || data.length === 0) return null; 
+
+  return {
+    id: target.id,
+    type: target.type,
+    psn_prices_history: data
+  };
 };
 
-export function useFetchGamePricing(psnConceptId?: string | null) {
+export function useFetchGamePricing(target?: PsnIdResult | null) {
   return useQuery({
-    queryKey: ["game-pricing", psnConceptId],
-    queryFn: () => psnConceptId ? fetchGamePricing(psnConceptId) : null,
-    enabled: !!psnConceptId,
+    queryKey: ["game-pricing", target?.id, target?.type],
+    queryFn: () => target ? fetchGamePricing(target) : null,
+    enabled: !!target,
     staleTime: 1000 * 60 * 60, 
     gcTime: 1000 * 60 * 60 * 24, 
   });
