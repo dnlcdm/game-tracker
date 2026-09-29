@@ -2,7 +2,6 @@ import { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -103,21 +102,15 @@ export const NotificationDropdown = () => {
                 ) : (
                     <div className="flex flex-col custom-scrollbar overflow-y-auto max-h-[300px]">
                         {notifications.map((notification) => (
-                            <MenuItem
+                            <div
                                 key={notification.id}
                                 onClick={() => handleRead(notification)}
-                                sx={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    alignItems: "flex-start",
-                                    px: 3,
-                                    py: 1.5,
-                                    bgcolor: notification.is_read ? "transparent" : "rgba(59, 130, 246, 0.08)",
-                                    "&:hover": {
-                                        bgcolor: "rgba(255, 255, 255, 0.05)",
-                                    },
-                                    whiteSpace: "normal"
-                                }}
+                                role="button"
+                                tabIndex={0}
+                                className={`flex flex-col items-start px-6 py-3 cursor-pointer transition-colors ${notification.is_read
+                                    ? "bg-transparent hover:bg-white/5"
+                                    : "bg-blue-500/10 hover:bg-blue-500/20"
+                                    }`}
                             >
                                 <div className="flex w-full items-start justify-between mb-1">
                                     <div className="flex items-center">
@@ -153,7 +146,7 @@ export const NotificationDropdown = () => {
                                 <Typography variant="caption" sx={{ color: "#64748b", fontSize: "0.7rem", alignSelf: "flex-end" }}>
                                     {new Date(notification.created_at).toLocaleDateString("pt-BR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
                                 </Typography>
-                            </MenuItem>
+                            </div>
                         ))}
                     </div>
                 )}
