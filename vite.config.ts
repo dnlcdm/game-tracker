@@ -10,6 +10,12 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "pwa/*.png"],
+      strategies: 'injectManifest', 
+      srcDir: 'public',
+      filename: 'sw.js',
+      injectManifest: {
+        injectionPoint: undefined
+      },
       manifest: {
         name: "Tracker Games",
         short_name: "TR Games",
