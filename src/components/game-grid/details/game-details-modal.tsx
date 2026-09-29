@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router";
 import type { IGamesSupabase } from "../../../features/search-games/types/games.types";
 import CloseIcon from "@mui/icons-material/Close";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
@@ -29,7 +30,15 @@ type Tab = (typeof TABS)[number];
 export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
   const { isPending, data } = useHltb(game.name);
   const { data: cachedTranslation } = useFetchCachedTranslation(game.id);
-  const [activeTab, setActiveTab] = useState<Tab>("Mídia");
+  const [searchParams] = useSearchParams();
+
+  const [activeTab, setActiveTab] = useState<Tab>(() => {
+    const tabState = searchParams.get("tab");
+    if (tabState === "price") return "Preços";
+    if (tabState === "time") return "Tempo";
+    if (tabState === "desc") return "Descrição";
+    return "Mídia";
+  });
 
   const psnTarget = extractPsnId(game);
   const finalPsnId = psnTarget?.id || null;

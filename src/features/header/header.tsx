@@ -8,6 +8,7 @@ import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
+import { NotificationDropdown } from "./components/notification-dropdown";
 
 export default function Header() {
   const { session, isLoading, signOut } = useUserAuth();
@@ -39,7 +40,8 @@ export default function Header() {
     <div className="flex items-center justify-between sm:h-14 h-11 px-4 bg-blue-950 border-b border-blue-900/40">
       <p className="font-[BHHBogle] text-2xl sm:text-4xl text-white">Tracker</p>
 
-      <div className="md:hidden flex items-center gap-3">
+      <div className="flex items-center gap-1 md:gap-4 ml-auto px-0 md:px-0">
+        <NotificationDropdown />
         <IconButton
           onClick={handleOpenMenu}
           disabled={isLoading || !session}
@@ -48,6 +50,7 @@ export default function Header() {
         >
           <Avatar src={avatarUrl} sx={{ width: 24, height: 24 }} />
         </IconButton>
+
 
         <Menu
           anchorEl={anchorEl}
@@ -58,7 +61,7 @@ export default function Header() {
           PaperProps={{
             sx: {
               mt: 1,
-              borderRadius: 3,
+              borderRadius: 2,
               bgcolor: "#0B1220",
               border: "1px solid rgba(31,41,55,0.9)",
               color: "white",

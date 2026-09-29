@@ -47,6 +47,7 @@ export const GameGrid = ({ items, actions, isLoading, onListAssign }: GameGridPr
   const closeModal = () => {
     const next = new URLSearchParams(searchParams);
     next.delete(GAME_QP);
+    next.delete("tab");
     setSearchParams(next, { replace: false });
   };
 
