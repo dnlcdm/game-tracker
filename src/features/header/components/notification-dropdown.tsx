@@ -9,9 +9,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useNotifications, type INotification } from "../hooks/useNotifications";
 import { usePushNotifications } from "../hooks/usePushNotifications";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useNavigate } from "react-router-dom";
-import { Close, X } from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
 
 export const NotificationDropdown = () => {
     const { notifications, unreadCount, isPending, markAsRead, markAllAsRead, deleteNotification } = useNotifications();
