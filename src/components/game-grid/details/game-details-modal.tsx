@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router";
 import type { IGamesSupabase } from "../../../features/search-games/types/games.types";
 import CloseIcon from "@mui/icons-material/Close";
@@ -17,6 +17,7 @@ import { useFetchCachedTranslation } from "../../../hooks/useFetchCachedTranslat
 import { GameDetailsPrice } from "./game-details-price";
 import { useFetchGamePricing } from "../hooks/useFetchGamePricing";
 import { extractPsnId } from "./pricing/psn.utils";
+import { useNotifications } from "../../../features/header/hooks/useNotifications";
 
 interface Props {
   game: IGamesSupabase;
@@ -31,6 +32,14 @@ export const GameDetailsModal = ({ game, actions, onClose }: Props) => {
   const { isPending, data } = useHltb(game.name);
   const { data: cachedTranslation } = useFetchCachedTranslation(game.id);
   const [searchParams] = useSearchParams();
+  const { notifications, deleteNotification } = useNotifications();
+
+  useEffect(() => {
+    const matched = notifications.find(n => n.game_id === game.id.toString());
+    if (matched) {
+      deleteNotification(matched.id);
+    }
+  }, [game.id, notifications, deleteNotification]);
 
   const [activeTab, setActiveTab] = useState<Tab>(() => {
     const tabState = searchParams.get("tab");

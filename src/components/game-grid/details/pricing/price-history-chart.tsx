@@ -88,7 +88,7 @@ export const PriceHistoryChart = ({ data, lines, ticks, range, onRangeChange }: 
                     <XAxis
                         dataKey="timestamp"
                         type="number"
-                        domain={ticks && ticks.length ? [ticks[0], ticks[ticks.length - 1]] : ['dataMin', 'dataMax']}
+                        domain={ticks && ticks.length ? [ticks[0], 'dataMax'] : ['dataMin', 'dataMax']}
                         ticks={ticks}
                         tickFormatter={(val: number) => {
                             if (!val) return "";

@@ -90,7 +90,7 @@ export const buildChartData = (data: PsnGameData, rangeOpt: 1 | 3 | 6 = 6): { po
         const intervals = rangeOpt - 1;
         for (let i = 0; i <= intervals; i++) {
             const d = new Date();
-            d.setUTCDate(15);
+            d.setUTCDate(1);
             d.setUTCMonth(d.getUTCMonth() - i);
             d.setUTCHours(12, 0, 0, 0);
             ticks.push(d.getTime());
