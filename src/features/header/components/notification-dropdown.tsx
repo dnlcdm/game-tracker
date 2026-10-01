@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import Menu from "@mui/material/Menu";
@@ -21,6 +21,12 @@ export const NotificationDropdown = () => {
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
+    useEffect(() => {
+        if (open && unreadCount > 0) {
+            markAllAsRead();
+        }
+    }, [open, unreadCount, markAllAsRead]);
 
     const handleClose = () => {
         setAnchorEl(null);
